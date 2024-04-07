@@ -1,0 +1,12 @@
+<button
+	mat-raised-button
+	[color]="colorButton()"
+	(click)="clickEvent.emit()"
+>
+	{{ text() }}
+	@if(iconName()) {
+	<mat-icon [customIcon]="'medium'">{{
+		iconName()
+	}}</mat-icon>
+	}
+</button>

@@ -1,0 +1,63 @@
+<section class="task-form-container">
+	<h3 class="task-form-title">Add new task</h3>
+
+	<form [formGroup]="taskForm" class="row">
+		<mat-form-field class="col">
+			<mat-label>Title</mat-label>
+			<input matInput formControlName="title" type="text" />
+		</mat-form-field>
+
+		<mat-form-field class="col">
+			<mat-label>Description</mat-label>
+			<textarea
+				matInput
+				formControlName="description"
+				type="text"
+			></textarea>
+		</mat-form-field>
+
+		<div
+			class="col row subtasks-container"
+			formArrayName="subtasks"
+		>
+			<h3>Subtasks</h3>
+
+			@for(subtask of subtasks.controls; track subtask) {
+			<mat-form-field class="col" [formGroupName]="$index">
+				<input
+					matInput
+					formControlName="title"
+					placeholder="Example"
+					type="text"
+					autocomplete="false"
+				/>
+			</mat-form-field>
+			}
+
+			<custom-button
+				[text]="'Add new subtask'"
+				[colorButton]="'acent'"
+				(clickEvent)="addSubtask()"
+				class="col add-subtasks-button"
+			/>
+		</div>
+
+		<mat-form-field class="col">
+			<mat-label>Status</mat-label>
+			<mat-select formControlName="status">
+				@for(status of statusOptions; track status) {
+				<mat-option [value]="status">{{
+					status
+				}}</mat-option>
+				}
+			</mat-select>
+		</mat-form-field>
+
+		<custom-button
+			[text]="'Create task'"
+			[colorButton]="'primary'"
+			(clickEvent)="createTask()"
+			class="col create-task-button"
+		/>
+	</form>
+</section>
