@@ -26,12 +26,15 @@ export class ThemeSwitcherComponent implements OnInit {
 	constructor(private readonly store: Store) {
 		this.themeToggled.valueChanges.subscribe((checked) => {
 			const darkThemeName = 'dark-theme';
+			const lightThemeName = 'light-theme';
 			const body = document.querySelector('body');
 			// Enable light theme
 			if (!checked) {
 				body?.classList.remove(darkThemeName);
+				body?.classList.add(lightThemeName);
 				this.store.dispatch(new fromStore.SaveTheme('ligth'));
 			} else {
+				body?.classList.remove(lightThemeName);
 				body?.classList.add(darkThemeName);
 				this.store.dispatch(new fromStore.SaveTheme('dark'));
 			}
