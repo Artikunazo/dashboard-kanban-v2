@@ -37,3 +37,7 @@ $m3-light-theme: matx.define-theme(
 .light-theme {
 	@include mat.all-component-themes($m3-light-theme);
 }
+
+.mdc-switch .mdc-switch__handle-track {
+	width: auto !important;
+}
