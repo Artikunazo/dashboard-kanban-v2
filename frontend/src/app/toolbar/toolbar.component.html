@@ -2,6 +2,7 @@
 	<mat-toolbar class="row toolbar-main">
 		<div class="col-1">
 			<custom-button
+				[colorButton]="'accent'"
 				(clickEvent)="openNav.emit()"
 				iconName="menu"
 			/>
@@ -12,7 +13,9 @@
 		<div class="col-4 justify-self-end">
 			<custom-button
 				[text]="'Add new task'"
+				[colorButton]="'accent'"
 				(clickEvent)="openTaskFormModal()"
+				iconName="add"
 			/>
 		</div>
 	</mat-toolbar>

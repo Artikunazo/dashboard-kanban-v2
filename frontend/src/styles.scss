@@ -41,3 +41,12 @@ $m3-light-theme: matx.define-theme(
 .mdc-switch .mdc-switch__handle-track {
 	width: auto !important;
 }
+
+.mat-mdc-card {
+	border-radius: var(--mdc-elevated-card-container-shape) !important;
+	background-color: var(--mdc-elevated-card-container-color) !important;
+	border-width: 0 !important;
+	border-style: solid !important;
+	border-color: var(--mdc-elevated-card-container-color) !important;
+	box-shadow: var(--mdc-elevated-card-container-elevation) !important;
+}
