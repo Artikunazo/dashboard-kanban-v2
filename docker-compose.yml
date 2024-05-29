@@ -7,9 +7,20 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     depends_on:
-      - passGen
-  passGen:
-  passwordGeneratorDb:
+      - dashboard-kanban
+  dashboard-kanban:
+    image: dashboard-kanban
+    build: 
+      context: ./dashboard-kanban
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://dashboardKanbanDB:3306:/dahsboard_kanban
+    restart: always
+    depends_on:
+      - dashboardKanbanDB
+  dashboardKanbanDB:
     image: mysql:8.0.36
     ports:
       -"3307:3306"
