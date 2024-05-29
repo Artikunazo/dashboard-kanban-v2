@@ -1,13 +1,13 @@
-package com.artikunazo.passwordgenerator;
+package com.artikunazo.dashboardKanban;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PasswordgeneratorApplication {
+public class DashboardKanbanApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PasswordgeneratorApplication.class, args);
+		SpringApplication.run(DashboardKanbanApplication.class, args);
 	}
 
 }

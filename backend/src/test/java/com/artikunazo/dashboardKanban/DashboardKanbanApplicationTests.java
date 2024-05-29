@@ -1,10 +1,10 @@
-package com.artikunazo.passwordgenerator;
+package com.artikunazo.dashboardKanban;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PasswordgeneratorApplicationTests {
+class DashboardKanbanApplicationTests {
 
 	@Test
 	void contextLoads() {
