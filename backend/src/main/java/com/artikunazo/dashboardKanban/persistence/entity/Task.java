@@ -21,8 +21,8 @@ public class Task {
   private Status idStatus;
 
   @OneToMany(mappedBy = "board", cascade = { CascadeType.ALL})
-  private List<Board> boards;
-
+  private Board board;
+pri
   @OneToMany(mappedBy = "subtask", cascade = { CascadeType.ALL })
   private List<Subtask> subtasks;
 
@@ -58,12 +58,12 @@ public class Task {
     this.idStatus = idStatus;
   }
 
-  public List<Board> getBoards() {
-    return boards;
+  public Board getBoards() {
+    return board;
   }
 
-  public void setBoards(List<Board> boards) {
-    this.boards = boards;
+  public void setBoards(Board boards) {
+    this.board = boards;
   }
 
   public List<Subtask> getSubtasks() {
