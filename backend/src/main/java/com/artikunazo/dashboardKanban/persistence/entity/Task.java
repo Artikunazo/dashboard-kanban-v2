@@ -22,7 +22,7 @@ public class Task {
 
   @OneToMany(mappedBy = "board", cascade = { CascadeType.ALL})
   private Board board;
-pri
+
   @OneToMany(mappedBy = "subtask", cascade = { CascadeType.ALL })
   private List<Subtask> subtasks;
 
