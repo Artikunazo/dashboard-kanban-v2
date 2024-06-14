@@ -7,13 +7,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
   @Mappings({
-    @Mapping(source = "title", target = "title"),
-    @Mapping(source = "tasks", target = "tasks"),
+      @Mapping(source = "title", target = "title"),
+      @Mapping(source = "tasks", target = "tasks"),
+      @Mapping(source = "idBoard", target = "boardId")
   })
   BoardDomain toBoard(Board board);
+  List<BoardDomain> toBoards(List<Board> boards);
 
   @InheritInverseConfiguration
   @Mapping(target = "idBoard", ignore = true)
