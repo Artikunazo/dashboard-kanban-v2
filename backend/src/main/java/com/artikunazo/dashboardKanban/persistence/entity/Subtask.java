@@ -16,7 +16,7 @@ public class Subtask {
   @ManyToOne
   @MapsId("idTask")
   @JoinColumn(name = "id_task", insertable = false, updatable = false)
-  private Task task;
+  private Integer taskId;
 
   public String getTitle() {
     return title;
@@ -42,11 +42,11 @@ public class Subtask {
     this.idSubtask = idSubtask;
   }
 
-  public Task getId_task() {
-    return task;
+  public Integer getTaskId() {
+    return taskId;
   }
 
-  public void setId_task(Task task) {
-    this.task = task;
+  public void setTaskId(Integer taskId) {
+    this.taskId = taskId;
   }
 }

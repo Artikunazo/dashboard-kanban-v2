@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface StatusMapper {
   @Mappings({
@@ -14,6 +16,7 @@ public interface StatusMapper {
       @Mapping(source = "status", target = "status")
   })
   StatusDomain toStatus(Status status);
+  List<StatusDomain> toStatusesDomain(List<Status> statuses);
 
   @InheritInverseConfiguration
   Status toStatusDomain(StatusDomain status);

@@ -19,7 +19,7 @@ public class BoardRepository {
   @Autowired
   private BoardMapper boardMapper;
 
-
+//  @Override
   public List<BoardDomain> getAll() {
     List<Board> boards = (List<Board>) boardCrudRepository.findAll();
     return boardMapper.toBoards(boards);

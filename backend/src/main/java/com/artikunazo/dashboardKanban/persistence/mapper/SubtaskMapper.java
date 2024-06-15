@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface SubtaskMapper {
   @Mappings({
@@ -15,8 +17,9 @@ public interface SubtaskMapper {
       @Mapping(source = "isDone", target = "isDone"),
       @Mapping(source = "task", target = "task"),
   })
-  SubtaskDomain toSubtask(Subtask subtask);
+  SubtaskDomain toSubtaskDomain(Subtask subtask);
+  List<SubtaskDomain> toSubtasksDomain(List<Subtask> subtasks);
 
   @InheritInverseConfiguration
-  Subtask toSubtaskDomain(SubtaskDomain subtaskDomain);
+  Subtask toSubtask(SubtaskDomain subtaskDomain);
 }
