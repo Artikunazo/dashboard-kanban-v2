@@ -15,12 +15,16 @@ public class Task {
   private String title;
   private String description;
 
+  @Column(name = "board_id")
+  private Integer boardId;
+
   @OneToOne
   @MapsId("status_id")
   @JoinColumn(name = "status_id", insertable = false, updatable = false)
   private Status idStatus;
 
-  @OneToMany(mappedBy = "board", cascade = { CascadeType.ALL})
+  @OneToMany
+  @JoinColumn(name = "board_id", insertable = false, updatable = false)
   private Board board;
 
   @OneToMany(mappedBy = "subtask", cascade = { CascadeType.ALL })
@@ -58,19 +62,27 @@ public class Task {
     this.idStatus = idStatus;
   }
 
-  public Board getBoards() {
-    return board;
-  }
-
-  public void setBoards(Board boards) {
-    this.board = boards;
-  }
-
   public List<Subtask> getSubtasks() {
     return subtasks;
   }
 
   public void setSubtasks(List<Subtask> subtasks) {
     this.subtasks = subtasks;
+  }
+
+  public Integer getBoardId() {
+    return boardId;
+  }
+
+  public void setBoardId(Integer boardId) {
+    this.boardId = boardId;
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
   }
 }
