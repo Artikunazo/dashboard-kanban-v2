@@ -13,10 +13,13 @@ public class Subtask {
   private String title;
   private Boolean isDone;
 
+  @Column(name = "id_task")
+  private Integer idTask;
+
   @ManyToOne
   @MapsId("idTask")
   @JoinColumn(name = "id_task", insertable = false, updatable = false)
-  private Integer taskId;
+  private Task task;
 
   public String getTitle() {
     return title;
@@ -42,11 +45,19 @@ public class Subtask {
     this.idSubtask = idSubtask;
   }
 
-  public Integer getTaskId() {
-    return taskId;
+  public Integer getIdTask() {
+    return idTask;
   }
 
-  public void setTaskId(Integer taskId) {
-    this.taskId = taskId;
+  public void setIdTask(Integer idTask) {
+    this.idTask = idTask;
+  }
+
+  public Task getTask() {
+    return task;
+  }
+
+  public void setTask(Task task) {
+    this.task = task;
   }
 }

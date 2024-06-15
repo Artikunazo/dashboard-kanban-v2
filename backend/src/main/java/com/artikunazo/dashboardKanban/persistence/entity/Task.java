@@ -15,13 +15,15 @@ public class Task {
   private String title;
   private String description;
 
-  @Column(name = "board_id")
-  private Integer boardId;
+  @Column(name = "id_board")
+  private Integer idBoard;
+
+  @Column(name = "id_status")
+  private Integer idStatus;
 
   @OneToOne
-  @MapsId("status_id")
   @JoinColumn(name = "status_id", insertable = false, updatable = false)
-  private Status idStatus;
+  private Status status;
 
   @OneToMany
   @JoinColumn(name = "board_id", insertable = false, updatable = false)
@@ -54,14 +56,6 @@ public class Task {
     this.description = description;
   }
 
-  public Status getIdStatus() {
-    return idStatus;
-  }
-
-  public void setIdStatus(Status idStatus) {
-    this.idStatus = idStatus;
-  }
-
   public List<Subtask> getSubtasks() {
     return subtasks;
   }
@@ -70,19 +64,35 @@ public class Task {
     this.subtasks = subtasks;
   }
 
-  public Integer getBoardId() {
-    return boardId;
-  }
-
-  public void setBoardId(Integer boardId) {
-    this.boardId = boardId;
-  }
-
   public Board getBoard() {
     return board;
   }
 
   public void setBoard(Board board) {
     this.board = board;
+  }
+
+  public Integer getIdBoard() {
+    return idBoard;
+  }
+
+  public void setIdBoard(Integer idBoard) {
+    this.idBoard = idBoard;
+  }
+
+  public Integer getIdStatus() {
+    return idStatus;
+  }
+
+  public void setIdStatus(Integer idStatus) {
+    this.idStatus = idStatus;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 }
