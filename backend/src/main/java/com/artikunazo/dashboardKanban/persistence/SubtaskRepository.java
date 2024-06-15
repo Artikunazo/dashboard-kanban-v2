@@ -1,6 +1,7 @@
 package com.artikunazo.dashboardKanban.persistence;
 
 import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
+import com.artikunazo.dashboardKanban.domain.repository.SubtaskDomainRepository;
 import com.artikunazo.dashboardKanban.persistence.crud.SubtaskCrudRepository;
 import com.artikunazo.dashboardKanban.persistence.entity.Subtask;
 import com.artikunazo.dashboardKanban.persistence.mapper.SubtaskMapper;
@@ -9,9 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@ToDo: Implement status domain repository
 @Repository
-public class SubtaskRepository {
+public class SubtaskRepository implements SubtaskDomainRepository {
   @Autowired
   private SubtaskCrudRepository subtaskCrudRepository;
 

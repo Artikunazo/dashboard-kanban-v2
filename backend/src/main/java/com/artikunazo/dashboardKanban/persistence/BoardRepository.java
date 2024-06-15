@@ -1,6 +1,7 @@
 package com.artikunazo.dashboardKanban.persistence;
 
 import com.artikunazo.dashboardKanban.domain.BoardDomain;
+import com.artikunazo.dashboardKanban.domain.repository.BoardDomainRepository;
 import com.artikunazo.dashboardKanban.persistence.crud.BoardCrudRepository;
 import com.artikunazo.dashboardKanban.persistence.entity.Board;
 import com.artikunazo.dashboardKanban.persistence.mapper.BoardMapper;
@@ -10,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//@ToDo: Implement status domain repository
 @Repository
-public class BoardRepository {
+public class BoardRepository implements BoardDomainRepository {
   @Autowired
   private BoardCrudRepository boardCrudRepository;
 
