@@ -7,7 +7,6 @@ import java.util.List;
 public class BoardDomain {
   private int boardId;
   private String title;
-  private List<Task> tasks;
 
   public int getBoardId() {
     return boardId;
@@ -23,13 +22,5 @@ public class BoardDomain {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public List<Task> getTasks() {
-    return tasks;
-  }
-
-  public void setTasks(List<Task> tasks) {
-    this.tasks = tasks;
   }
 }

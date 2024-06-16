@@ -6,7 +6,7 @@ public class SubtaskDomain {
   private int subtaskId;
   private String title;
   private boolean isDone;
-  private Task task;
+  private int taskId;
 
   public int getSubtaskId() {
     return subtaskId;
@@ -32,11 +32,11 @@ public class SubtaskDomain {
     isDone = done;
   }
 
-  public Task getTask() {
-    return task;
+  public int getTaskId() {
+    return taskId;
   }
 
-  public void setTask(Task task) {
-    this.task = task;
+  public void setTaskId(int taskId) {
+    this.taskId = taskId;
   }
 }

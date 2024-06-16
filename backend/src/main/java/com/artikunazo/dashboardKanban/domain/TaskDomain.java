@@ -7,7 +7,7 @@ public class TaskDomain {
   private String title;
   private String description;
   private int statusId;
-  private BoardDomain board;
+  private int boardId;
   private List<SubtaskDomain> subtasks;
 
   public int getTaskId() {
@@ -42,12 +42,12 @@ public class TaskDomain {
     this.statusId = statusId;
   }
 
-  public BoardDomain getBoard() {
-    return board;
+  public int getBoardId() {
+    return boardId;
   }
 
-  public void setBoard(BoardDomain board) {
-    this.board = board;
+  public void setBoardId(int boardId) {
+    this.boardId = boardId;
   }
 
   public List<SubtaskDomain> getSubtasks() {
