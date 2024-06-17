@@ -25,7 +25,10 @@ public class BoardService {
     return boardDomainRepository.saveBoard(boardDomain);
   }
 
-  public void deleteBoard(int idBoard) {
-    boardDomainRepository.deleteBoard(idBoard);
+  public boolean deleteBoard(int idBoard) {
+    return getBoardById(idBoard).map(boardDomain -> {
+      boardDomainRepository.deleteBoard(idBoard);
+      return true;
+    }).orElse(false);
   }
 }

@@ -1,14 +1,14 @@
 package com.artikunazo.dashboardKanban.web.controller;
 
+import com.artikunazo.dashboardKanban.domain.BoardDomain;
 import com.artikunazo.dashboardKanban.domain.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -21,6 +21,25 @@ public class BoardController {
   @GetMapping("/health-check")
   public ResponseEntity<String> getResponse() {
     return new ResponseEntity<String>("Ok!", HttpStatus.OK) ;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<BoardDomain>> getAll() {
+    return new ResponseEntity<>(boardService.getAll(), HttpStatus.OK);
+  }
+
+  @PostMapping("/save")
+  public ResponseEntity<BoardDomain> saveBoard(@RequestBody BoardDomain boardDomain) {
+    return new ResponseEntity<>(boardService.saveBoard(boardDomain), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/delete/{idBoard}")
+  public ResponseEntity<String> deleteBoard(@PathVariable("idBoard") int idBoard) {
+    if(!boardService.deleteBoard(idBoard)) {
+      return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+    } else {
+      return new ResponseEntity<String>(HttpStatus.OK);
+    }
   }
 
 }
