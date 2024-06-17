@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class SubtaskRepository implements SubtaskDomainRepository {
@@ -21,6 +22,12 @@ public class SubtaskRepository implements SubtaskDomainRepository {
   public List<SubtaskDomain> getAllByTaskId(int taskId){
     return subtaskMapper.toSubtasksDomain(
         subtaskCrudRepository.findByTaskId(taskId)
+    );
+  }
+
+  public Optional<SubtaskDomain> getSubtaskById(int idSubtask) {
+    return subtaskMapper.toSubtaskDomainOptional(
+        subtaskCrudRepository.findById(idSubtask)
     );
   }
 

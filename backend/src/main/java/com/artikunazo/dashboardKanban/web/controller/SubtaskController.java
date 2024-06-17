@@ -1,13 +1,13 @@
 package com.artikunazo.dashboardKanban.web.controller;
 
+import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.service.SubtaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -21,4 +21,24 @@ public class SubtaskController {
   public ResponseEntity<String> getResponse() {
     return new ResponseEntity<String>("Ok!", HttpStatus.OK) ;
   }
+
+  @GetMapping("/all/{idTask}")
+  public ResponseEntity<List<SubtaskDomain>> getAllByTask(@PathVariable("idTask") int idTask) {
+    return new ResponseEntity<>(subtaskService.getAllByTaskId(idTask), HttpStatus.OK);
+  }
+
+  @PostMapping("/save")
+  public ResponseEntity<SubtaskDomain> saveSubtask(@RequestBody SubtaskDomain subtaskDomain) {
+    return new ResponseEntity<>(subtaskService.saveSubtask(subtaskDomain), HttpStatus.CREATED);
+  }
+
+  @DeleteMapping("delete/{idSubtask}")
+  ResponseEntity<String> deleteSubtask(@PathVariable("idSubtask") int idSubtask) {
+    if(!subtaskService.deleteSubtask(idSubtask)) {
+      return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+    } else {
+      return new ResponseEntity<String>(HttpStatus.OK);
+    }
+  }
+
 }

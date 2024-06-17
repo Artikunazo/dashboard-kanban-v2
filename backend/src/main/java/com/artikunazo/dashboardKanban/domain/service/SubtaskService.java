@@ -5,6 +5,7 @@ import com.artikunazo.dashboardKanban.domain.repository.SubtaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SubtaskService {
   @Autowired
@@ -14,11 +15,18 @@ public class SubtaskService {
     return subtaskDomainRepository.getAllByTaskId(taskId);
   }
 
+  public Optional<SubtaskDomain> getSubtaskById(int idSubtask) {
+    return subtaskDomainRepository.getSubtaskById(idSubtask);
+  }
+
   public SubtaskDomain saveSubtask(SubtaskDomain subtaskDomain) {
     return subtaskDomainRepository.saveSubtask(subtaskDomain);
   }
 
-  public void deleteSubtask(int subtaskId) {
-    subtaskDomainRepository.deleteSubtask(subtaskId);
+  public boolean deleteSubtask(int idSubtask) {
+    return getSubtaskById(idSubtask).map(subtaskDomain -> {
+      subtaskDomainRepository.deleteSubtask(idSubtask);
+      return true;
+    }).orElse(false);
   }
 }

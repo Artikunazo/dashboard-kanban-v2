@@ -30,7 +30,7 @@ public class BoardController {
 
   @PostMapping("/save")
   public ResponseEntity<BoardDomain> saveBoard(@RequestBody BoardDomain boardDomain) {
-    return new ResponseEntity<>(boardService.saveBoard(boardDomain), HttpStatus.OK);
+    return new ResponseEntity<>(boardService.saveBoard(boardDomain), HttpStatus.CREATED);
   }
 
   @DeleteMapping("/delete/{idBoard}")
