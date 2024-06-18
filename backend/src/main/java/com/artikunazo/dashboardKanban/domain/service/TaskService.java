@@ -4,11 +4,8 @@ import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.artikunazo.dashboardKanban.domain.service.SubtaskService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
