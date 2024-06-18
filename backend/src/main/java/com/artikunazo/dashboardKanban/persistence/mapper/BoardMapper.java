@@ -13,14 +13,13 @@ import java.util.List;
 public interface BoardMapper {
   @Mappings({
       @Mapping(source = "title", target = "title"),
-      @Mapping(source = "tasks", target = "tasks"),
       @Mapping(source = "idBoard", target = "boardId")
   })
   BoardDomain toBoard(Board board);
   List<BoardDomain> toBoards(List<Board> boards);
 
   @InheritInverseConfiguration
-  @Mapping(target = "idBoard", ignore = true)
+  @Mapping(target = "tasks", ignore = true)
   Board toBoardDomain(BoardDomain boardDomain);
 
 }

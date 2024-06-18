@@ -14,16 +14,16 @@ import java.util.Optional;
 public interface TaskMapper {
 
   @Mappings({
-      @Mapping(source = "taskId", target = "idTask"),
-      @Mapping(source = "title", target = "title"),
-      @Mapping(source = "description", target = "description"),
-      @Mapping(source = "statusId", target = "idStatus"),
-      @Mapping(source = "board", target = "board"),
-      @Mapping(source = "subtasks", target = "subtasks"),
+      @Mapping(source = "idTask", target = "taskId"),
+      @Mapping(source = "title", target = "taskTitle"),
+      @Mapping(source = "description", target = "taskDescription"),
+      @Mapping(source = "idBoard", target = "boardId"),
+      @Mapping(source = "idStatus", target = "statusId")
   })
   TaskDomain toTaskDomain(Task task);
-  List<TaskDomain> toTasksDomian(List<Task> tasks);
+  List<TaskDomain> toTasksDomain(List<Task> tasks);
 
   @InheritInverseConfiguration
+  @Mapping(target = "subtasks", ignore = true)
   Task toTask(TaskDomain taskDomain);
 }

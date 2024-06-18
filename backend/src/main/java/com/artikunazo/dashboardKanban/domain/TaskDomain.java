@@ -4,8 +4,8 @@ import java.util.List;
 
 public class TaskDomain {
   private int taskId;
-  private String title;
-  private String description;
+  private String taskTitle;
+  private String taskDescription;
   private int statusId;
   private int boardId;
   private List<SubtaskDomain> subtasks;
@@ -18,20 +18,20 @@ public class TaskDomain {
     this.taskId = taskId;
   }
 
-  public String getTitle() {
-    return title;
+  public String getTaskTitle() {
+    return taskTitle;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setTaskTitle(String taskTitle) {
+    this.taskTitle = taskTitle;
   }
 
-  public String getDescription() {
-    return description;
+  public String getTaskDescription() {
+    return taskDescription;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setTaskDescription(String taskDescription) {
+    this.taskDescription = taskDescription;
   }
 
   public int getStatusId() {

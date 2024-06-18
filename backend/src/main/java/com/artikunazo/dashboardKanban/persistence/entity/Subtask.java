@@ -17,7 +17,6 @@ public class Subtask {
   private Integer idTask;
 
   @ManyToOne
-  @MapsId("idTask")
   @JoinColumn(name = "id_task", insertable = false, updatable = false)
   private Task task;
 

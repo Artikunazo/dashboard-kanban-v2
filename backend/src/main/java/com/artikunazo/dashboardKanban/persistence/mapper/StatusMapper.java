@@ -12,12 +12,13 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface StatusMapper {
   @Mappings({
-    @Mapping(source = "statusId", target = "idStatus"),
-      @Mapping(source = "status", target = "status")
+      @Mapping(target = "statusId", source = "idStatus"),
+      @Mapping(source = "status", target = "statusName")
   })
   StatusDomain toStatus(Status status);
   List<StatusDomain> toStatusesDomain(List<Status> statuses);
 
   @InheritInverseConfiguration
+  @Mapping(target = "task", ignore = true)
   Status toStatusDomain(StatusDomain status);
 }

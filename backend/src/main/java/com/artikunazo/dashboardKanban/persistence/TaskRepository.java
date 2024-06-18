@@ -21,7 +21,7 @@ public class TaskRepository implements TaskDomainRepository {
 
   @Override
   public List<TaskDomain> getTasksByBoardId(int boardId) {
-    return taskMapper.toTasksDomian(
+    return taskMapper.toTasksDomain(
         taskCrudRespository.findByBoardId(boardId)
     );
   }

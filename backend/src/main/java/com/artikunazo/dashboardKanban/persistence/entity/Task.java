@@ -25,11 +25,11 @@ public class Task {
   @JoinColumn(name = "status_id", insertable = false, updatable = false)
   private Status status;
 
-  @OneToMany
+  @ManyToOne
   @JoinColumn(name = "board_id", insertable = false, updatable = false)
   private Board board;
 
-  @OneToMany(mappedBy = "subtask", cascade = { CascadeType.ALL })
+  @OneToMany(mappedBy = "task", cascade = { CascadeType.ALL })
   private List<Subtask> subtasks;
 
   public Integer getIdTask() {

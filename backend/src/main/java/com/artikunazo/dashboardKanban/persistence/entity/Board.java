@@ -14,8 +14,8 @@ public class Board {
 
   private String title;
 
-  @OneToMany(mappedBy = "task", cascade = { CascadeType.ALL })
-  private List<Task> tasks;
+  @OneToMany(mappedBy = "board",cascade = { CascadeType.ALL })
+  private List<Task> task;
 
   public Integer getIdBoard() {
     return idBoard;
@@ -34,10 +34,10 @@ public class Board {
   }
 
   public List<Task> getTasks() {
-    return tasks;
+    return task;
   }
 
   public void setTasks(List<Task> tasks) {
-    this.tasks = tasks;
+    this.task = tasks;
   }
 }

@@ -2,7 +2,7 @@ package com.artikunazo.dashboardKanban.domain;
 
 public class StatusDomain {
   private int statusId;
-  private String status;
+  private String statusName;
 
   public int getStatusId() {
     return statusId;
@@ -13,10 +13,10 @@ public class StatusDomain {
   }
 
   public String getStatus() {
-    return status;
+    return statusName;
   }
 
   public void setStatus(String status) {
-    this.status = status;
+    this.statusName = status;
   }
 }
