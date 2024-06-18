@@ -15,6 +15,10 @@ public class SubtaskService {
     return subtaskDomainRepository.getAllByTaskId(taskId);
   }
 
+  public Integer getCountSubtasksByIdTask(int idTask) {
+    return subtaskDomainRepository.getCountSubtasksByIdTask(idTask);
+  }
+
   public Optional<SubtaskDomain> getSubtaskById(int idSubtask) {
     return subtaskDomainRepository.getSubtaskById(idSubtask);
   }

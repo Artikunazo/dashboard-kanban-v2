@@ -19,6 +19,7 @@ public class StatusRepository implements StatusDomainRepository {
   @Autowired
   private StatusMapper statusMapper;
 
+  @Override
   public List<StatusDomain> getAll() {
     List<Status> statuses = (List<Status>) statusCrudRepository.findAll();
     return statusMapper.toStatusesDomain(statuses);

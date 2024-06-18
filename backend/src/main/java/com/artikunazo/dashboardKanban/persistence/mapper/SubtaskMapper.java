@@ -19,7 +19,6 @@ public interface SubtaskMapper {
       @Mapping(source = "task", target = "task"),
   })
   SubtaskDomain toSubtaskDomain(Subtask subtask);
-  Optional<SubtaskDomain> toSubtaskDomainOptional(Optional<Subtask> subtask);
   List<SubtaskDomain> toSubtasksDomain(List<Subtask> subtasks);
 
   @InheritInverseConfiguration

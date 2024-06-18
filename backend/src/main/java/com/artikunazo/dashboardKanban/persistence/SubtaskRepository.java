@@ -19,24 +19,34 @@ public class SubtaskRepository implements SubtaskDomainRepository {
   @Autowired
   private SubtaskMapper subtaskMapper;
 
+  @Override
   public List<SubtaskDomain> getAllByTaskId(int taskId){
     return subtaskMapper.toSubtasksDomain(
         subtaskCrudRepository.findByTaskId(taskId)
     );
   }
 
+  @Override
   public Optional<SubtaskDomain> getSubtaskById(int idSubtask) {
-    return subtaskMapper.toSubtaskDomainOptional(
-        subtaskCrudRepository.findById(idSubtask)
+    return subtaskCrudRepository.findById(idSubtask).map(
+        subtask -> subtaskMapper.toSubtaskDomain(subtask)
     );
   }
 
+  @Override
   public SubtaskDomain saveSubtask(SubtaskDomain subtaskDomain) {
     Subtask subtask = subtaskMapper.toSubtask(subtaskDomain);
     return subtaskMapper.toSubtaskDomain(subtaskCrudRepository.save(subtask));
   }
 
+  @Override
   public void deleteSubtask(int subtaskId) {
     subtaskCrudRepository.deleteById(subtaskId);
   }
+
+  @Override
+  public Integer getCountSubtasksByIdTask(int idTask) {
+    return subtaskCrudRepository.countByTaskId(idTask);
+  }
+
 }

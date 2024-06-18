@@ -1,9 +1,5 @@
 package com.artikunazo.dashboardKanban.domain;
 
-import com.artikunazo.dashboardKanban.persistence.entity.Task;
-
-import java.util.List;
-
 public class BoardDomain {
   private int boardId;
   private String title;

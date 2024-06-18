@@ -19,24 +19,29 @@ public class TaskRepository implements TaskDomainRepository {
   @Autowired
   private TaskMapper taskMapper;
 
+  @Override
   public List<TaskDomain> getTasksByBoardId(int boardId) {
     return taskMapper.toTasksDomian(
         taskCrudRespository.findByBoardId(boardId)
     );
   }
 
+  @Override
   public TaskDomain saveTask(TaskDomain taskDomain) {
     Task task = taskMapper.toTask(taskDomain);
     return taskMapper.toTaskDomain(taskCrudRespository.save(task));
   }
 
+  @Override
   public void deleteTask(int taskId) {
     taskCrudRespository.deleteById(taskId);
   }
 
+  @Override
   public Optional<TaskDomain> getTaskById(int idTask) {
-    Optional<Task> task = taskCrudRespository.findById(idTask);
-    return taskMapper.toTaskDomainOptional(task);
+    return taskCrudRespository.findById(idTask).map(
+        task -> taskMapper.toTaskDomain(task)
+    );
   }
 
 

@@ -1,9 +1,14 @@
 package com.artikunazo.dashboardKanban.domain.service;
 
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
+import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.artikunazo.dashboardKanban.domain.service.SubtaskService;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +16,27 @@ public class TaskService {
   @Autowired
   private TaskDomainRepository taskDomainRepository;
 
-  public List<TaskDomain> getTasksByBoardId(int boardId) {
-    return taskDomainRepository.getTasksByBoardId(boardId);
+  @Autowired
+  private SubtaskService subtaskService;
+
+  public List<TaskOverview> getTasksByBoardId(int boardId) {
+    ArrayList<TaskOverview> taskOverviewList = new ArrayList<>();
+
+    List<TaskDomain> tasks = taskDomainRepository.getTasksByBoardId(boardId);
+
+    tasks.forEach(taskDomain -> {
+      taskOverviewList.add(
+          new TaskOverview(
+              taskDomain.getTaskId(),
+              taskDomain.getTitle(),
+              subtaskService.getCountSubtasksByIdTask(
+                  taskDomain.getTaskId()
+              )
+          )
+      );
+    });
+
+    return taskOverviewList;
   }
 
   public Optional<TaskDomain> getTaskById(int idTask) {

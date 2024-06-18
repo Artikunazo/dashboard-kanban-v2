@@ -1,6 +1,7 @@
 package com.artikunazo.dashboardKanban.web.controller;
 
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
+import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,10 @@ public class TaskController {
   }
 
   //@ToDo: Move this method to TaskOverview
-//  @GetMapping("/all/{idBoard}")
-//  public ResponseEntity<List<TaskDomain>> getTaskByBoard(@PathVariable("idBoard") int idBoard) {
-//    return new ResponseEntity<>(taskService.getTasksByBoardId(idBoard), HttpStatus.OK);
-//  }
+  @GetMapping("/all/{idBoard}")
+  public ResponseEntity<List<TaskOverview>> getTasksByBoardId(@PathVariable("idBoard") int idBoard) {
+    return new ResponseEntity<>(taskService.getTasksByBoardId(idBoard), HttpStatus.OK);
+  }
 
   @GetMapping("{idTask}")
   public ResponseEntity<Optional<TaskDomain>> getTaskById(@PathVariable("idTask") int idTask) {

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SubtaskCrudRepository extends CrudRepository<Subtask, Integer> {
   List<Subtask> findByTaskId(int taskId);
+  Integer countByTaskId(int taskId);
 }
