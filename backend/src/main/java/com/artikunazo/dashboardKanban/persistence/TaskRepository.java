@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TaskRepository implements TaskDomainRepository {
@@ -32,4 +33,11 @@ public class TaskRepository implements TaskDomainRepository {
   public void deleteTask(int taskId) {
     taskCrudRespository.deleteById(taskId);
   }
+
+  public Optional<TaskDomain> getTaskById(int idTask) {
+    Optional<Task> task = taskCrudRespository.findById(idTask);
+    return taskMapper.toTaskDomainOptional(task);
+  }
+
+
 }

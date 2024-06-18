@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
@@ -21,8 +22,10 @@ public interface TaskMapper {
       @Mapping(source = "subtasks", target = "subtasks"),
   })
   TaskDomain toTaskDomain(Task task);
+  Optional<TaskDomain> toTaskDomainOptional(Optional<Task> task);
   List<TaskDomain> toTasksDomian(List<Task> tasks);
 
   @InheritInverseConfiguration
   Task toTask(TaskDomain taskDomain);
+  Optional<Task> toTaskOptional(Optional<TaskDomain> taskDomain);
 }
