@@ -130,5 +130,5 @@ export type TasksActions =
 	| DeleteTask
 	| DeleteTaskSuccess
 	| DeleteTaskFail
-	| SaveTasks
-	| SaveTasksSuccess;
+	| SaveTask
+	| SaveTaskSuccess;
