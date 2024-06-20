@@ -1,30 +1,30 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CONTEXT_PATH, URL_BASE } from '../common/constants';
-import { Board } from "../models/board_models";
+import {HttpClient} from '@angular/common/http';
+import {Injectable, inject} from '@angular/core';
+import {Observable} from 'rxjs';
+import {CONTEXT_PATH, URL_BASE} from '../common/constants';
+import {Board} from '../models/board_models';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class BoardService {
-  protected readonly httpClient = inject(HttpClient);
+	protected readonly httpClient = inject(HttpClient);
 
-  private readonly URL = `${URL_BASE}${CONTEXT_PATH}board/`;
+	private readonly URL = `${URL_BASE}${CONTEXT_PATH}board/`;
 
-  // healthCheck() {
-  //   return this.httpClient.get(`${this.URL}health-check`);
-  // }
+	// healthCheck() {
+	//   return this.httpClient.get(`${this.URL}health-check`);
+	// }
 
-  root(): Observable<Board[]> {
-    return this.httpClient.get<Board[]>(this.URL);
-  }
+	getBoards(): Observable<Board[]> {
+		return this.httpClient.get<Board[]>(this.URL);
+	}
 
-  save(board: Board): Observable<Board> {
-    return this.httpClient.post<Board>(this.URL + 'save', board);
-  }
+	save(board: Board): Observable<Board> {
+		return this.httpClient.post<Board>(this.URL + 'save', board);
+	}
 
-  delete(boardId: number): Observable<any> {
-    return this.httpClient.delete<any>(`${this.URL}delete/${boardId}`);
-  }
+	delete(boardId: number): Observable<any> {
+		return this.httpClient.delete<any>(`${this.URL}delete/${boardId}`);
+	}
 }
