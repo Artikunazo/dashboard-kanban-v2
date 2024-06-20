@@ -1,6 +1,6 @@
-import {Update} from '@ngrx/entity';
-import {Action} from '@ngrx/store';
-import {ITask} from '../../models/tasks_models';
+import { Update } from '@ngrx/entity';
+import { Action } from '@ngrx/store';
+import { ITask, Task } from '../../models/tasks_models';
 
 export enum TasksActionType {
 	LOAD_TASKS = '[Task] Load Tasks',
@@ -19,9 +19,9 @@ export enum TasksActionType {
 	DELETE_TASK_SUCCESS = '[Task] Delete Task Success',
 	DELETE_TASK_FAIL = '[Task] Delete Task Fail',
 
-	SAVE_TASKS = '[Task] Save Task',
-	SAVE_TASKS_SUCCESS = '[Task] Save Task Success',
-	SAVE_TASKS_FAIL = '[Task] Save Task Fail',
+	SAVE_TASK = '[Task] Save Task',
+	SAVE_TASK_SUCCESS = '[Task] Save Task Success',
+	SAVE_TASK_FAIL = '[Task] Save Task Fail',
 }
 
 // LOAD
@@ -83,30 +83,38 @@ export class UpdateTasksFail implements Action {
 export class DeleteTask implements Action {
 	readonly type = TasksActionType.DELETE_TASK;
 
-	constructor(public payload: string) {}
+	constructor(public payload: number) {}
 }
 
 export class DeleteTaskSuccess implements Action {
 	readonly type = TasksActionType.DELETE_TASK_SUCCESS;
 
-	constructor(public payload: string) {}
+	constructor(public payload: number) {}
 }
 
 export class DeleteTaskFail implements Action {
 	readonly type = TasksActionType.DELETE_TASK_FAIL;
 
-	constructor(public payload: string) {}
+	constructor(public payload: any) {}
 }
 
 // SAVE
-export class SaveTasks implements Action {
-	readonly type = TasksActionType.SAVE_TASKS;
+export class SaveTask implements Action {
+	readonly type = TasksActionType.SAVE_TASK;
+
+  constructor(public payload: Task) {}
 }
 
-export class SaveTasksSuccess implements Action {
-	readonly type = TasksActionType.SAVE_TASKS_SUCCESS;
+export class SaveTaskSuccess implements Action {
+	readonly type = TasksActionType.SAVE_TASK_SUCCESS;
 
-	constructor(public payload: ITask) {}
+	constructor(public payload: Task) {}
+}
+
+export class SaveTaskFail implements Action {
+	readonly type = TasksActionType.SAVE_TASK_FAIL;
+
+	constructor(public payload: any) {}
 }
 
 export type TasksActions =
