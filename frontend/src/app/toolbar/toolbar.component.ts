@@ -1,15 +1,15 @@
-import {Component, inject, output} from '@angular/core';
-import {MaterialModule} from '../material/material.module';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {MatDialog} from '@angular/material/dialog';
-import {TaskFormComponent} from '../task-form/task-form.component';
-import {Store} from '@ngrx/store';
+import { Component, output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Store } from '@ngrx/store';
+import { CustomButtonComponent } from '../common/custom-button/custom-button.component';
 import * as fromStore from '../store';
+import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
 	selector: 'toolbar',
 	standalone: true,
-	imports: [MaterialModule, CustomButtonComponent],
+	imports: [CustomButtonComponent, MatToolbarModule],
 	templateUrl: './toolbar.component.html',
 	styleUrl: './toolbar.component.scss',
 })
