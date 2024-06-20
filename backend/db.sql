@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS `Dashboard_kanban`.`subtaks` ;
 CREATE TABLE IF NOT EXISTS `Dashboard_kanban`.`subtaks` (
   `id_subtask` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
-  `isDone` TINYINT NOT NULL DEFAULT 0,
+  `is_done` TINYINT NOT NULL DEFAULT 0,
   `id_task` INT NOT NULL,
   PRIMARY KEY (`id_subtask`),
   INDEX `id_task_idx` (`id_task` ASC) VISIBLE,

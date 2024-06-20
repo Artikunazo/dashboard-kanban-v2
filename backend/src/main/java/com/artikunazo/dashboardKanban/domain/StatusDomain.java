@@ -12,11 +12,11 @@ public class StatusDomain {
     this.statusId = statusId;
   }
 
-  public String getStatus() {
+  public String getStatusName() {
     return statusName;
   }
 
-  public void setStatus(String status) {
-    this.statusName = status;
+  public void setStatusName(String statusName) {
+    this.statusName = statusName;
   }
 }

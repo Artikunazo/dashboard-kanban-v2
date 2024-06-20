@@ -11,6 +11,8 @@ public class Subtask {
   private Integer idSubtask;
 
   private String title;
+
+  @Column(name = "is_done")
   private Boolean isDone;
 
   @Column(name = "id_task")
@@ -19,6 +21,14 @@ public class Subtask {
   @ManyToOne
   @JoinColumn(name = "id_task", insertable = false, updatable = false)
   private Task task;
+
+  public Integer getIdSubtask() {
+    return idSubtask;
+  }
+
+  public void setIdSubtask(Integer idSubtask) {
+    this.idSubtask = idSubtask;
+  }
 
   public String getTitle() {
     return title;
@@ -34,14 +44,6 @@ public class Subtask {
 
   public void setDone(Boolean done) {
     isDone = done;
-  }
-
-  public Integer getIdSubtask() {
-    return idSubtask;
-  }
-
-  public void setIdSubtask(Integer idSubtask) {
-    this.idSubtask = idSubtask;
   }
 
   public Integer getIdTask() {

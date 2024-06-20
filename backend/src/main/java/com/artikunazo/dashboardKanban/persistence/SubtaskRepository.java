@@ -22,7 +22,7 @@ public class SubtaskRepository implements SubtaskDomainRepository {
   @Override
   public List<SubtaskDomain> getAllByTaskId(int taskId){
     return subtaskMapper.toSubtasksDomain(
-        subtaskCrudRepository.findByTaskId(taskId)
+        subtaskCrudRepository.findByIdTask(taskId)
     );
   }
 
@@ -46,7 +46,7 @@ public class SubtaskRepository implements SubtaskDomainRepository {
 
   @Override
   public Integer getCountSubtasksByIdTask(int idTask) {
-    return subtaskCrudRepository.countByTaskId(idTask);
+    return subtaskCrudRepository.countByIdTask(idTask);
   }
 
 }

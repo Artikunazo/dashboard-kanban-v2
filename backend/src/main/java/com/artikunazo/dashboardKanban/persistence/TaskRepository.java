@@ -2,7 +2,7 @@ package com.artikunazo.dashboardKanban.persistence;
 
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
-import com.artikunazo.dashboardKanban.persistence.crud.TaskCrudRespository;
+import com.artikunazo.dashboardKanban.persistence.crud.TaskCrudRepository;
 import com.artikunazo.dashboardKanban.persistence.entity.Task;
 import com.artikunazo.dashboardKanban.persistence.mapper.TaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public class TaskRepository implements TaskDomainRepository {
   @Autowired
-  private TaskCrudRespository taskCrudRespository;
+  private TaskCrudRepository taskCrudRepository;
 
   @Autowired
   private TaskMapper taskMapper;
@@ -22,24 +22,24 @@ public class TaskRepository implements TaskDomainRepository {
   @Override
   public List<TaskDomain> getTasksByBoardId(int boardId) {
     return taskMapper.toTasksDomain(
-        taskCrudRespository.findByBoardId(boardId)
+        taskCrudRepository.findByIdBoard(boardId)
     );
   }
 
   @Override
   public TaskDomain saveTask(TaskDomain taskDomain) {
     Task task = taskMapper.toTask(taskDomain);
-    return taskMapper.toTaskDomain(taskCrudRespository.save(task));
+    return taskMapper.toTaskDomain(taskCrudRepository.save(task));
   }
 
   @Override
   public void deleteTask(int taskId) {
-    taskCrudRespository.deleteById(taskId);
+    taskCrudRepository.deleteById(taskId);
   }
 
   @Override
   public Optional<TaskDomain> getTaskById(int idTask) {
-    return taskCrudRespository.findById(idTask).map(
+    return taskCrudRepository.findById(idTask).map(
         task -> taskMapper.toTaskDomain(task)
     );
   }

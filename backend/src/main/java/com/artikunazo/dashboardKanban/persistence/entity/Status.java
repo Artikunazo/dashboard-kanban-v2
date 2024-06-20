@@ -15,14 +15,14 @@ public class Status {
   private String status;
 
   @OneToOne(mappedBy = "status",  cascade = { CascadeType.ALL })
-  private List<Task> task;
+  private Task task;
 
-  public Integer getId() {
+  public Integer getIdStatus() {
     return idStatus;
   }
 
-  public void setId(Integer id) {
-    this.idStatus = id;
+  public void setIdStatus(Integer idStatus) {
+    this.idStatus = idStatus;
   }
 
   public String getStatus() {
@@ -33,19 +33,11 @@ public class Status {
     this.status = status;
   }
 
-  public Integer getIdStatus() {
-    return idStatus;
-  }
-
-  public void setIdStatus(Integer idStatus) {
-    this.idStatus = idStatus;
-  }
-
-  public List<Task> getTask() {
+  public Task getTask() {
     return task;
   }
 
-  public void setTask(List<Task> task) {
+  public void setTask(Task task) {
     this.task = task;
   }
 }

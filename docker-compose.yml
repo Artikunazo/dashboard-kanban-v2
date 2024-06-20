@@ -11,26 +11,28 @@ services:
   dashboard-kanban:
     image: dashboard-kanban
     build: 
-      context: ./dashboard-kanban
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:mysql://dashboardKanbanDB:3306:/dahsboard_kanban
+      DB_URL: jdbc:mysql://dashboardKanbanDB:3306/dahsboard_kanban
+      DB_USER: root
+      DB_PASSWORD: 1234
     restart: always
     depends_on:
       - dashboardKanbanDB
   dashboardKanbanDB:
     image: mysql:8.0.36
     ports:
-      -"3307:3306"
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_PASSWORD: 1234
-      MYSQL_DATABASE: dashboard_kanban
+      MYSQL_DATABASE: dahsboard_kanban
     restart: always
     healthcheck:
-      test: ["CDM", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       retries: 5
       

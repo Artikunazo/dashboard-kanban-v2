@@ -4,11 +4,13 @@ import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TaskService {
   @Autowired
   private TaskDomainRepository taskDomainRepository;
@@ -25,7 +27,7 @@ public class TaskService {
       taskOverviewList.add(
           new TaskOverview(
               taskDomain.getTaskId(),
-              taskDomain.getTitle(),
+              taskDomain.getTaskTitle(),
               subtaskService.getCountSubtasksByIdTask(
                   taskDomain.getTaskId()
               )

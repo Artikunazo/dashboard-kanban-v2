@@ -3,10 +3,12 @@ package com.artikunazo.dashboardKanban.domain.service;
 import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.repository.SubtaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class SubtaskService {
   @Autowired
   private SubtaskDomainRepository subtaskDomainRepository;
