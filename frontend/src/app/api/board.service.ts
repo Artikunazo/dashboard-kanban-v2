@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CONTEXT_PATH, URL_BASE } from '../common/constants';
-import { Board } from '../models/board_models';
+import { Board } from "../models/board_models";
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class BoardService {
   //   return this.httpClient.get(`${this.URL}health-check`);
   // }
 
-  root() {
-    return this.httpClient.get(this.URL);
+  root(): Observable<Board[]> {
+    return this.httpClient.get<Board[]>(this.URL);
   }
 
-  save(board: Board) {
-    return this.httpClient.post(this.URL + 'save', board);
+  save(board: Board): Observable<Board> {
+    return this.httpClient.post<Board>(this.URL + 'save', board);
   }
 
-  delete(boardId: number) {
-    return this.httpClient.delete(`${this.URL}delete/${boardId}`);
+  delete(boardId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.URL}delete/${boardId}`);
   }
 }
