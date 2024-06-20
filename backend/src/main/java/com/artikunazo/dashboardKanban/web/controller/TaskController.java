@@ -24,7 +24,6 @@ public class TaskController {
     return new ResponseEntity<String>("Ok!", HttpStatus.OK) ;
   }
 
-  //@ToDo: Move this method to TaskOverview
   @GetMapping("/all/{idBoard}")
   public ResponseEntity<List<TaskOverview>> getTasksByBoardId(@PathVariable("idBoard") int idBoard) {
     return new ResponseEntity<>(taskService.getTasksByBoardId(idBoard), HttpStatus.OK);

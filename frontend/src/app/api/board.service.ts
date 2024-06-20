@@ -11,9 +11,9 @@ export class BoardService {
 
   private readonly URL = `${URL_BASE}${CONTEXT_PATH}board/`;
 
-  healthCheck() {
-    return this.httpClient.get(`${this.URL}health-check`);
-  }
+  // healthCheck() {
+  //   return this.httpClient.get(`${this.URL}health-check`);
+  // }
 
   root() {
     return this.httpClient.get(this.URL);
@@ -26,6 +26,4 @@ export class BoardService {
   delete(boardId: number) {
     return this.httpClient.delete(`${this.URL}delete/${boardId}`);
   }
-
-
 }
