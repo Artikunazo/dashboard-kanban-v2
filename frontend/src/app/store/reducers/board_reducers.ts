@@ -84,7 +84,12 @@ export function reducer(
 }
 
 export const getBoardsData = (state: BoardState) => state.data;
-// @ToDo: research about get specific item using entity
-export const getBoardDataById = (state: BoardState, idBoard: number) => state.data;
+// export const getBoardById = (state: BoardState, idBoard: number) => state.entities[idBoard];
 export const getBoardError = (state: BoardState) => state.error;
 export const getBoardIsLoading = (state: BoardState) => state.isLoading;
+export const {
+  selectEntities,
+  selectAll,
+  selectIds,
+  selectTotal
+} = boardAdapter.getSelectors()

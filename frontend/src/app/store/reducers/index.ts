@@ -21,8 +21,9 @@ export const reducers: ActionReducerMap<AppState, any> = {
 
 /* BOARD */
 export const getBoardState = createFeatureSelector<fromBoardReducer.BoardState>('board');
+export const getEntities = createSelector(getBoardState, fromBoardReducer.selectEntities);
 export const getBoardsData = createSelector(getBoardState, fromBoardReducer.getBoardsData);
-// export const getBoardById = createSelector(getBoardState, fromBoardReducer.getBoardById);
+export const getBoardById = (idBoard: number) => createSelector(getBoardState, (entities: any) => entities[idBoard]);
 export const getBoardIsLoading = createSelector(getBoardState, fromBoardReducer.getBoardIsLoading);
 export const getBoardError = createSelector(getBoardState, fromBoardReducer.getBoardError);
 
