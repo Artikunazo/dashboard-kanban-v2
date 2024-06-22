@@ -1,6 +1,6 @@
-import {Action} from '@ngrx/store';
-import {Board} from '../../models/board_models';
-import {Task} from '../../models/tasks_models';
+import { Action } from '@ngrx/store';
+import { Board } from '../../models/board_models';
+import { Task } from '../../models/tasks_models';
 
 export enum BoardActionsType {
 	LOAD_BOARDS = '[Board] Load Boards',
@@ -42,49 +42,49 @@ export class LoadBoardsFail implements Action {
 }
 
 export class LoadBoard implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS;
+	readonly type = BoardActionsType.LOAD_BOARD;
 }
 
 export class LoadBoardSucess implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_SUCCESS;
+	readonly type = BoardActionsType.LOAD_BOARD_SUCCESS;
 
 	constructor(payload: Task[]) {}
 }
 
 export class LoadBoardFail implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_FAIL;
+	readonly type = BoardActionsType.LOAD_BOARD_FAIL;
 
 	constructor(payload: any) {}
 }
 
 export class SaveBoard implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS;
+	readonly type = BoardActionsType.SAVE_BOARD;
 }
 
 export class SaveBoardSucess implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_SUCCESS;
+	readonly type = BoardActionsType.SAVE_BOARD_SUCCESS;
 
 	constructor(payload: Board) {}
 }
 
 export class SaveBoardFail implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_FAIL;
+	readonly type = BoardActionsType.SAVE_BOARD_FAIL;
 
 	constructor(payload: any) {}
 }
 
 export class DeleteBoard implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS;
+	readonly type = BoardActionsType.DELETE_BOARD;
 }
 
 export class DeleteBoardSucess implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_SUCCESS;
+	readonly type = BoardActionsType.DELETE_BOARD_SUCCESS;
 
 	constructor(payload: any) {}
 }
 
 export class DeleteBoardFail implements Action {
-	readonly type = BoardActionsType.LOAD_BOARDS_FAIL;
+	readonly type = BoardActionsType.DELETE_BOARD_FAIL;
 
 	constructor(payload: any) {}
 }
