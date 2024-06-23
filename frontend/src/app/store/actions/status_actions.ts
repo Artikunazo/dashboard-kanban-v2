@@ -14,13 +14,13 @@ export class LoadStatuses implements Action {
 export class LoadStatusesSuccess implements Action {
 	readonly type = StatusActionType.LOAD_STATUSES_SUCCESS;
 
-	constructor(payload: Status[]) {}
+	constructor(public payload: Status[]) {}
 }
 
 export class LoadStatusesFail implements Action {
 	readonly type = StatusActionType.LOAD_STATUSES_FAIL;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export type StatusActions =
