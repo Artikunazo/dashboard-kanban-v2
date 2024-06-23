@@ -1,10 +1,10 @@
-import {Component, OnInit, inject, output} from '@angular/core';
-import {CustomIconDirective} from '../common/custom-icon.directive';
-import {Store} from '@ngrx/store';
-import * as fromStore from '../store';
+import {Component, OnInit, output} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {Store} from '@ngrx/store';
+import {CustomIconDirective} from '../common/custom-icon.directive';
+import * as fromStore from '../store';
 
 @Component({
 	selector: 'theme-switcher',
