@@ -1,6 +1,7 @@
 import {ActionReducerMap} from '@ngrx/store';
 import * as fromBoardReducer from './board_reducers';
 import * as fromStatusReducer from './status_reducers';
+import * as fromSubtasksReducer from './subtask_reducers';
 import * as fromTasksReducer from './tasks_reducer';
 import * as fromThemeReducer from './theme_reducer';
 
@@ -9,6 +10,7 @@ export interface AppState {
 	theme: fromThemeReducer.ThemeState;
 	board: fromBoardReducer.BoardState;
 	status: fromStatusReducer.StatusState;
+	subtasks: fromSubtasksReducer.SubtaskState;
 }
 
 export const reducers: ActionReducerMap<AppState, any> = {
@@ -16,4 +18,5 @@ export const reducers: ActionReducerMap<AppState, any> = {
 	theme: fromThemeReducer.reducer,
 	board: fromBoardReducer.reducer,
 	status: fromStatusReducer.reducer,
+	subtasks: fromSubtasksReducer.reducer,
 };

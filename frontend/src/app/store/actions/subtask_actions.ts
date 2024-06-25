@@ -1,3 +1,4 @@
+import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
 import {Subtask} from '../../models/subtask_models';
 
@@ -46,7 +47,7 @@ export class SaveSubtask implements Action {
 export class SaveSubtaskSuccess implements Action {
 	readonly type = SubtaskActionType.SAVE_SUBTASK_SUCCESS;
 
-	constructor(public payload: Subtask) {}
+	constructor(public payload: Update<Subtask>) {}
 }
 
 export class SaveSubtaskFail implements Action {

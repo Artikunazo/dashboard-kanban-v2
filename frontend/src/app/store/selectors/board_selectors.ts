@@ -13,6 +13,7 @@ export const getBoardsData = createSelector(
 );
 export const getBoardById = (idBoard: number) =>
 	createSelector(getBoardState, (entities: any) => entities[idBoard]);
+
 export const getBoardIsLoading = createSelector(
 	getBoardState,
 	fromBoardReducer.getBoardIsLoading,

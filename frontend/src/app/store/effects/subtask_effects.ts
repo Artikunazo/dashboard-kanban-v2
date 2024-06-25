@@ -39,7 +39,10 @@ export class SubtaskEffects {
 			mergeMap((subtask: Subtask) => {
 				return this.subtaskService.save(subtask).pipe(
 					map((subtaskSaved: Subtask) => {
-						return new fromSubtaskActions.SaveSubtaskSuccess(subtaskSaved);
+						return new fromSubtaskActions.SaveSubtaskSuccess({
+							id: subtaskSaved.subtaskId ?? 0,
+							changes: {...subtaskSaved},
+						});
 					}),
 					catchError((error: any) => {
 						return of(new fromSubtaskActions.SaveSubtaskFail(error));
