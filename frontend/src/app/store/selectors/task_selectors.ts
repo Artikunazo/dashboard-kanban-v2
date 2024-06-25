@@ -8,7 +8,7 @@ export const getTasksState =
 
 export const getTasksData = createSelector(
 	getTasksState,
-	fromTasksReducer.getTasksData,
+	fromTasksReducer.getTaskData,
 );
 
 export const getTasksSelectors = fromTasksReducer.taskAdapter.getSelectors();
@@ -17,3 +17,6 @@ export const getTasks = createSelector(
 	getTasksState,
 	getTasksSelectors.selectAll,
 );
+
+export const selectTaskById = (idTask: number) =>
+	createSelector(getTasksState, (entries: any) => entries[idTask]);

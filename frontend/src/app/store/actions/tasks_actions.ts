@@ -1,11 +1,11 @@
-import { Update } from '@ngrx/entity';
-import { Action } from '@ngrx/store';
-import { ITask, Task } from '../../models/tasks_models';
+import {Update} from '@ngrx/entity';
+import {Action} from '@ngrx/store';
+import {Task} from '../../models/tasks_models';
 
 export enum TasksActionType {
-	LOAD_TASKS = '[Task] Load Tasks',
-	LOAD_TASKS_SUCCESS = '[Task] Load Tasks Success',
-	LOAD_TASKS_FAIL = '[Task] Load Tasks Fail',
+	LOAD_TASK = '[Task] Load Task',
+	LOAD_TASK_SUCCESS = '[Task] Load Task Success',
+	LOAD_TASK_FAIL = '[Task] Load Task Fail',
 
 	ADD_TASK = '[Task] Add task',
 	ADD_TASK_SUCCESS = '[Task] Add task success',
@@ -25,18 +25,18 @@ export enum TasksActionType {
 }
 
 // LOAD
-export class LoadTasks implements Action {
-	readonly type = TasksActionType.LOAD_TASKS;
+export class LoadTask implements Action {
+	readonly type = TasksActionType.LOAD_TASK;
 }
 
-export class LoadTasksSuccess implements Action {
-	readonly type = TasksActionType.LOAD_TASKS_SUCCESS;
+export class LoadTaskSuccess implements Action {
+	readonly type = TasksActionType.LOAD_TASK_SUCCESS;
 
-	constructor(public payload: ITask[]) {}
+	constructor(public payload: Task) {}
 }
 
-export class LoadTasksFail implements Action {
-	readonly type = TasksActionType.LOAD_TASKS_FAIL;
+export class LoadTaskFail implements Action {
+	readonly type = TasksActionType.LOAD_TASK_FAIL;
 
 	constructor(public payload: string) {}
 }
@@ -45,13 +45,13 @@ export class LoadTasksFail implements Action {
 export class AddTask implements Action {
 	readonly type = TasksActionType.ADD_TASK;
 
-	constructor(public payload: ITask) {}
+	constructor(public payload: Task) {}
 }
 
 export class AddTaskSuccess implements Action {
 	readonly type = TasksActionType.ADD_TASK_SUCCESS;
 
-	constructor(public payload: ITask) {}
+	constructor(public payload: Task) {}
 }
 
 export class AddTaskFail implements Action {
@@ -64,13 +64,13 @@ export class AddTaskFail implements Action {
 export class UpdateTask implements Action {
 	readonly type = TasksActionType.UPDATE_TASK;
 
-	constructor(public payload: ITask) {}
+	constructor(public payload: Task) {}
 }
 
 export class UpdateTasksSuccess implements Action {
 	readonly type = TasksActionType.UPDATE_TASK_SUCCESS;
 
-	constructor(public payload: Update<ITask>) {}
+	constructor(public payload: Update<Task>) {}
 }
 
 export class UpdateTasksFail implements Action {
@@ -102,7 +102,7 @@ export class DeleteTaskFail implements Action {
 export class SaveTask implements Action {
 	readonly type = TasksActionType.SAVE_TASK;
 
-  constructor(public payload: Task) {}
+	constructor(public payload: Task) {}
 }
 
 export class SaveTaskSuccess implements Action {
@@ -118,9 +118,9 @@ export class SaveTaskFail implements Action {
 }
 
 export type TasksActions =
-	| LoadTasks
-	| LoadTasksSuccess
-	| LoadTasksFail
+	| LoadTask
+	| LoadTaskSuccess
+	| LoadTaskFail
 	| AddTask
 	| AddTaskSuccess
 	| AddTaskFail
@@ -131,4 +131,5 @@ export type TasksActions =
 	| DeleteTaskSuccess
 	| DeleteTaskFail
 	| SaveTask
-	| SaveTaskSuccess;
+	| SaveTaskSuccess
+	| SaveTaskFail;

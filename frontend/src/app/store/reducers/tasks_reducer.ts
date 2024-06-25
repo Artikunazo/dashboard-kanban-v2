@@ -1,18 +1,20 @@
-import {ITask, TaskStatus} from '../../models/tasks_models';
-import * as fromTasksActions from '../actions/tasks_actions';
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
+import {Task} from '../../models/tasks_models';
+import * as fromTasksActions from '../actions/tasks_actions';
 
-export interface TasksState extends EntityState<ITask> {
-	data: ITask[];
+export interface TasksState extends EntityState<Task> {
+	data: Task[];
+	isLoading: boolean;
 	error: string;
 }
 
-export const taskAdapter = createEntityAdapter<ITask>({
-	selectId: (task) => task.id ?? '',
+export const taskAdapter = createEntityAdapter<Task>({
+	selectId: (task) => task.taskId ?? '',
 });
 
 export const initialState: TasksState = taskAdapter.getInitialState({
 	data: [],
+	isLoading: false,
 	error: '',
 });
 
@@ -23,12 +25,19 @@ export function reducer(
 	const tasksActionTypes = fromTasksActions.TasksActionType;
 
 	switch (action.type) {
-		case tasksActionTypes.LOAD_TASKS_SUCCESS: {
-			return taskAdapter.setAll(<[]>action.payload, state);
+		case tasksActionTypes.LOAD_TASK: {
+			return {
+				...state,
+				isLoading: true,
+			};
 		}
 
-		case tasksActionTypes.LOAD_TASKS_FAIL: {
-			return {...state, error: action.payload};
+		case tasksActionTypes.LOAD_TASK_SUCCESS: {
+			return taskAdapter.addOne(action.payload, {...state, isLoading: false});
+		}
+
+		case tasksActionTypes.LOAD_TASK_FAIL: {
+			return {...state, error: action.payload, isLoading: false};
 		}
 
 		case tasksActionTypes.ADD_TASK_SUCCESS: {
@@ -55,8 +64,12 @@ export function reducer(
 			return {...state, error: action.payload};
 		}
 
-		case tasksActionTypes.SAVE_TASKS_SUCCESS: {
+		case tasksActionTypes.SAVE_TASK_SUCCESS: {
 			return {...state};
+		}
+
+		case tasksActionTypes.SAVE_TASK_FAIL: {
+			return {...state, error: action.payload};
 		}
 
 		default: {
@@ -65,4 +78,8 @@ export function reducer(
 	}
 }
 
-export const getTasksData = (state: TasksState) => state.data;
+export const getTaskIsLoading = (state: TasksState) => state.isLoading;
+export const getTaskError = (state: TasksState) => state.error;
+export const getTaskData = (state: TasksState) => state.data;
+export const {selectAll, selectEntities, selectIds, selectTotal} =
+	taskAdapter.getSelectors();
