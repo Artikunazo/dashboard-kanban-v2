@@ -16,7 +16,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:mysql://dashboardKanbanDB:3306/dahsboard_kanban
+      DB_URL: jdbc:mysql://dashboardKanbanDB:3306/dashboard_kanban
       DB_USER: root
       DB_PASSWORD: 1234
     restart: always
@@ -29,7 +29,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_PASSWORD: 1234
-      MYSQL_DATABASE: dahsboard_kanban
+      MYSQL_DATABASE: dashboard_kanban
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]

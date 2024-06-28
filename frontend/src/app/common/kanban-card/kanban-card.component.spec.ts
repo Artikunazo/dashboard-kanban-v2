@@ -1,15 +1,15 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {KanbanCardComponent} from './kanban-card.component';
 import {
+	MatDialog,
 	MatDialogModule,
 	MatDialogRef,
-	MatDialog,
 } from '@angular/material/dialog';
 import {Store, StoreModule} from '@ngrx/store';
-import {ITask} from '../../models/tasks_models';
-import {TaskOverviewComponent} from '../../task-overview/task-overview.component';
-import * as fromStore from '../../store';
 import * as fromTaskReducer from '../../../app/store/reducers/tasks_reducer';
+import {Task} from '../../models/tasks_models';
+import * as fromStore from '../../store';
+import {TaskOverviewComponent} from '../../task-overview/task-overview.component';
+import {KanbanCardComponent} from './kanban-card.component';
 
 describe('KanbanCardComponent', () => {
 	let component: KanbanCardComponent;
@@ -52,7 +52,7 @@ describe('KanbanCardComponent', () => {
 				status: 'ToDo',
 			},
 		];
-		const taskData: ITask = {
+		const taskData: Task = {
 			id: '1',
 			title: 'Test Task',
 			description: 'test',

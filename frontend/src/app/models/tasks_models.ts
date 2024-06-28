@@ -1,26 +1,21 @@
-import { Subtask } from "./subtask_models";
+import {Subtask} from './subtask_models';
 
 export interface Task {
-  taskId: number;
-  taskTitle: string;
-  taskDescription: string;
-  statusId: number;
-  boardId: number;
-  subtasks: Subtask[];
-}
-
-export interface ITask {
+	id?: number;
 	title: string;
 	description: string;
-	subtasks: ISubtask[];
-	status: string;
-	id: string;
+	statusId: number;
+	boardId: number;
+	subtasks: Subtask[];
 }
 
-export interface ISubtask {
-	title: string | undefined;
-	status: string;
-	index?: number;
+export interface ApiTask {
+	taskId: number;
+	taskTitle: string;
+	taskDescription: string;
+	statusId: number;
+	boardId: number;
+	subtasks: Subtask[];
 }
 
 export enum TaskStatus {

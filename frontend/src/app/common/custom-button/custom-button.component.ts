@@ -1,11 +1,12 @@
 import {Component, input, output} from '@angular/core';
-import {MaterialModule} from '../../material/material.module';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {CustomIconDirective} from '../custom-icon.directive';
 
 @Component({
 	selector: 'custom-button',
 	standalone: true,
-	imports: [MaterialModule, CustomIconDirective],
+	imports: [CustomIconDirective, MatButtonModule, MatIconModule],
 	templateUrl: './custom-button.component.html',
 	styleUrl: './custom-button.component.scss',
 })

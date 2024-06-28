@@ -1,9 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {SubtasksOverviewComponent} from './subtasks-overview.component';
-import {ISubtask} from '../../models/tasks_models';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {SubtaskDoneDirective} from '../subtask-done.directive';
 import {signal} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {Subtask} from '../../models/tasks_models';
+import {SubtaskDoneDirective} from '../subtask-done.directive';
+import {SubtasksOverviewComponent} from './subtasks-overview.component';
 
 describe('SubtasksOverviewComponent', () => {
 	let component: SubtasksOverviewComponent;
@@ -30,7 +30,7 @@ describe('SubtasksOverviewComponent', () => {
 	});
 
 	it('should set subtask and index signal properties', () => {
-		const subtask: ISubtask = {title: 'Test Subtask', status: 'ToDo', index: 0};
+		const subtask: Subtask = {title: 'Test Subtask', status: 'ToDo', index: 0};
 		const index = 1;
 		component.subtask = signal(subtask) as any;
 		component.index = signal(index) as any;
@@ -40,7 +40,7 @@ describe('SubtasksOverviewComponent', () => {
 	});
 
 	it('should emit subtaskUpdated output event when changed method is called', () => {
-		const subtask: ISubtask = {title: 'Test Subtask', status: 'ToDo', index: 0};
+		const subtask: Subtask = {title: 'Test Subtask', status: 'ToDo', index: 0};
 		const index = 1;
 		component.subtask = signal(subtask) as any;
 		component.index = signal(index) as any;

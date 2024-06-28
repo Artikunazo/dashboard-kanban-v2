@@ -9,7 +9,7 @@ export interface SubtaskState extends EntityState<Subtask> {
 }
 
 export const subtaskAdapter = createEntityAdapter<Subtask>({
-	selectId: (subtask: Subtask) => subtask.subtaskId ?? 0,
+	selectId: (subtask: Subtask) => subtask.id ?? 0,
 });
 
 export const initialState: SubtaskState = subtaskAdapter.getInitialState({

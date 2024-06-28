@@ -1,7 +1,7 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
 		<mat-list class="sidebar-options">
-			<mat-list-item>
+			<!-- <mat-list-item>
 				<p>Platform Launch</p>
 			</mat-list-item>
 			<mat-list-item>
@@ -9,6 +9,15 @@
 			</mat-list-item>
 			<mat-list-item>
 				<p>Roadmap</p>
+			</mat-list-item> -->
+
+			<mat-list-item class="add-board-item">
+				<button
+					mat-raised-button
+					(click)="showNewBoardDialog()"
+				>
+					<mat-icon>add</mat-icon> Add board
+				</button>
 			</mat-list-item>
 		</mat-list>
 

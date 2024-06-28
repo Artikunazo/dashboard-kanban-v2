@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
+import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
+import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import {ITask} from '../models/tasks_models';
 
 @Component({
 	selector: 'task-overview',
@@ -21,17 +21,17 @@ import {ITask} from '../models/tasks_models';
 	styleUrl: './task-overview.component.scss',
 })
 export class TaskOverviewComponent implements OnInit {
-	public task!: ITask;
+	public task!: Task;
 	public statusSelected = new FormControl();
 	public statusOptions = ['ToDo', 'Doing', 'Done'];
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA)
-		private readonly matDialogData: ITask,
+		private readonly matDialogData: Task,
 		private readonly store: Store,
 	) {
 		this.task = this.matDialogData;
-		this.statusSelected.setValue(this.task.status);
+		this.statusSelected.setValue(this.task.statusId);
 	}
 
 	ngOnInit(): void {
@@ -40,7 +40,8 @@ export class TaskOverviewComponent implements OnInit {
 				this.store.dispatch(
 					new fromStore.UpdateTask({
 						...this.task,
-						status: newValue ?? 'ToDo',
+						//@ToDo: change to correctly. It'd receive id instead of string (name)
+						statusId: newValue ?? 'ToDo',
 					}),
 				);
 			},

@@ -1,0 +1,17 @@
+<section class="container">
+	<h3 class="board-form-title">Add new board</h3>
+
+	<form [formGroup]="boardForm" class="row">
+		<mat-form-field class="col">
+			<mat-label>Title</mat-label>
+			<input matInput formControlName="title" type="text" />
+		</mat-form-field>
+
+		<custom-button
+			[text]="'Create board'"
+			[colorButton]="'accent'"
+			(clickEvent)="createBoard()"
+			class="col"
+		/>
+	</form>
+</section>

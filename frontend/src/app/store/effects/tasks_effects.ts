@@ -3,7 +3,8 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {TaskService} from '../../api/task.service';
-import {Task} from '../../models/tasks_models';
+import {ApiTaskToTask} from '../../converters/task_converter';
+import {ApiTask, Task} from '../../models/tasks_models';
 import * as fromTasksAction from '../actions/tasks_actions';
 import * as fromTasksActions from '../actions/tasks_actions';
 
@@ -23,9 +24,10 @@ export class TasksEffects {
 			ofType(this.tasksActionsTypes.LOAD_TASK),
 			mergeMap((idTask: number) =>
 				this.taskService.getTaskById(idTask).pipe(
-					map((response: any) => {
-						const data = JSON.parse(response);
-						return new fromTasksAction.LoadTaskSuccess(data);
+					map((response: ApiTask) => {
+						// @ToDo: parse from base64 to string
+						const task: Task = ApiTaskToTask(response);
+						return new fromTasksAction.LoadTaskSuccess(task);
 					}),
 					catchError((error: any) => {
 						return of(new fromTasksAction.LoadTaskFail(error));

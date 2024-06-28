@@ -1,16 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TaskOverviewComponent} from './task-overview.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
-import {Store, StoreModule} from '@ngrx/store';
-import {reducers} from '../store/reducers';
-import {ITask} from '../models/tasks_models';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {importProvidersFrom} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {Store, StoreModule} from '@ngrx/store';
+import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import {reducers} from '../store/reducers';
+import {TaskOverviewComponent} from './task-overview.component';
 
 describe('TaskOverviewComponent', () => {
 	let component: TaskOverviewComponent;
@@ -81,7 +81,7 @@ describe('TaskOverviewComponent', () => {
 				status: 'ToDo',
 			},
 		];
-		const task: ITask = {
+		const task: Task = {
 			id: '1',
 			title: 'Test Task',
 			description: 'Test Description',

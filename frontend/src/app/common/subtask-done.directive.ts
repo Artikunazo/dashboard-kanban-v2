@@ -4,7 +4,6 @@ import {
 	Input,
 	OnChanges,
 	SimpleChanges,
-	input,
 } from '@angular/core';
 
 @Directive({
@@ -12,7 +11,7 @@ import {
 	standalone: true,
 })
 export class SubtaskDoneDirective implements OnChanges {
-	@Input() public subtaskDone: string = '';
+	@Input() public subtaskDone: boolean = false;
 
 	constructor(private el: ElementRef) {}
 

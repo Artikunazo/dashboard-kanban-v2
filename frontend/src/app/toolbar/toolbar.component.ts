@@ -1,10 +1,10 @@
-import { Component, output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Store } from '@ngrx/store';
-import { CustomButtonComponent } from '../common/custom-button/custom-button.component';
+import {Component, output} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {Store} from '@ngrx/store';
+import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import * as fromStore from '../store';
-import { TaskFormComponent } from '../task-form/task-form.component';
+import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
 	selector: 'toolbar',
@@ -31,7 +31,7 @@ export class ToolbarComponent {
 		});
 
 		dialogRef.afterClosed().subscribe(() => {
-			this.store.dispatch(new fromStore.LoadTasks());
+			this.store.dispatch(new fromStore.LoadTask());
 		});
 	}
 }

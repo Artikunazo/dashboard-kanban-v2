@@ -1,12 +1,12 @@
+import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
+import {importProvidersFrom, signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {KanbanColumnComponent} from './kanban-column.component';
+import {Store, StoreModule} from '@ngrx/store';
+import {Task} from '../../models/tasks_models';
+import {reducers} from '../../store/reducers';
 import {KanbanCardComponent} from '../kanban-card/kanban-card.component';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
-import {ITask} from '../../models/tasks_models';
-import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
-import {importProvidersFrom, input, signal} from '@angular/core';
-import {Store, StoreModule} from '@ngrx/store';
-import {reducers} from '../../store/reducers';
+import {KanbanColumnComponent} from './kanban-column.component';
 
 describe('KanbanColumnComponent', () => {
 	const subtasks = [
@@ -15,7 +15,7 @@ describe('KanbanColumnComponent', () => {
 			status: 'ToDo',
 		},
 	];
-	const tasks: ITask[] = [
+	const tasks: Task[] = [
 		{
 			id: '1',
 			title: 'Task 1',

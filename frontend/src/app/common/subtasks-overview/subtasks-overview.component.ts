@@ -1,6 +1,6 @@
 import {Component, input, output} from '@angular/core';
-import {ISubtask} from '../../models/tasks_models';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {Subtask} from '../../models/subtask_models';
 import {SubtaskDoneDirective} from '../subtask-done.directive';
 
 @Component({
@@ -11,17 +11,18 @@ import {SubtaskDoneDirective} from '../subtask-done.directive';
 	styleUrl: './subtasks-overview.component.scss',
 })
 export class SubtasksOverviewComponent {
-	public subtask = input<ISubtask>({title: '', status: ''});
+	public subtask = input<Subtask>({title: '', isDone: false, taskId: null});
 	public index = input<number>(0);
 	public subtaskUpdated = output<{}>();
 
-	public newSubtask!: ISubtask;
+	public newSubtask!: Subtask;
 
 	changed(checked: boolean) {
 		this.newSubtask = {
 			title: this.subtask()?.title,
-			status: checked ? 'Done' : 'ToDo',
-			index: this.index(),
+			isDone: checked,
+			taskId: null,
+			// index: this.index(),
 		};
 		this.subtaskUpdated.emit(this.newSubtask);
 	}

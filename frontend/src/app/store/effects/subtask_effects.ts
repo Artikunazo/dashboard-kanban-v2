@@ -40,7 +40,7 @@ export class SubtaskEffects {
 				return this.subtaskService.save(subtask).pipe(
 					map((subtaskSaved: Subtask) => {
 						return new fromSubtaskActions.SaveSubtaskSuccess({
-							id: subtaskSaved.subtaskId ?? 0,
+							id: subtaskSaved.id ?? 0,
 							changes: {...subtaskSaved},
 						});
 					}),

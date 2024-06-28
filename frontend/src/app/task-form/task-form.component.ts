@@ -1,19 +1,18 @@
 import {Component, inject} from '@angular/core';
 import {
+	FormArray,
+	FormBuilder,
+	FormGroup,
 	ReactiveFormsModule,
 	Validators,
-	FormBuilder,
-	FormArray,
-	FormGroup,
 } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
+import {MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import * as fromStore from '../store';
-import {Store} from '@ngrx/store';
-import * as uuid from 'uuid';
-import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
 	selector: 'task-form',
@@ -78,8 +77,8 @@ export class TaskFormComponent {
 				title: this.taskForm.value.title!,
 				description: this.taskForm.value.description!,
 				subtasks: <[]>this.taskForm.value.subtasks!,
-				status: this.taskForm.value.status!,
-				id: uuid.v4(),
+				statusId: this.taskForm.value.status!,
+				boardId: 0, // @ToDo: fix this
 			}),
 		);
 

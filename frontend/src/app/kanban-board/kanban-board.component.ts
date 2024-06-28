@@ -1,10 +1,10 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
 
+import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import {ITask} from '../models/tasks_models';
-import {DragDropModule, CdkDragDrop} from '@angular/cdk/drag-drop';
 
 @Component({
 	selector: 'kanban-board',
@@ -14,32 +14,32 @@ import {DragDropModule, CdkDragDrop} from '@angular/cdk/drag-drop';
 	styleUrl: './kanban-board.component.scss',
 })
 export class KanbanBoardComponent implements OnInit {
-	public tasksList: ITask[] = [];
-	public taskListIndexed!: {[key: string]: ITask[]};
+	public tasksList: Task[] = [];
+	public taskListIndexed!: {[key: string]: Task[]};
 
 	constructor(private readonly store: Store) {}
 
 	ngOnInit(): void {
-		this.store.dispatch(new fromStore.LoadTasks());
-		this.store.select(fromStore.getTasks).subscribe({
-			next: (response) => {
-				this.tasksList = response;
-				this.indexTasks();
-			},
-		});
+		// this.store.dispatch(new fromStore.LoadTasks());
+		// this.store.select(fromStore.getTasks).subscribe({
+		// 	next: (response) => {
+		// 		this.tasksList = response;
+		// 		this.indexTasks();
+		// 	},
+		// });
 	}
 
 	indexTasks() {
-		this.taskListIndexed = this.tasksList.reduce(
-			(previous: any, current: any) => ({
-				...previous,
-				[current['status']]: [...(previous[current['status']] || []), current],
-			}),
-			{},
-		);
+		// this.taskListIndexed = this.tasksList.reduce(
+		// 	(previous: any, current: any) => ({
+		// 		...previous,
+		// 		[current['status']]: [...(previous[current['status']] || []), current],
+		// 	}),
+		// 	{},
+		// );
 	}
 
-	drop(event: CdkDragDrop<ITask[]>) {
+	drop(event: CdkDragDrop<Task[]>) {
 		const newStatus = event.container.element.nativeElement.id;
 		const task = event.item.dropContainer.data;
 		this.store.dispatch(

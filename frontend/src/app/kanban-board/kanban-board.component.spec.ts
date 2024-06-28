@@ -1,12 +1,11 @@
+import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {KanbanBoardComponent} from './kanban-board.component';
-import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
 import {Store, StoreModule} from '@ngrx/store';
+import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 import * as fromTaskReducer from '../store/reducers/tasks_reducer';
-import {ITask} from '../models/tasks_models';
-import {DragDropModule, CdkDragDrop} from '@angular/cdk/drag-drop';
-import {input} from '@angular/core';
+import {KanbanBoardComponent} from './kanban-board.component';
 
 describe('KanbanBoardComponent', () => {
 	const subtasks = [
@@ -15,7 +14,7 @@ describe('KanbanBoardComponent', () => {
 			status: 'ToDo',
 		},
 	];
-	const tasks: ITask[] = [
+	const tasks: Task[] = [
 		{
 			id: '1',
 			title: 'Task 1',
@@ -80,7 +79,7 @@ describe('KanbanBoardComponent', () => {
 		component.drop({
 			item: {dropContainer: {data: [tasks[0]]}},
 			container: {element: {nativeElement: {id: newStatus}}},
-		} as CdkDragDrop<ITask[]>);
+		} as CdkDragDrop<Task[]>);
 		expect(dispatchSpy).toHaveBeenCalledWith(
 			new fromStore.UpdateTask({...tasks[0], status: newStatus}),
 		);

@@ -50,3 +50,7 @@ $m3-light-theme: matx.define-theme(
 	border-color: var(--mdc-elevated-card-container-color) !important;
 	box-shadow: var(--mdc-elevated-card-container-elevation) !important;
 }
+
+.add-board-item .mdc-list-item__content {
+	padding: 12px;
+}
