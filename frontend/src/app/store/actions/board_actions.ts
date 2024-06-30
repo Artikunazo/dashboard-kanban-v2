@@ -1,6 +1,6 @@
-import { Action } from '@ngrx/store';
-import { Board } from '../../models/board_models';
-import { Task } from '../../models/tasks_models';
+import {Action} from '@ngrx/store';
+import {Board} from '../../models/board_models';
+import {Task} from '../../models/tasks_models';
 
 export enum BoardActionsType {
 	LOAD_BOARDS = '[Board] Load Boards',
@@ -32,13 +32,13 @@ export class LoadBoards implements Action {
 export class LoadBoardsSucess implements Action {
 	readonly type = BoardActionsType.LOAD_BOARDS_SUCCESS;
 
-	constructor(payload: Board[]) {}
+	constructor(public payload: Board[]) {}
 }
 
 export class LoadBoardsFail implements Action {
 	readonly type = BoardActionsType.LOAD_BOARDS_FAIL;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export class LoadBoard implements Action {
@@ -48,29 +48,31 @@ export class LoadBoard implements Action {
 export class LoadBoardSucess implements Action {
 	readonly type = BoardActionsType.LOAD_BOARD_SUCCESS;
 
-	constructor(payload: Task[]) {}
+	constructor(public payload: Task[]) {}
 }
 
 export class LoadBoardFail implements Action {
 	readonly type = BoardActionsType.LOAD_BOARD_FAIL;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export class SaveBoard implements Action {
 	readonly type = BoardActionsType.SAVE_BOARD;
+
+	constructor(public payload: Board) {}
 }
 
 export class SaveBoardSucess implements Action {
 	readonly type = BoardActionsType.SAVE_BOARD_SUCCESS;
 
-	constructor(payload: Board) {}
+	constructor(public payload: Board) {}
 }
 
 export class SaveBoardFail implements Action {
 	readonly type = BoardActionsType.SAVE_BOARD_FAIL;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export class DeleteBoard implements Action {
@@ -80,13 +82,13 @@ export class DeleteBoard implements Action {
 export class DeleteBoardSucess implements Action {
 	readonly type = BoardActionsType.DELETE_BOARD_SUCCESS;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export class DeleteBoardFail implements Action {
 	readonly type = BoardActionsType.DELETE_BOARD_FAIL;
 
-	constructor(payload: any) {}
+	constructor(public payload: any) {}
 }
 
 export type BoardActions =

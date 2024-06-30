@@ -22,11 +22,11 @@ public class Task {
   private Integer idStatus;
 
   @OneToOne
-  @JoinColumn(name = "status_id", insertable = false, updatable = false)
+  @JoinColumn(name = "id_status", insertable = false, updatable = false)
   private Status status;
 
   @ManyToOne
-  @JoinColumn(name = "board_id", insertable = false, updatable = false)
+  @JoinColumn(name = "id_board", insertable = false, updatable = false)
   private Board board;
 
   @OneToMany(mappedBy = "task", cascade = { CascadeType.ALL })

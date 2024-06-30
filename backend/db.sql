@@ -14,15 +14,15 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema Dashboard_kanban
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Dashboard_kanban` ;
-USE `Dashboard_kanban` ;
+CREATE SCHEMA IF NOT EXISTS `dashboard_kanban` ;
+USE `dashboard_kanban` ;
 
 -- -----------------------------------------------------
 -- Table `Dashboard_kanban`.`boards`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dashboard_kanban`.`boards` ;
+DROP TABLE IF EXISTS `dashboard_kanban`.`boards` ;
 
-CREATE TABLE IF NOT EXISTS `Dashboard_kanban`.`boards` (
+CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`boards` (
   `id_board` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   PRIMARY KEY (`id_board`))
@@ -32,9 +32,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Dashboard_kanban`.`status`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dashboard_kanban`.`status` ;
+DROP TABLE IF EXISTS `dashboard_kanban`.`status` ;
 
-CREATE TABLE IF NOT EXISTS `Dashboard_kanban`.`status` (
+CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`status` (
   `id_status` INT NOT NULL AUTO_INCREMENT,
   `status` TEXT NOT NULL,
   PRIMARY KEY (`id_status`))
@@ -44,9 +44,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Dashboard_kanban`.`tasks`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dashboard_kanban`.`tasks` ;
+DROP TABLE IF EXISTS `dashboard_kanban`.`tasks` ;
 
-CREATE TABLE IF NOT EXISTS `Dashboard_kanban`.`tasks` (
+CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`tasks` (
   `id_task` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   `description` TEXT NOT NULL,
@@ -71,9 +71,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Dashboard_kanban`.`subtaks`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dashboard_kanban`.`subtaks` ;
+DROP TABLE IF EXISTS `dashboard_kanban`.`subtaks` ;
 
-CREATE TABLE IF NOT EXISTS `Dashboard_kanban`.`subtaks` (
+CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`subtaks` (
   `id_subtask` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   `is_done` TINYINT NOT NULL DEFAULT 0,

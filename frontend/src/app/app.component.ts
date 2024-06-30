@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
@@ -9,6 +9,8 @@ import {Store} from '@ngrx/store';
 import {BoardFormComponent} from './board-form/board-form.component';
 import {boardDialogConfig} from './common/modal_configs';
 import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
+import {Board} from './models/board_models';
+import * as fromStore from './store';
 import {ThemeSwitcherComponent} from './theme-switcher/theme-switcher.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 
@@ -28,14 +30,27 @@ import {ToolbarComponent} from './toolbar/toolbar.component';
 	],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
+	boards: Board[] = [];
+
 	title = 'dashboard-kanban';
 
 	showNewBoardDialog(): void {
-		this.matDialog.open(BoardFormComponent, boardDialogConfig);
+		const dialog = this.matDialog.open(BoardFormComponent, boardDialogConfig);
+
+		dialog.afterClosed().subscribe({
+			next: () => {
+				this.store.select(fromStore.getBoardsData).subscribe({
+					next: (boards: Board[]) => {
+						this.boards = boards;
+					},
+				});
+			},
+		});
 	}
 }

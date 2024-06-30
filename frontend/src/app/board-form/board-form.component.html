@@ -1,17 +1,24 @@
-<section class="container">
-	<h3 class="board-form-title">Add new board</h3>
+<section class="container-liquid">
+	<!-- <div class="row">
+		<div class="col">
+			<h3 class="board-form-title">Add New Board</h3>
+		</div>
+	</div> -->
 
-	<form [formGroup]="boardForm" class="row">
+	<form [formGroup]="boardForm" class="row board-form">
 		<mat-form-field class="col">
-			<mat-label>Title</mat-label>
+			<mat-label>Board title</mat-label>
 			<input matInput formControlName="title" type="text" />
 		</mat-form-field>
 
-		<custom-button
-			[text]="'Create board'"
-			[colorButton]="'accent'"
-			(clickEvent)="createBoard()"
-			class="col"
-		/>
+		<div class="col justify-self-end">
+			<custom-button
+				[text]="'Save board'"
+				[colorButton]="'accent'"
+				(clickEvent)="saveBoard()"
+				class="col create-new-board-button"
+				[disabled]="isLoading"
+			/>
+		</div>
 	</form>
 </section>

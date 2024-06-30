@@ -22,6 +22,7 @@ public class BoardService {
   }
 
   public BoardDomain saveBoard(BoardDomain boardDomain) {
+    System.out.println("Debug save board: " + boardDomain);
     return boardDomainRepository.saveBoard(boardDomain);
   }
 

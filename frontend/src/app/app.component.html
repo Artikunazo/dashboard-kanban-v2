@@ -1,15 +1,11 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
 		<mat-list class="sidebar-options">
-			<!-- <mat-list-item>
-				<p>Platform Launch</p>
-			</mat-list-item>
+			@for (board of boards; track board.id) {
 			<mat-list-item>
-				<p>Marketing plan</p>
+				<p>{{ board.title }}</p>
 			</mat-list-item>
-			<mat-list-item>
-				<p>Roadmap</p>
-			</mat-list-item> -->
+			}
 
 			<mat-list-item class="add-board-item">
 				<button
@@ -28,7 +24,7 @@
 		<toolbar (openNav)="drawer.toggle()" />
 
 		<div class="main-container">
-			<kanban-board />
+			<!-- <kanban-board /> -->
 		</div>
 
 		<!-- <ng-template #routerOutlet>

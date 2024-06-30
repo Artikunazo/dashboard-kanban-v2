@@ -5,7 +5,6 @@ import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {BoardService} from '../../api/board.service';
 import {TaskService} from '../../api/task.service';
 import {Board} from '../../models/board_models';
-import {Task} from '../../models/tasks_models';
 import * as fromBoardActions from '../actions/board_actions';
 
 @Injectable({
@@ -36,27 +35,11 @@ export class BoardEffects {
 		);
 	});
 
-	loadBoard$: Observable<Action> = createEffect(() => {
-		return this.actions$.pipe(
-			ofType(this.boardActions.LOAD_BOARD),
-			mergeMap((idBoard: number) => {
-				return this.taskService.getTasksByBoard(idBoard).pipe(
-					map((tasks: Task[]) => {
-						return new fromBoardActions.LoadBoardSucess(tasks);
-					}),
-					catchError((error: any) => {
-						return of(new fromBoardActions.LoadBoardFail(error));
-					}),
-				);
-			}),
-		);
-	});
-
 	saveBoard$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(this.boardActions.SAVE_BOARD),
-			mergeMap((board: Board) => {
-				return this.boardService.save(board).pipe(
+			mergeMap((board: fromBoardActions.SaveBoard) => {
+				return this.boardService.save(board.payload).pipe(
 					map((board: Board) => {
 						return new fromBoardActions.SaveBoardSucess(board);
 					}),
