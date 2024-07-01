@@ -77,6 +77,8 @@ export class SaveBoardFail implements Action {
 
 export class DeleteBoard implements Action {
 	readonly type = BoardActionsType.DELETE_BOARD;
+
+	constructor(public payload: number | string) {}
 }
 
 export class DeleteBoardSucess implements Action {

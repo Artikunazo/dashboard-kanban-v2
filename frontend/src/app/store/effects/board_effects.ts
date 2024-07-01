@@ -4,7 +4,8 @@ import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {BoardService} from '../../api/board.service';
 import {TaskService} from '../../api/task.service';
-import {Board} from '../../models/board_models';
+import {apiBoardsToBoards} from '../../converters/board_converters';
+import {ApiBoard, Board} from '../../models/board_models';
 import * as fromBoardActions from '../actions/board_actions';
 
 @Injectable({
@@ -24,7 +25,8 @@ export class BoardEffects {
 			ofType(this.boardActions.LOAD_BOARDS),
 			mergeMap(() => {
 				return this.boardService.getBoards().pipe(
-					map((boards: Board[]) => {
+					map((apiBoards: ApiBoard[]) => {
+						const boards = apiBoardsToBoards(apiBoards);
 						return new fromBoardActions.LoadBoardsSucess(boards);
 					}),
 					catchError((error: any) => {

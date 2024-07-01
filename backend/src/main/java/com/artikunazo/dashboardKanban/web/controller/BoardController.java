@@ -23,7 +23,7 @@ public class BoardController {
     return new ResponseEntity<String>("Ok!", HttpStatus.OK) ;
   }
 
-  @GetMapping
+  @GetMapping("/")
   public ResponseEntity<List<BoardDomain>> getAll() {
     return new ResponseEntity<>(boardService.getAll(), HttpStatus.OK);
   }

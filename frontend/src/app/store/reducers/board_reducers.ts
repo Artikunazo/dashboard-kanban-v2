@@ -26,7 +26,7 @@ export function reducer(
 
 	switch (action.type) {
 		case boardActionTypes.LOAD_BOARDS: {
-			return {...state, isLoading: true};
+			return {...state, isLoading: true, error: ''};
 		}
 
 		case boardActionTypes.LOAD_BOARDS_SUCCESS: {
@@ -38,7 +38,7 @@ export function reducer(
 		}
 
 		case boardActionTypes.SAVE_BOARD: {
-			return {...state, isLoading: true};
+			return {...state, isLoading: true, error: ''};
 		}
 
 		case boardActionTypes.SAVE_BOARD_SUCCESS: {
@@ -50,7 +50,7 @@ export function reducer(
 		}
 
 		case boardActionTypes.DELETE_BOARD: {
-			return {...state, isLoading: true};
+			return {...state, isLoading: true, error: ''};
 		}
 
 		case boardActionTypes.DELETE_BOARD_SUCCESS: {

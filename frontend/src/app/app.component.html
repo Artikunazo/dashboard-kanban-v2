@@ -1,9 +1,20 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
-		<mat-list class="sidebar-options">
+		@if(!isLoading) {
+		<mat-nav-list class="sidebar-options">
 			@for (board of boards; track board.id) {
-			<mat-list-item>
-				<p>{{ board.title }}</p>
+			<mat-list-item class="add-board-item">
+				<span matListItemTitle>
+					{{ board.title }}
+				</span>
+				<button
+					mat-button
+					[matMenuTriggerFor]="menu"
+					[matMenuTriggerData]="board"
+					matListItemMeta
+				>
+					<mat-icon>more_vert</mat-icon>
+				</button>
 			</mat-list-item>
 			}
 
@@ -15,7 +26,10 @@
 					<mat-icon>add</mat-icon> Add board
 				</button>
 			</mat-list-item>
-		</mat-list>
+		</mat-nav-list>
+		} @else {
+		<mat-spinner [diameter]="30"></mat-spinner>
+		}
 
 		<theme-switcher (switcherToggled)="drawer.close()" />
 	</mat-drawer>
@@ -31,4 +45,22 @@
 			<router-outlet />
 		</ng-template> -->
 	</section>
+
+	<mat-menu #menu="matMenu">
+		<ng-template
+			matMenuContent
+			let-id="id"
+			let-title="title"
+		>
+			<button
+				mat-menu-item
+				(click)="editBoard({id, title})"
+			>
+				Edit
+			</button>
+			<button mat-menu-item (click)="deleteBoard(id)">
+				Delete
+			</button>
+		</ng-template>
+	</mat-menu>
 </mat-drawer-container>

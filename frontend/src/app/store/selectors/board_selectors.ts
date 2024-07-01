@@ -3,7 +3,8 @@ import * as fromBoardReducer from '../reducers/board_reducers';
 
 export const getBoardState =
 	createFeatureSelector<fromBoardReducer.BoardState>('board');
-export const getEntities = createSelector(
+
+export const getBoardEntities = createSelector(
 	getBoardState,
 	fromBoardReducer.selectEntities,
 );
@@ -21,4 +22,19 @@ export const getBoardIsLoading = createSelector(
 export const getBoardError = createSelector(
 	getBoardState,
 	fromBoardReducer.getBoardError,
+);
+
+export const selectAllBoards = createSelector(
+	getBoardState,
+	fromBoardReducer.selectAll,
+);
+
+export const selectBoardsEntities = createSelector(
+	getBoardState,
+	fromBoardReducer.selectEntities,
+);
+
+export const selectBoardData = createSelector(
+	getBoardState,
+	fromBoardReducer.getBoardsData,
 );

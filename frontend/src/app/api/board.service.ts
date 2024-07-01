@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Observable} from 'rxjs';
 import {CONTEXT_PATH, URL_BASE} from '../common/constants';
-import {Board} from '../models/board_models';
+import {ApiBoard, Board} from '../models/board_models';
 
 @Injectable({
 	providedIn: 'root',
@@ -16,8 +16,8 @@ export class BoardService {
 	//   return this.httpClient.get(`${this.URL}health-check`);
 	// }
 
-	getBoards(): Observable<Board[]> {
-		return this.httpClient.get<Board[]>(this.URL);
+	getBoards(): Observable<ApiBoard[]> {
+		return this.httpClient.get<ApiBoard[]>(this.URL);
 	}
 
 	save(board: Board): Observable<Board> {

@@ -12,13 +12,16 @@
 		</mat-form-field>
 
 		<div class="col justify-self-end">
+			@if (!isLoading; as isLoading) {
 			<custom-button
-				[text]="'Save board'"
+				[text]="'Save'"
 				[colorButton]="'accent'"
 				(clickEvent)="saveBoard()"
 				class="col create-new-board-button"
-				[disabled]="isLoading"
 			/>
+			} @else {
+			<mat-spinner class="col" [diameter]="30" />
+			}
 		</div>
 	</form>
 </section>
