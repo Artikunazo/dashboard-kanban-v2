@@ -51,7 +51,9 @@ export class AppComponent {
 				this.isLoading = loading;
 			},
 		});
+
 		this.store.dispatch(new fromStore.LoadBoards());
+
 		this.store.select(fromStore.selectAllBoards).subscribe({
 			next: (data: Board[]) => {
 				this.boards = data;
@@ -78,7 +80,10 @@ export class AppComponent {
 	}
 
 	editBoard(boardData: Board) {
-		this.store.dispatch(new fromStore.SaveBoard(boardData));
+		this.matDialog.open(BoardFormComponent, {
+			...boardDialogConfig,
+			data: boardData,
+		});
 	}
 
 	deleteBoard(idBoard: number | string) {

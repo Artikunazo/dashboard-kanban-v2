@@ -20,11 +20,15 @@ export class BoardService {
 		return this.httpClient.get<ApiBoard[]>(this.URL);
 	}
 
-	save(board: Board): Observable<Board> {
+	save(board: {title: string}): Observable<Board> {
 		return this.httpClient.post<Board>(this.URL + 'save', board);
 	}
 
-	delete(boardId: number): Observable<any> {
+	update(board: Board): Observable<Board> {
+		return this.httpClient.post<Board>(this.URL + 'update', board);
+	}
+
+	delete(boardId: number | string): Observable<any> {
 		return this.httpClient.delete<any>(`${this.URL}delete/${boardId}`);
 	}
 }

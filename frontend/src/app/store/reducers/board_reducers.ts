@@ -49,6 +49,21 @@ export function reducer(
 			return {...state, isLoading: false, error: action.payload};
 		}
 
+		case boardActionTypes.UPDATE_BOARD: {
+			return {...state, isLoading: true, error: ''};
+		}
+
+		case boardActionTypes.UPDATE_BOARD_SUCCESS: {
+			return boardAdapter.updateOne(action.payload, {
+				...state,
+				isLoading: false,
+			});
+		}
+
+		case boardActionTypes.UPDATE_BOARD_FAIL: {
+			return {...state, isLoading: false, error: action.payload};
+		}
+
 		case boardActionTypes.DELETE_BOARD: {
 			return {...state, isLoading: true, error: ''};
 		}

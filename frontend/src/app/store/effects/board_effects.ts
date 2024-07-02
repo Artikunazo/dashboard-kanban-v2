@@ -53,13 +53,32 @@ export class BoardEffects {
 		);
 	});
 
+	updateBoard$: Observable<Action> = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(this.boardActions.UPDATE_BOARD),
+			mergeMap((data: fromBoardActions.UpdateBoard) => {
+				return this.boardService.update(data.payload).pipe(
+					map(() => {
+						return new fromBoardActions.UpdateBoardSuccess({
+							id: data.payload.id ?? '',
+							changes: {...data.payload},
+						});
+					}),
+					catchError((error: any) => {
+						return of(new fromBoardActions.UpdateBoardFail(error));
+					}),
+				);
+			}),
+		);
+	});
+
 	deleteBoard$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(this.boardActions.DELETE_BOARD),
-			mergeMap((idBoard: number) => {
-				return this.boardService.delete(idBoard).pipe(
-					map((board: any) => {
-						return new fromBoardActions.DeleteBoardSucess(board);
+			mergeMap((data: fromBoardActions.DeleteBoard) => {
+				return this.boardService.delete(data.payload).pipe(
+					map(() => {
+						return new fromBoardActions.DeleteBoardSucess(data.payload);
 					}),
 					catchError((error: any) => {
 						return of(new fromBoardActions.DeleteBoardFail(error));

@@ -1,3 +1,4 @@
+import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
 import {Board} from '../../models/board_models';
 import {Task} from '../../models/tasks_models';
@@ -12,9 +13,9 @@ export enum BoardActionsType {
 	LOAD_BOARD_SUCCESS = '[Board] Load Board Success',
 	LOAD_BOARD_FAIL = '[Board] Load Board Fail',
 
-	// UPDATE_TASK = '[Task] Update task',
-	// UPDATE_TASK_SUCCESS = '[Task] Update Task Success',
-	// UPDATE_TASK_FAIL = '[Task] Update Task Fail',
+	UPDATE_BOARD = '[Board] Update Board',
+	UPDATE_BOARD_SUCCESS = '[Board] Update Board Success',
+	UPDATE_BOARD_FAIL = '[Board] Update Board Fail',
 
 	DELETE_BOARD = '[Board] Delete Board',
 	DELETE_BOARD_SUCCESS = '[Board] Delete Board Success',
@@ -60,7 +61,7 @@ export class LoadBoardFail implements Action {
 export class SaveBoard implements Action {
 	readonly type = BoardActionsType.SAVE_BOARD;
 
-	constructor(public payload: Board) {}
+	constructor(public payload: {title: string}) {}
 }
 
 export class SaveBoardSucess implements Action {
@@ -71,6 +72,24 @@ export class SaveBoardSucess implements Action {
 
 export class SaveBoardFail implements Action {
 	readonly type = BoardActionsType.SAVE_BOARD_FAIL;
+
+	constructor(public payload: any) {}
+}
+
+export class UpdateBoard implements Action {
+	readonly type = BoardActionsType.UPDATE_BOARD;
+
+	constructor(public payload: Board) {}
+}
+
+export class UpdateBoardSuccess implements Action {
+	readonly type = BoardActionsType.UPDATE_BOARD_SUCCESS;
+
+	constructor(public payload: Update<Board>) {}
+}
+
+export class UpdateBoardFail implements Action {
+	readonly type = BoardActionsType.UPDATE_BOARD_FAIL;
 
 	constructor(public payload: any) {}
 }
@@ -103,6 +122,9 @@ export type BoardActions =
 	| SaveBoard
 	| SaveBoardFail
 	| SaveBoardSucess
+	| UpdateBoard
+	| UpdateBoardSuccess
+	| UpdateBoardFail
 	| DeleteBoard
 	| DeleteBoardFail
 	| DeleteBoardSucess;
