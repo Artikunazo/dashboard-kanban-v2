@@ -41,8 +41,6 @@ public class BoardRepository implements BoardDomainRepository {
   @Override
   public Integer updateBoard(BoardDomain boardDomain){
     Board board = boardMapper.toBoard(boardDomain);
-    System.out.println("id" + board.getIdBoard());
-    System.out.println("title" + board.getTitle());
     return boardCrudRepository.setBoardTitle(board.getIdBoard(), board.getTitle());
   }
 

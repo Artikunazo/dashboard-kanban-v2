@@ -33,8 +33,6 @@ public class BoardService {
   }
 
   public Integer updateBoard(BoardDomain boardDomain) {
-    Integer result = boardDomainRepository.updateBoard(boardDomain);
-    System.out.println("result" + result);
-    return result;
+    return boardDomainRepository.updateBoard(boardDomain);
   }
 }
