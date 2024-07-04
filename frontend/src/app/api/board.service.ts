@@ -24,8 +24,8 @@ export class BoardService {
 		return this.httpClient.post<Board>(this.URL + 'save', board);
 	}
 
-	update(board: Board): Observable<Board> {
-		return this.httpClient.post<Board>(this.URL + 'update', board);
+	update(board: ApiBoard): Observable<number> {
+		return this.httpClient.post<number>(this.URL + 'update', board);
 	}
 
 	delete(boardId: number | string): Observable<any> {

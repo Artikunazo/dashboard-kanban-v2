@@ -33,6 +33,17 @@ public class BoardController {
     return new ResponseEntity<>(boardService.saveBoard(boardDomain), HttpStatus.CREATED);
   }
 
+  @PostMapping("/update")
+  public ResponseEntity<Integer> updateBoard(@RequestBody BoardDomain boardDomain) {
+//    if(!boardService.updateBoard(boardDomain)){
+//      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    } else {
+//      return new ResponseEntity<>(HttpStatus.OK);
+//    }
+    System.out.println("controller " + boardDomain.getBoardId());
+    return new ResponseEntity<Integer>(boardService.updateBoard(boardDomain), HttpStatus.OK);
+  }
+
   @DeleteMapping("/delete/{idBoard}")
   public ResponseEntity<String> deleteBoard(@PathVariable("idBoard") int idBoard) {
     if(!boardService.deleteBoard(idBoard)) {

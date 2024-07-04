@@ -1,11 +1,13 @@
 package com.artikunazo.dashboardKanban.persistence.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
 @Entity
 @Table(name = "boards")
+@DynamicUpdate
 public class Board {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

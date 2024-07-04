@@ -4,6 +4,6 @@ export interface Board {
 }
 
 export interface ApiBoard {
-	boardId: number;
+	boardId: string;
 	title: string;
 }

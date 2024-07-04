@@ -4,7 +4,10 @@ import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {BoardService} from '../../api/board.service';
 import {TaskService} from '../../api/task.service';
-import {apiBoardsToBoards} from '../../converters/board_converters';
+import {
+	apiBoardsToBoards,
+	boardToApiBoard,
+} from '../../converters/board_converters';
 import {ApiBoard, Board} from '../../models/board_models';
 import * as fromBoardActions from '../actions/board_actions';
 
@@ -57,7 +60,8 @@ export class BoardEffects {
 		return this.actions$.pipe(
 			ofType(this.boardActions.UPDATE_BOARD),
 			mergeMap((data: fromBoardActions.UpdateBoard) => {
-				return this.boardService.update(data.payload).pipe(
+				const apiBoard: ApiBoard = boardToApiBoard(data.payload);
+				return this.boardService.update(apiBoard).pipe(
 					map(() => {
 						return new fromBoardActions.UpdateBoardSuccess({
 							id: data.payload.id ?? '',

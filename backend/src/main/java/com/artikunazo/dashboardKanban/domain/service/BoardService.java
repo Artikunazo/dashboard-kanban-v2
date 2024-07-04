@@ -22,7 +22,6 @@ public class BoardService {
   }
 
   public BoardDomain saveBoard(BoardDomain boardDomain) {
-    System.out.println("Debug save board: " + boardDomain);
     return boardDomainRepository.saveBoard(boardDomain);
   }
 
@@ -31,5 +30,11 @@ public class BoardService {
       boardDomainRepository.deleteBoard(idBoard);
       return true;
     }).orElse(false);
+  }
+
+  public Integer updateBoard(BoardDomain boardDomain) {
+    Integer result = boardDomainRepository.updateBoard(boardDomain);
+    System.out.println("result" + result);
+    return result;
   }
 }

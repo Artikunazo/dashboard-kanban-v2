@@ -15,11 +15,11 @@ public interface BoardMapper {
       @Mapping(source = "title", target = "title"),
       @Mapping(source = "idBoard", target = "boardId")
   })
-  BoardDomain toBoard(Board board);
-  List<BoardDomain> toBoards(List<Board> boards);
+  BoardDomain toBoardDomain(Board board);
+  List<BoardDomain> toBoardsDomain(List<Board> boards);
 
   @InheritInverseConfiguration
   @Mapping(target = "tasks", ignore = true)
-  Board toBoardDomain(BoardDomain boardDomain);
+  Board toBoard(BoardDomain boardDomain);
 
 }

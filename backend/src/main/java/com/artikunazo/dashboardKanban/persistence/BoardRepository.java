@@ -22,20 +22,28 @@ public class BoardRepository implements BoardDomainRepository {
   @Override
   public List<BoardDomain> getAll() {
     List<Board> boards = (List<Board>) boardCrudRepository.findAll();
-    return boardMapper.toBoards(boards);
+    return boardMapper.toBoardsDomain(boards);
   }
 
   @Override
   public Optional<BoardDomain> getBoardById(int idBoard) {
     return boardCrudRepository.findById(idBoard).map(
-        board -> boardMapper.toBoard(board)
+        board -> boardMapper.toBoardDomain(board)
     );
   }
 
   @Override
   public BoardDomain saveBoard(BoardDomain boardDomain){
-    Board board = boardMapper.toBoardDomain(boardDomain);
-    return boardMapper.toBoard(boardCrudRepository.save(board));
+    Board board = boardMapper.toBoard(boardDomain);
+    return boardMapper.toBoardDomain(boardCrudRepository.save(board));
+  }
+
+  @Override
+  public Integer updateBoard(BoardDomain boardDomain){
+    Board board = boardMapper.toBoard(boardDomain);
+    System.out.println("id" + board.getIdBoard());
+    System.out.println("title" + board.getTitle());
+    return boardCrudRepository.setBoardTitle(board.getIdBoard(), board.getTitle());
   }
 
   @Override
