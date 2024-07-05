@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Observable} from 'rxjs';
 import {CONTEXT_PATH, URL_BASE} from '../common/constants';
-import {ApiBoard, Board} from '../models/board_models';
+import {ApiBoard} from '../models/board_models';
 
 @Injectable({
 	providedIn: 'root',
@@ -20,8 +20,8 @@ export class BoardService {
 		return this.httpClient.get<ApiBoard[]>(this.URL);
 	}
 
-	save(board: {title: string}): Observable<Board> {
-		return this.httpClient.post<Board>(this.URL + 'save', board);
+	save(board: {title: string}): Observable<ApiBoard> {
+		return this.httpClient.post<ApiBoard>(this.URL + 'save', board);
 	}
 
 	update(board: ApiBoard): Observable<number> {
