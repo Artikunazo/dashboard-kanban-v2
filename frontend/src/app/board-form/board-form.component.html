@@ -14,14 +14,14 @@
 		<div class="col justify-self-end">
 			@if (isLoading) {
 			<mat-spinner class="col" [diameter]="30" />
-			} @if(isEdit) {
+			} @else if(isEdit && !isLoading) {
 			<custom-button
 				[text]="'Save'"
 				[colorButton]="'accent'"
 				(clickEvent)="updateBoard()"
 				class="col create-new-board-button"
 			/>
-			} @else {
+			} @else if(!isEdit && !isLoading) {
 			<custom-button
 				[text]="'Save'"
 				[colorButton]="'accent'"

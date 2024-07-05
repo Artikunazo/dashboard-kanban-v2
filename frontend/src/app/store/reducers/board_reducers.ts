@@ -42,6 +42,7 @@ export function reducer(
 		}
 
 		case boardActionTypes.SAVE_BOARD_SUCCESS: {
+			console.log({state, payload: action.payload});
 			return boardAdapter.addOne(action.payload, {...state, isLoading: false});
 		}
 

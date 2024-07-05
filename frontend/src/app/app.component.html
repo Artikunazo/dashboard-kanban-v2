@@ -1,6 +1,5 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
-		@if(!isLoading) {
 		<mat-nav-list class="sidebar-options">
 			@for (board of boards; track board.id) {
 			<mat-list-item class="add-board-item">
@@ -16,6 +15,8 @@
 					<mat-icon>more_vert</mat-icon>
 				</button>
 			</mat-list-item>
+			} @empty {
+			<span> There are no items.</span>
 			}
 
 			<mat-list-item class="add-board-item">
@@ -27,9 +28,6 @@
 				</button>
 			</mat-list-item>
 		</mat-nav-list>
-		} @else {
-		<mat-spinner [diameter]="30"></mat-spinner>
-		}
 
 		<theme-switcher (switcherToggled)="drawer.close()" />
 	</mat-drawer>

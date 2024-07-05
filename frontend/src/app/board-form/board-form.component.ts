@@ -50,7 +50,10 @@ export class BoardFormComponent {
 			},
 		});
 
-		if (this.matDialogData.id) {
+		if (
+			this.matDialogData !== null &&
+			Object.hasOwn(this.matDialogData || {}, 'id')
+		) {
 			this.boardForm.patchValue({
 				title: this.matDialogData.title,
 			});
@@ -69,5 +72,6 @@ export class BoardFormComponent {
 				id: this.matDialogData.id,
 			}),
 		);
+		this.matDialogRef.close();
 	}
 }

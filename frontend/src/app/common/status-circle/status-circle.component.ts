@@ -1,8 +1,9 @@
 import {Component, input} from '@angular/core';
-import {TaskStatus} from '../../models/tasks_models';
 import {MatIconModule} from '@angular/material/icon';
+import {TaskStatus} from '../../models/tasks_models';
 import {CustomIconDirective} from '../custom-icon.directive';
 
+//@Todo: remove this component
 @Component({
 	selector: 'status-circle',
 	standalone: true,

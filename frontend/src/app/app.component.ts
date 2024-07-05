@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
@@ -35,7 +35,6 @@ import * as fromStore from './store';
 	],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
 	protected readonly matDialog = inject(MatDialog);
@@ -62,21 +61,7 @@ export class AppComponent {
 	}
 
 	showNewBoardDialog(): void {
-		const dialog = this.matDialog.open(BoardFormComponent, boardDialogConfig);
-
-		dialog.afterClosed().subscribe({
-			next: () => {
-				// this.store.select(fromStore.selectAllBoards).subscribe({
-				// 	next: (boards: any) => {
-				// 		console.log('select all', boards);
-				// 		this.boards = boards;
-				// 	},
-				// });
-				// this.store
-				// 	.select(fromStore.selectBoardsEntities)
-				// 	.subscribe((entities: any) => console.log({entities}));
-			},
-		});
+		this.matDialog.open(BoardFormComponent, boardDialogConfig);
 	}
 
 	editBoard(boardData: Board) {
