@@ -13,10 +13,15 @@ export const getTasksData = createSelector(
 
 export const getTasksSelectors = fromTasksReducer.taskAdapter.getSelectors();
 
-export const getTasks = createSelector(
+export const getAllTasks = createSelector(
 	getTasksState,
 	getTasksSelectors.selectAll,
 );
 
 export const selectTaskById = (idTask: number) =>
 	createSelector(getTasksState, (entries: any) => entries[idTask]);
+
+export const selectBoardSelected = createSelector(
+	getTasksState,
+	fromTasksReducer.getBoardSelected,
+);

@@ -10,7 +10,7 @@ export interface Task {
 }
 
 export interface ApiTask {
-	taskId: number;
+	taskId?: number;
 	taskTitle: string;
 	taskDescription: string;
 	statusId: number;
@@ -22,4 +22,18 @@ export enum TaskStatus {
 	ToDo = 'ToDo',
 	Doing = 'Doing',
 	Done = 'Done',
+}
+
+export interface ApiTaskOverwivew {
+	idTask: number;
+	taskName: string;
+	totalSubtasks: number;
+	statusName: string;
+}
+
+export interface TaskOverview {
+	id: number;
+	title: string;
+	countSubtasks: number;
+	status: string;
 }

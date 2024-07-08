@@ -24,4 +24,9 @@ public class StatusRepository implements StatusDomainRepository {
     List<Status> statuses = (List<Status>) statusCrudRepository.findAll();
     return statusMapper.toStatusesDomain(statuses);
   }
+
+  @Override
+  public String getStatusNameByTask(int idTask) {
+    return statusCrudRepository.getStatusNameByTask(idTask);
+  }
 }

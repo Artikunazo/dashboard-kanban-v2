@@ -1,9 +1,9 @@
 import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
 import {Component, input} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Task} from '../../models/tasks_models';
-import {KanbanCardComponent} from '../kanban-card/kanban-card.component';
+import {TaskOverview} from '../../models/tasks_models';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
+import {KanbanCardComponent} from '../task-overview/task-overview.component';
 
 @Component({
 	selector: 'kanban-column',
@@ -20,7 +20,7 @@ import {StatusCircleComponent} from '../status-circle/status-circle.component';
 })
 export class KanbanColumnComponent {
 	public columnType = input<string>('ToDo');
-	public tasks = input<Task[]>([]);
+	public tasks = input<TaskOverview[]>([]);
 
 	constructor(protected readonly store: Store) {}
 }

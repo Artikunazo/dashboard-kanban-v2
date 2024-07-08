@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
+import {Status} from '../models/status_models';
 import * as fromStore from '../store';
 
 @Component({
@@ -34,9 +35,10 @@ export class TaskFormComponent {
 		MatDialogRef,
 	) as MatDialogRef<TaskFormComponent>;
 
-	public taskForm!: FormGroup;
+	protected boardSelected!: number;
 
-	public statusOptions = ['ToDo', 'Doing', 'Done'];
+	public taskForm!: FormGroup;
+	public statusOptions: Status[] = [];
 
 	constructor() {
 		this.taskForm = this.formBuilder.group({
@@ -54,6 +56,35 @@ export class TaskFormComponent {
 
 	get subtasks() {
 		return this.taskForm.get('subtasks') as FormArray;
+	}
+
+	ngOnInit() {
+		this.store
+			.select(fromStore.selectBoardSelected)
+			.subscribe((boardSelected: number) => {
+				this.boardSelected = boardSelected;
+			});
+
+		this.store.select(fromStore.selectStatusData).subscribe({
+			next: (status: Status[]) => {
+				if (status.length === 0) {
+					this.store.dispatch(new fromStore.LoadStatuses());
+				}
+				this.statusOptions = status;
+			},
+		});
+
+		// @ToDo: validate if the task is in edit mode
+		// If editMode is on, dispatch get subtasks by idTask
+		// this.store.select(fromStore.getTasks).subscribe({
+		//   next: (tasks: Task[]) => {
+		//     if(tasks.length === 0) {
+		//       this.store.dispatch(new fromStore.LoadTasks());
+		//     } else {
+
+		//     }
+		//   }
+		// })
 	}
 
 	closeDialog(): void {
@@ -74,11 +105,11 @@ export class TaskFormComponent {
 
 		this.store.dispatch(
 			new fromStore.AddTask({
-				title: this.taskForm.value.title!,
-				description: this.taskForm.value.description!,
-				subtasks: <[]>this.taskForm.value.subtasks!,
-				statusId: this.taskForm.value.status!,
-				boardId: 0, // @ToDo: fix this
+				title: this.taskForm.value.title,
+				description: this.taskForm.value.description,
+				statusId: this.taskForm.value.status,
+				boardId: this.boardSelected,
+				subtasks: <[]>this.taskForm.value.subtasks,
 			}),
 		);
 

@@ -1,5 +1,7 @@
 package com.artikunazo.dashboardKanban.domain.service;
 
+import com.artikunazo.dashboardKanban.domain.StatusDomain;
+import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// Ever get subtask with different methods**
+
 @Service
 public class TaskService {
   @Autowired
@@ -17,6 +21,9 @@ public class TaskService {
 
   @Autowired
   private SubtaskService subtaskService;
+
+  @Autowired
+  private StatusService statusService;
 
   public List<TaskOverview> getTasksByBoardId(int boardId) {
     ArrayList<TaskOverview> taskOverviewList = new ArrayList<>();
@@ -30,7 +37,8 @@ public class TaskService {
               taskDomain.getTaskTitle(),
               subtaskService.getCountSubtasksByIdTask(
                   taskDomain.getTaskId()
-              )
+              ),
+              statusService.getStatusNameOfTask(taskDomain.getTaskId())
           )
       );
     });
@@ -43,6 +51,18 @@ public class TaskService {
   }
 
   public TaskDomain saveTask(TaskDomain taskDomain) {
+    // @ToDo: Save subtasks first
+    // Get subtasks from taskDomain
+    // Save subtasks
+    // If save process is successful, then save taskDomain
+
+    List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
+    for (SubtaskDomain subtask : subtasks) {
+      subtaskService.saveSubtask(subtask);
+    }
+
+    // @ToDo: Verify if all subtask were saved
+
     return taskDomainRepository.saveTask(taskDomain);
   }
 

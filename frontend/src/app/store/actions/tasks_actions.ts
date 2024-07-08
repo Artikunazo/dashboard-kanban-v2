@@ -1,11 +1,15 @@
 import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
-import {Task} from '../../models/tasks_models';
+import {Task, TaskOverview} from '../../models/tasks_models';
 
 export enum TasksActionType {
 	LOAD_TASK = '[Task] Load Task',
 	LOAD_TASK_SUCCESS = '[Task] Load Task Success',
 	LOAD_TASK_FAIL = '[Task] Load Task Fail',
+
+	LOAD_TASKS_BY_BOARD = '[Task] Load Tasks by Board',
+	LOAD_TASKS_BY_BOARD_SUCCESS = '[Task] Load Tasks by Board Success',
+	LOAD_TASKS_BY_BOARD_FAIL = '[Task] Load Tasks by Board Fail',
 
 	ADD_TASK = '[Task] Add task',
 	ADD_TASK_SUCCESS = '[Task] Add task success',
@@ -38,7 +42,25 @@ export class LoadTaskSuccess implements Action {
 export class LoadTaskFail implements Action {
 	readonly type = TasksActionType.LOAD_TASK_FAIL;
 
-	constructor(public payload: string) {}
+	constructor(public payload: any) {}
+}
+
+export class LoadTasksByBoard implements Action {
+	readonly type = TasksActionType.LOAD_TASKS_BY_BOARD;
+
+	constructor(public payload: number) {}
+}
+
+export class LoadTasksByBoardSuccess implements Action {
+	readonly type = TasksActionType.LOAD_TASKS_BY_BOARD_SUCCESS;
+
+	constructor(public payload: TaskOverview[]) {}
+}
+
+export class LoadTasksByBoardFail implements Action {
+	readonly type = TasksActionType.LOAD_TASKS_BY_BOARD_FAIL;
+
+	constructor(public payload: any) {}
 }
 
 // ADD
@@ -57,7 +79,7 @@ export class AddTaskSuccess implements Action {
 export class AddTaskFail implements Action {
 	readonly type = TasksActionType.ADD_TASK_FAIL;
 
-	constructor(public payload: string) {}
+	constructor(public payload: any) {}
 }
 
 // UPDATE
@@ -121,6 +143,9 @@ export type TasksActions =
 	| LoadTask
 	| LoadTaskSuccess
 	| LoadTaskFail
+	| LoadTasksByBoard
+	| LoadTasksByBoardSuccess
+	| LoadTasksByBoardFail
 	| AddTask
 	| AddTaskSuccess
 	| AddTaskFail

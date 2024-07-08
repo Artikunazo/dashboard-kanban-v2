@@ -25,7 +25,7 @@ public class StatusController {
     return new ResponseEntity<String>("Ok!", HttpStatus.OK) ;
   }
 
-  @GetMapping
+  @GetMapping("/")
   public ResponseEntity<List<StatusDomain>> getAll() {
     return new ResponseEntity<>(statusService.getAll(), HttpStatus.OK);
   }

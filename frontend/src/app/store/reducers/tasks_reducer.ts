@@ -1,19 +1,21 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {Task} from '../../models/tasks_models';
+import {TaskOverview} from '../../models/tasks_models';
 import * as fromTasksActions from '../actions/tasks_actions';
 
-export interface TasksState extends EntityState<Task> {
-	data: Task[];
+export interface TasksState extends EntityState<TaskOverview> {
+	data: TaskOverview[];
+	boardSelected: number;
 	isLoading: boolean;
 	error: string;
 }
 
-export const taskAdapter = createEntityAdapter<Task>({
-	selectId: (task) => task.id ?? 0,
+export const taskAdapter = createEntityAdapter<TaskOverview>({
+	selectId: (TaskOverview) => TaskOverview.id,
 });
 
 export const initialState: TasksState = taskAdapter.getInitialState({
 	data: [],
+	boardSelected: 0,
 	isLoading: false,
 	error: '',
 });
@@ -25,6 +27,22 @@ export function reducer(
 	const tasksActionTypes = fromTasksActions.TasksActionType;
 
 	switch (action.type) {
+		case tasksActionTypes.LOAD_TASKS_BY_BOARD: {
+			return {
+				...state,
+				boardSelected: action.payload,
+				isLoading: true,
+			};
+		}
+
+		case tasksActionTypes.LOAD_TASKS_BY_BOARD_SUCCESS: {
+			return taskAdapter.setAll(action.payload, {...state, isLoading: false});
+		}
+
+		case tasksActionTypes.LOAD_TASKS_BY_BOARD_FAIL: {
+			return {...state, error: action.payload, isLoading: false};
+		}
+
 		case tasksActionTypes.LOAD_TASK: {
 			return {
 				...state,
@@ -32,17 +50,21 @@ export function reducer(
 			};
 		}
 
-		case tasksActionTypes.LOAD_TASK_SUCCESS: {
-			return taskAdapter.addOne(action.payload, {...state, isLoading: false});
-		}
+		// case tasksActionTypes.LOAD_TASK_SUCCESS: {
+		// 	// Agregar un nuevo campo con la informacion de la task seleccionada
+		// 	// Asi poder obtener la info obtenida por task
+		// 	// return taskAdapter.addOne(action.payload, {...state, isLoading: false});
+		// }
 
 		case tasksActionTypes.LOAD_TASK_FAIL: {
 			return {...state, error: action.payload, isLoading: false};
 		}
 
-		case tasksActionTypes.ADD_TASK_SUCCESS: {
-			return taskAdapter.addOne(action.payload, state);
-		}
+		// case tasksActionTypes.ADD_TASK_SUCCESS: {
+		// 	// La API tiene que regresar el task overview
+		// 	// No debe regresar la informacion del task completa
+		// 	// return taskAdapter.addOne(action.payload, state);
+		// }
 
 		case tasksActionTypes.ADD_TASK_FAIL: {
 			return {...state, error: action.payload};
@@ -83,3 +105,4 @@ export const getTaskError = (state: TasksState) => state.error;
 export const getTaskData = (state: TasksState) => state.data;
 export const {selectAll, selectEntities, selectIds, selectTotal} =
 	taskAdapter.getSelectors();
+export const getBoardSelected = (state: TasksState) => state.boardSelected;

@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';
-import {Task} from '../models/tasks_models';
+import {TaskOverview} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
@@ -14,36 +14,37 @@ import * as fromStore from '../store';
 	styleUrl: './kanban-board.component.scss',
 })
 export class KanbanBoardComponent implements OnInit {
-	public tasksList: Task[] = [];
-	public taskListIndexed!: {[key: string]: Task[]};
+	private readonly store = inject(Store);
 
-	constructor(private readonly store: Store) {}
+	public tasksList: TaskOverview[] = [];
+	public tasksListIndexed!: {[key: string]: TaskOverview[]};
+
+	constructor() {}
 
 	ngOnInit(): void {
-		// this.store.dispatch(new fromStore.LoadTasks());
-		// this.store.select(fromStore.getTasks).subscribe({
-		// 	next: (response) => {
-		// 		this.tasksList = response;
-		// 		this.indexTasks();
-		// 	},
-		// });
+		this.store.select(fromStore.getAllTasks).subscribe({
+			next: (tasks: TaskOverview[]) => {
+				this.tasksList = tasks || [];
+				this.indexTasks();
+			},
+		});
 	}
 
 	indexTasks() {
-		// this.taskListIndexed = this.tasksList.reduce(
-		// 	(previous: any, current: any) => ({
-		// 		...previous,
-		// 		[current['status']]: [...(previous[current['status']] || []), current],
-		// 	}),
-		// 	{},
-		// );
+		this.tasksListIndexed = this.tasksList.reduce(
+			(previous: any, current: any) => ({
+				...previous,
+				[current['status']]: [...(previous[current['status']] || []), current],
+			}),
+			{},
+		);
 	}
 
-	drop(event: CdkDragDrop<Task[]>) {
+	drop(event: CdkDragDrop<TaskOverview[]>) {
 		const newStatus = event.container.element.nativeElement.id;
 		const task = event.item.dropContainer.data;
-		this.store.dispatch(
-			new fromStore.UpdateTask({...task[0], status: newStatus}),
-		);
+		// this.store.dispatch(
+		// 	new fromStore.UpdateTask({...task[0], status: newStatus}),
+		// );
 	}
 }

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StatusDomainRepository {
   List<StatusDomain> getAll();
+  String getStatusNameByTask(int idTask);
 }

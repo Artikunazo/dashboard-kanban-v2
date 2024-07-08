@@ -69,11 +69,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Dashboard_kanban`.`subtaks`
+-- Table `Dashboard_kanban`.`subtasks`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `dashboard_kanban`.`subtaks` ;
+DROP TABLE IF EXISTS `dashboard_kanban`.`subtasks` ;
 
-CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`subtaks` (
+CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`subtasks` (
   `id_subtask` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   `is_done` TINYINT NOT NULL DEFAULT 0,

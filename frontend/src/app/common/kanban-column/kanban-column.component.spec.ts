@@ -4,8 +4,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Store, StoreModule} from '@ngrx/store';
 import {Task} from '../../models/tasks_models';
 import {reducers} from '../../store/reducers';
-import {KanbanCardComponent} from '../kanban-card/kanban-card.component';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
+import {KanbanCardComponent} from '../task-overview/task-overview.component';
 import {KanbanColumnComponent} from './kanban-column.component';
 
 describe('KanbanColumnComponent', () => {

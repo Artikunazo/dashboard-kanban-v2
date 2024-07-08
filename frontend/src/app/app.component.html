@@ -2,7 +2,10 @@
 	<mat-drawer #drawer mode="over">
 		<mat-nav-list class="sidebar-options">
 			@for (board of boards; track board.id) {
-			<mat-list-item class="add-board-item">
+			<mat-list-item
+				class="add-board-item"
+				(click)="loadTaskByBoard(board.id)"
+			>
 				<span matListItemTitle>
 					{{ board.title }}
 				</span>
@@ -36,7 +39,7 @@
 		<toolbar (openNav)="drawer.toggle()" />
 
 		<div class="main-container">
-			<!-- <kanban-board /> -->
+			<kanban-board />
 		</div>
 
 		<!-- <ng-template #routerOutlet>

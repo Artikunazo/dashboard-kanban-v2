@@ -60,6 +60,13 @@ export class AppComponent {
 		});
 	}
 
+	loadTaskByBoard(idBoard: string | undefined) {
+		this.store.dispatch(
+			new fromStore.LoadTasksByBoard(parseInt(idBoard || '0')),
+		);
+		// @ToDo: check if sidebar can to close
+	}
+
 	showNewBoardDialog(): void {
 		this.matDialog.open(BoardFormComponent, boardDialogConfig);
 	}
