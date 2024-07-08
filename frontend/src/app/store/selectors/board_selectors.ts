@@ -8,10 +8,7 @@ export const getBoardEntities = createSelector(
 	getBoardState,
 	fromBoardReducer.selectEntities,
 );
-export const getBoardsData = createSelector(
-	getBoardState,
-	fromBoardReducer.getBoardsData,
-);
+
 export const getBoardById = (idBoard: number) =>
 	createSelector(getBoardState, (entities: any) => entities[idBoard]);
 
@@ -34,7 +31,7 @@ export const selectBoardsEntities = createSelector(
 	fromBoardReducer.selectEntities,
 );
 
-export const selectBoardData = createSelector(
+export const selectBoardTitle = createSelector(
 	getBoardState,
-	fromBoardReducer.getBoardsData,
+	fromBoardReducer.getBoardTitle,
 );

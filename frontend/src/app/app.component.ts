@@ -60,10 +60,11 @@ export class AppComponent {
 		});
 	}
 
-	loadTaskByBoard(idBoard: string | undefined) {
+	loadTasksByBoard(board: Board) {
 		this.store.dispatch(
-			new fromStore.LoadTasksByBoard(parseInt(idBoard || '0')),
+			new fromStore.LoadTasksByBoard(parseInt(board.id || '0')),
 		);
+		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		// @ToDo: check if sidebar can to close
 	}
 

@@ -24,6 +24,8 @@ export enum BoardActionsType {
 	SAVE_BOARD = '[Board] Save Board',
 	SAVE_BOARD_SUCCESS = '[Board] Save Board Success',
 	SAVE_BOARD_FAIL = '[Board] Save Board Fail',
+
+	SAVE_TITLE_BOARD = '[Board] Save Title Board',
 }
 
 export class LoadBoards implements Action {
@@ -112,6 +114,12 @@ export class DeleteBoardFail implements Action {
 	constructor(public payload: any) {}
 }
 
+export class SaveTitleBoard implements Action {
+	readonly type = BoardActionsType.SAVE_TITLE_BOARD;
+
+	constructor(public payload: string) {}
+}
+
 export type BoardActions =
 	| LoadBoards
 	| LoadBoardsSucess
@@ -127,4 +135,5 @@ export type BoardActions =
 	| UpdateBoardFail
 	| DeleteBoard
 	| DeleteBoardFail
-	| DeleteBoardSucess;
+	| DeleteBoardSucess
+	| SaveTitleBoard;

@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
+import * as fromStore from '../store';
 import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
@@ -16,12 +17,18 @@ export class ToolbarComponent {
 	public openNav = output();
 
 	public title = 'Kanban';
-	public subtitle = 'Platform Launch';
+	public subtitle = '';
 
 	constructor(
 		private readonly dialog: MatDialog,
 		private readonly store: Store,
 	) {}
+
+	ngOnInit() {
+		this.store.select(fromStore.selectBoardTitle).subscribe({
+			next: (title: string) => (this.subtitle = title),
+		});
+	}
 
 	openTaskFormModal() {
 		const dialogRef = this.dialog.open(TaskFormComponent, {
