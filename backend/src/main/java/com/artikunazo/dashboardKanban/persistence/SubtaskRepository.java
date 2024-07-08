@@ -49,4 +49,9 @@ public class SubtaskRepository implements SubtaskDomainRepository {
     return subtaskCrudRepository.countByIdTask(idTask);
   }
 
+  @Override
+  public Integer getIsDoneSubTaskByTask(int idTask) {
+    return subtaskCrudRepository.getIsDoneSubTaskByTask(idTask);
+  }
+
 }

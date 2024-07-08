@@ -29,6 +29,7 @@ export interface ApiTaskOverwivew {
 	taskName: string;
 	totalSubtasks: number;
 	statusName: string;
+	totalIsDoneSubtasks: number;
 }
 
 export interface TaskOverview {
@@ -36,4 +37,5 @@ export interface TaskOverview {
 	title: string;
 	countSubtasks: number;
 	status: string;
+	countDoneSubtasks: number;
 }

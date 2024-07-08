@@ -27,8 +27,8 @@ public class TaskService {
 
   public List<TaskOverview> getTasksByBoardId(int boardId) {
     ArrayList<TaskOverview> taskOverviewList = new ArrayList<>();
-
     List<TaskDomain> tasks = taskDomainRepository.getTasksByBoardId(boardId);
+
 
     tasks.forEach(taskDomain -> {
       taskOverviewList.add(
@@ -38,7 +38,8 @@ public class TaskService {
               subtaskService.getCountSubtasksByIdTask(
                   taskDomain.getTaskId()
               ),
-              statusService.getStatusNameOfTask(taskDomain.getTaskId())
+              statusService.getStatusNameOfTask(taskDomain.getTaskId()),
+              subtaskService.getIsDoneSubTaskByTask(taskDomain.getTaskId())
           )
       );
     });

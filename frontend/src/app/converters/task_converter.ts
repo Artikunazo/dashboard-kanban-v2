@@ -24,6 +24,7 @@ export function ApiTaskOverviewToTaskOverview(
 		title: apiTaskOverwivew.taskName,
 		countSubtasks: apiTaskOverwivew.totalSubtasks,
 		status: apiTaskOverwivew.statusName,
+		countDoneSubtasks: apiTaskOverwivew.totalIsDoneSubtasks,
 	};
 }
 

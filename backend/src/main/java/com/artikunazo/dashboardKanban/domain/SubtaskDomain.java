@@ -5,7 +5,7 @@ import com.artikunazo.dashboardKanban.persistence.entity.Task;
 public class SubtaskDomain {
   private int subtaskId;
   private String titleSubtask;
-  private boolean done;
+  private int done;
   private int taskId;
 
   public int getSubtaskId() {
@@ -24,11 +24,11 @@ public class SubtaskDomain {
     this.titleSubtask = titleSubtask;
   }
 
-  public boolean isDone() {
+  public int getDone() {
     return done;
   }
 
-  public void setDone(boolean done) {
+  public void setDone(int done) {
     this.done = done;
   }
 

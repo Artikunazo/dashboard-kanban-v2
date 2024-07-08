@@ -13,7 +13,7 @@ public class Subtask {
   private String title;
 
   @Column(name = "is_done")
-  private Boolean isDone;
+  private int isDone;
 
   @Column(name = "id_task")
   private Integer idTask;
@@ -38,14 +38,6 @@ public class Subtask {
     this.title = title;
   }
 
-  public Boolean getDone() {
-    return isDone;
-  }
-
-  public void setDone(Boolean done) {
-    isDone = done;
-  }
-
   public Integer getIdTask() {
     return idTask;
   }
@@ -60,5 +52,13 @@ public class Subtask {
 
   public void setTask(Task task) {
     this.task = task;
+  }
+
+  public int getIsDone() {
+    return isDone;
+  }
+
+  public void setIsDone(int isDone) {
+    this.isDone = isDone;
   }
 }

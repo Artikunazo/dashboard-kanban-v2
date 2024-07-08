@@ -15,7 +15,7 @@ public interface SubtaskMapper {
   @Mappings({
       @Mapping(source = "idSubtask",target = "subtaskId"),
       @Mapping(source = "title", target = "titleSubtask"),
-      @Mapping(source = "done", target = "done"),
+      @Mapping(source = "isDone", target = "done"),
       @Mapping(source = "idTask", target = "taskId")
   })
   SubtaskDomain toSubtaskDomain(Subtask subtask);

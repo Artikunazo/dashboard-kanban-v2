@@ -35,4 +35,8 @@ public class SubtaskService {
       return true;
     }).orElse(false);
   }
+
+  public Integer getIsDoneSubTaskByTask(int idTask){
+    return subtaskDomainRepository.getIsDoneSubTaskByTask(idTask);
+  }
 }

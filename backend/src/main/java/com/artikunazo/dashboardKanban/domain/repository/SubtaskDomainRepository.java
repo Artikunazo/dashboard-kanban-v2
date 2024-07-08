@@ -11,4 +11,5 @@ public interface SubtaskDomainRepository {
   void deleteSubtask(int subtaskId);
   Optional<SubtaskDomain> getSubtaskById(int idSubtask);
   Integer getCountSubtasksByIdTask(int idTask);
+  Integer getIsDoneSubTaskByTask(int idTask);
 }

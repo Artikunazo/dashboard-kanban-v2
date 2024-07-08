@@ -2,6 +2,9 @@
 <mat-card>
 	<mat-card-content>
 		<p>{{ task()?.title }}</p>
-		<p>{{ task()?.countSubtasks }}</p>
+		<p>
+			{{ task()?.countDoneSubtasks }} of
+			{{ task()?.countSubtasks }}
+		</p>
 	</mat-card-content>
 </mat-card>

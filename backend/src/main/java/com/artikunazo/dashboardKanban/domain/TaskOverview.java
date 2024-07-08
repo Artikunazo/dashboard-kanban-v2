@@ -5,12 +5,14 @@ public class TaskOverview {
   private String taskName;
   private int totalSubtasks;
   private String statusName;
+  private int totalIsDoneSubtasks;
 
-  public TaskOverview(int idTask, String taskName, int totalSubtasks, String statusName){
+  public TaskOverview(int idTask, String taskName, int totalSubtasks, String statusName, int totalIsDoneSubtasks){
     this.idTask = idTask;
     this.taskName = taskName;
     this.totalSubtasks = totalSubtasks;
     this.statusName = statusName;
+    this.totalIsDoneSubtasks = totalIsDoneSubtasks;
   }
 
   public String getTaskName() {
@@ -43,5 +45,13 @@ public class TaskOverview {
 
   public void setStatusName(String statusName) {
     this.statusName = statusName;
+  }
+
+  public int getTotalIsDoneSubtasks() {
+    return totalIsDoneSubtasks;
+  }
+
+  public void setTotalIsDoneSubtasks(int totalIsDoneSubtasks) {
+    this.totalIsDoneSubtasks = totalIsDoneSubtasks;
   }
 }
