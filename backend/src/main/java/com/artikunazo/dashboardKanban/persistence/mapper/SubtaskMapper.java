@@ -13,7 +13,7 @@ import com.artikunazo.dashboardKanban.persistence.entity.Subtask;
 @Mapper(componentModel = "spring")
 public interface SubtaskMapper {
   @Mappings({
-      @Mapping(source = "idSubtask",target = "subtaskId"),
+      @Mapping(source = "idSubtask", target = "subtaskId"),
       @Mapping(source = "title", target = "titleSubtask"),
       @Mapping(source = "isDone", target = "done"),
       @Mapping(source = "idTask", target = "taskId")

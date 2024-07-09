@@ -1,22 +1,12 @@
 package com.artikunazo.dashboardKanban.domain;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
 public class BoardDomain {
   private int boardId;
   private String title;
 
-  public int getBoardId() {
-    return boardId;
-  }
-
-  public void setBoardId(int boardId) {
-    this.boardId = boardId;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
 }

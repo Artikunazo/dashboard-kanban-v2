@@ -1,6 +1,5 @@
 package com.artikunazo.dashboardKanban.domain.service;
 
-import com.artikunazo.dashboardKanban.domain.StatusDomain;
 import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskOverview;
@@ -59,6 +58,7 @@ public class TaskService {
 
     List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
     for (SubtaskDomain subtask : subtasks) {
+      System.out.println("subtask info " + subtask.getTitleSubtask() + " " + subtask.getDone() + " " + subtask.getTaskId());
       subtaskService.saveSubtask(subtask);
     }
 

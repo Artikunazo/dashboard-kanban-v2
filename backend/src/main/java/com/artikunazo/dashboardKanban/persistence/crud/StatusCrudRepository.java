@@ -8,4 +8,5 @@ import org.springframework.data.repository.query.Param;
 public interface StatusCrudRepository extends CrudRepository<Status, Integer> {
   @Query("SELECT s.status FROM Status s LEFT JOIN Task t ON t.idStatus = s.idStatus WHERE t.idTask = :idTask")
   String getStatusNameByTask(@Param("idTask") int idTask);
+
 }
