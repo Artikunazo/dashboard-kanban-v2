@@ -51,20 +51,20 @@ public class TaskService {
   }
 
   public TaskDomain saveTask(TaskDomain taskDomain) {
-    // @ToDo: Save subtasks first
-    // Get subtasks from taskDomain
-    // Save subtasks
-    // If save process is successful, then save taskDomain
+    // @ToDo: Save task first
+    // For get taskId stored
+    // We get that taskId and We use it to store each subtask
+
+    TaskDomain taskSaved = taskDomainRepository.saveTask(taskDomain);
 
     List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
     for (SubtaskDomain subtask : subtasks) {
       System.out.println("subtask info " + subtask.getTitleSubtask() + " " + subtask.getDone() + " " + subtask.getTaskId());
+      subtask.setTaskId(taskSaved.getTaskId());
       subtaskService.saveSubtask(subtask);
     }
 
-    // @ToDo: Verify if all subtask were saved
-
-    return taskDomainRepository.saveTask(taskDomain);
+    return taskSaved;
   }
 
   public boolean deleteTask(int idTask) {

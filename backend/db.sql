@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS `dashboard_kanban`.`tasks` (
   INDEX `id_board_idx` (`id_board` ASC) VISIBLE,
   CONSTRAINT `id_status`
     FOREIGN KEY (`id_status`)
-    REFERENCES `Dashboard_kanban`.`status` (`id_status`)
+    REFERENCES `dashboard_kanban`.`status` (`id_status`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `id_board`
     FOREIGN KEY (`id_board`)
-    REFERENCES `Dashboard_kanban`.`boards` (`id_board`)
+    REFERENCES `dashboard_kanban`.`boards` (`id_board`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

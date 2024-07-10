@@ -1,18 +1,24 @@
+import {ApiSubtask, Subtask} from '../models/subtask_models';
 import {
 	ApiTask,
 	ApiTaskOverwivew,
 	Task,
 	TaskOverview,
 } from '../models/tasks_models';
+import {apiSubtaskToSubtask, subtasktoApiSubtask} from './subtask_converters';
 
 export function ApiTaskToTask(apiTask: ApiTask): Task {
+	const subtasks: Subtask[] = apiTask.subtasks.map((subtask: ApiSubtask) =>
+		apiSubtaskToSubtask(subtask),
+	);
+
 	return {
 		id: apiTask.taskId,
 		title: apiTask.taskTitle,
 		description: apiTask.taskDescription,
 		statusId: apiTask.statusId,
 		boardId: apiTask.boardId,
-		subtasks: apiTask.subtasks,
+		subtasks,
 	};
 }
 
@@ -41,11 +47,15 @@ export function apiTasksToTasks(apiTasks: ApiTask[]): Task[] {
 }
 
 export function taskToApiTask(task: Task): ApiTask {
+	const subtasks: ApiSubtask[] = task.subtasks.map((subtask: Subtask) =>
+		subtasktoApiSubtask(subtask),
+	);
+
 	return {
 		taskTitle: task.title,
 		taskDescription: task.description,
 		statusId: task.statusId,
 		boardId: task.boardId,
-		subtasks: task.subtasks,
+		subtasks,
 	};
 }

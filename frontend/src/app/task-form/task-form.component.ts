@@ -39,17 +39,16 @@ export class TaskFormComponent {
 
 	public taskForm!: FormGroup;
 	public statusOptions: Status[] = [];
+	protected subtaskForm: FormGroup = this.formBuilder.group({
+		title: this.formBuilder.control('', [Validators.required]),
+		status: this.formBuilder.control('ToDo'),
+	});
 
 	constructor() {
 		this.taskForm = this.formBuilder.group({
 			title: this.formBuilder.control('', [Validators.required]),
 			description: this.formBuilder.control('', [Validators.required]),
-			subtasks: this.formBuilder.array([
-				this.formBuilder.group({
-					title: this.formBuilder.control('', [Validators.required]),
-					status: this.formBuilder.control('ToDo'),
-				}),
-			]),
+			subtasks: this.formBuilder.array([this.subtaskForm]),
 			status: this.formBuilder.control('', [Validators.required]),
 		});
 	}
@@ -65,11 +64,10 @@ export class TaskFormComponent {
 				this.boardSelected = boardSelected;
 			});
 
+		this.store.dispatch(new fromStore.LoadStatuses());
 		this.store.select(fromStore.selectStatusData).subscribe({
 			next: (status: Status[]) => {
-				if (status.length === 0) {
-					this.store.dispatch(new fromStore.LoadStatuses());
-				}
+				console.log('status', status);
 				this.statusOptions = status;
 			},
 		});
@@ -92,12 +90,7 @@ export class TaskFormComponent {
 	}
 
 	addSubtask() {
-		return this.subtasks.push(
-			this.formBuilder.group({
-				title: this.formBuilder.control('', [Validators.required]),
-				status: this.formBuilder.control('ToDo'),
-			}),
-		);
+		return this.subtasks.push(this.subtaskForm);
 	}
 
 	createTask() {

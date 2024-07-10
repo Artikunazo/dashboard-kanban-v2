@@ -1,4 +1,4 @@
-import {Subtask} from './subtask_models';
+import {ApiSubtask, Subtask} from './subtask_models';
 
 export interface Task {
 	id?: number;
@@ -15,7 +15,7 @@ export interface ApiTask {
 	taskDescription: string;
 	statusId: number;
 	boardId: number;
-	subtasks: Subtask[];
+	subtasks: ApiSubtask[];
 }
 
 export enum TaskStatus {

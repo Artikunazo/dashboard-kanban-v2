@@ -10,13 +10,13 @@ import java.util.List;
 @Table(name = "status")
 public class Status {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_status")
-  private Integer idStatus;
+  private int idStatus;
 
   private String status;
 
-  @OneToOne(mappedBy = "status",  cascade = CascadeType.DETACH)
+  @OneToOne(mappedBy = "status",  cascade = CascadeType.ALL)
   private Task task;
 
 }

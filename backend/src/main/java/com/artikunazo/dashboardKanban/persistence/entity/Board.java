@@ -12,12 +12,12 @@ import java.util.List;
 @DynamicUpdate
 public class Board {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_board")
   private Integer idBoard;
 
   private String title;
 
-  @OneToMany(mappedBy = "board",cascade = { CascadeType.DETACH })
+  @OneToMany(mappedBy = "board",cascade = { CascadeType.ALL })
   private List<Task> tasks;
 }

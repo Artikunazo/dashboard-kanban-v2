@@ -10,9 +10,9 @@ import java.util.List;
 @Table(name = "tasks")
 public class Task {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_task")
-  private Integer idTask;
+  private int idTask;
 
   private String title;
   private String description;
@@ -31,7 +31,7 @@ public class Task {
   @JoinColumn(name = "id_board", insertable = false, updatable = false)
   private Board board;
 
-  @OneToMany(mappedBy = "task", cascade = { CascadeType.DETACH })
+  @OneToMany(mappedBy = "task", cascade = { CascadeType.ALL })
   private List<Subtask> subtasks;
 
 }

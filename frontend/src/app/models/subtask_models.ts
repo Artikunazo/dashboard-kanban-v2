@@ -1,13 +1,13 @@
 export interface Subtask {
-	id?: number;
+	id?: number | null;
 	title: string;
 	isDone: boolean;
 	taskId: number | null;
 }
 
 export interface ApiSubtask {
-	subtaskId: number;
+	subtaskId: number | null;
 	titleSubtask: string;
 	done: boolean;
-	taskId: number;
+	taskId: number | null;
 }

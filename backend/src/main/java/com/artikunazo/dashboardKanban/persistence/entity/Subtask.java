@@ -8,9 +8,9 @@ import lombok.*;
 @Table(name = "subtasks")
 public class Subtask {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_subtask")
-  private Integer idSubtask;
+  private int idSubtask;
 
   private String title;
 
