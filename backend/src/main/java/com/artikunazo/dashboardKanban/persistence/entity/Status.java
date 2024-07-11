@@ -16,7 +16,7 @@ public class Status {
 
   private String status;
 
-  @OneToOne(mappedBy = "status",  cascade = CascadeType.ALL)
-  private Task task;
+  @OneToMany(mappedBy = "status",  cascade = CascadeType.ALL)
+  private List<Task> task;
 
 }

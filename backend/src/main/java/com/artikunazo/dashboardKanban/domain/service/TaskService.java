@@ -28,7 +28,6 @@ public class TaskService {
     ArrayList<TaskOverview> taskOverviewList = new ArrayList<>();
     List<TaskDomain> tasks = taskDomainRepository.getTasksByBoardId(boardId);
 
-
     tasks.forEach(taskDomain -> {
       taskOverviewList.add(
           new TaskOverview(
@@ -59,7 +58,6 @@ public class TaskService {
 
     List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
     for (SubtaskDomain subtask : subtasks) {
-      System.out.println("subtask info " + subtask.getTitleSubtask() + " " + subtask.getDone() + " " + subtask.getTaskId());
       subtask.setTaskId(taskSaved.getTaskId());
       subtaskService.saveSubtask(subtask);
     }

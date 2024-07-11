@@ -23,7 +23,7 @@ public class Task {
   @Column(name = "id_status")
   private Integer idStatus;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "id_status", insertable = false, updatable = false)
   private Status status;
 
