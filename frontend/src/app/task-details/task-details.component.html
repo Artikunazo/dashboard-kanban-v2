@@ -24,8 +24,8 @@
 			<mat-select [formControl]="statusSelected">
 				@for(status of statusOptions; track status) {
 
-				<mat-option [value]="status">{{
-					status
+				<mat-option [value]="status.id">{{
+					status.name
 				}}</mat-option>
 				}
 			</mat-select>

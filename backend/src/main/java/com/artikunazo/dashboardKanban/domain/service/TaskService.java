@@ -46,7 +46,13 @@ public class TaskService {
   }
 
   public Optional<TaskDomain> getTaskById(int idTask) {
-    return taskDomainRepository.getTaskById(idTask);
+    Optional<TaskDomain> task = taskDomainRepository.getTaskById(idTask);
+
+    task.ifPresent(taskDomain -> {
+      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskDomain.getTaskId()));
+    });
+
+    return task;
   }
 
   public TaskDomain saveTask(TaskDomain taskDomain) {
@@ -66,6 +72,7 @@ public class TaskService {
   }
 
   public boolean deleteTask(int idTask) {
+    // @ToDo: Delete subtasks related with task to delete
     return getTaskById(idTask).map(taskDomain -> {
       taskDomainRepository.deleteTask(idTask);
       return true;

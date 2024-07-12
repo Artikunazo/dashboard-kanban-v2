@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 public class TaskDomain {
@@ -14,5 +15,4 @@ public class TaskDomain {
   private int statusId;
   private int boardId;
   private List<SubtaskDomain> subtasks;
-
 }

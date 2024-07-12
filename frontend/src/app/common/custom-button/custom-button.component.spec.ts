@@ -1,10 +1,10 @@
 // Necessary imports for the test
+import {signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {CustomButtonComponent} from './custom-button.component'; // Adjust the import path as necessary
 import {MaterialModule} from '../../material/material.module';
 import {CustomIconDirective} from '../custom-icon.directive';
-import {input, signal} from '@angular/core';
+import {CustomButtonComponent} from './custom-button.component'; // Adjust the import path as necessary
 
 describe('CustomButtonComponent', () => {
 	let component: CustomButtonComponent;
@@ -47,7 +47,6 @@ describe('CustomButtonComponent', () => {
 		const iconElement: HTMLElement = fixture.debugElement.query(
 			By.directive(CustomIconDirective),
 		).nativeElement;
-		console.log(iconElement);
 		expect(iconElement.getAttribute('ng-reflect-icon')).toEqual('add');
 	});
 

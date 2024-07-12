@@ -1,5 +1,5 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {TaskOverview} from '../../models/tasks_models';
+import {Task, TaskOverview} from '../../models/tasks_models';
 import * as fromTasksActions from '../actions/tasks_actions';
 
 export interface TasksState extends EntityState<TaskOverview> {
@@ -7,6 +7,7 @@ export interface TasksState extends EntityState<TaskOverview> {
 	boardSelected: number;
 	isLoading: boolean;
 	error: string;
+	task: Task | null;
 }
 
 export const taskAdapter = createEntityAdapter<TaskOverview>({
@@ -18,6 +19,7 @@ export const initialState: TasksState = taskAdapter.getInitialState({
 	boardSelected: 0,
 	isLoading: false,
 	error: '',
+	task: null,
 });
 
 export function reducer(
@@ -50,11 +52,14 @@ export function reducer(
 			};
 		}
 
-		// case tasksActionTypes.LOAD_TASK_SUCCESS: {
-		// 	// Agregar un nuevo campo con la informacion de la task seleccionada
-		// 	// Asi poder obtener la info obtenida por task
-		// 	// return taskAdapter.addOne(action.payload, {...state, isLoading: false});
-		// }
+		case tasksActionTypes.LOAD_TASK_SUCCESS: {
+			return {
+				...state,
+				isLoading: false,
+				error: '',
+				task: action.payload,
+			};
+		}
 
 		case tasksActionTypes.LOAD_TASK_FAIL: {
 			return {...state, error: action.payload, isLoading: false};
@@ -94,6 +99,10 @@ export function reducer(
 			return {...state, error: action.payload};
 		}
 
+		case tasksActionTypes.CLEAN_TASK_SELECTED: {
+			return {...state, task: null};
+		}
+
 		default: {
 			return state;
 		}
@@ -106,3 +115,4 @@ export const getTaskData = (state: TasksState) => state.data;
 export const {selectAll, selectEntities, selectIds, selectTotal} =
 	taskAdapter.getSelectors();
 export const getBoardSelected = (state: TasksState) => state.boardSelected;
+export const getTaskSelected = (state: TasksState) => state.task;

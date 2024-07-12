@@ -25,3 +25,8 @@ export const selectBoardSelected = createSelector(
 	getTasksState,
 	fromTasksReducer.getBoardSelected,
 );
+
+export const selectTask = createSelector(
+	getTasksState,
+	fromTasksReducer.getTaskSelected,
+);

@@ -1,5 +1,4 @@
-<!-- <mat-card (click)="openTaskOverviewModal(task())"> -->
-<mat-card>
+<mat-card (click)="taskSelected.emit(task())">
 	<mat-card-content>
 		<p>{{ task()?.title }}</p>
 		<p>

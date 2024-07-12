@@ -33,8 +33,8 @@ export class TasksEffects {
 	loadTask$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(this.tasksActionsTypes.LOAD_TASK),
-			mergeMap((idTask: number) =>
-				this.taskService.getTaskById(idTask).pipe(
+			mergeMap((loadTaskData: fromTasksActions.LoadTask) =>
+				this.taskService.getTaskById(loadTaskData.payload).pipe(
 					map((response: ApiTask) => {
 						// @ToDo: parse from base64 to string
 						const task: Task = ApiTaskToTask(response);
