@@ -2,7 +2,7 @@ import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
 import {Component, inject, input} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {Task, TaskOverview} from '../../models/tasks_models';
+import {TaskOverview} from '../../models/tasks_models';
 import * as fromStore from '../../store';
 import {TaskDetailsComponent} from '../../task-details/task-details.component';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
@@ -27,35 +27,11 @@ export class KanbanColumnComponent {
 
 	public columnType = input<string>('ToDo');
 	public tasks = input<TaskOverview[]>([]);
-	private taskSelected: Task | null = null;
 
 	showTaskSelected(task: TaskOverview): void {
-		if (!task.id) {
-			// this.store.dispatch(
-			// 	new fromStore.LoadTasksByBoard(
-			// 		this.store.select(fromStore.selectBoardSelected),
-			// 	),
-			// );
-		} else {
-			this.store.dispatch(new fromStore.LoadTask(task.id));
-			this.store.select(fromStore.selectTask).subscribe({
-				next: (task: Task | null) => {
-					if (!task) return;
+		this.store.dispatch(new fromStore.LoadTask(task.id));
+		this.store.select(fromStore.selectTask).subscribe();
 
-					console.log('task opened', task);
-
-					this.matDialog
-						.open(TaskDetailsComponent, {
-							data: {...task},
-						})
-						.afterClosed()
-						.subscribe({
-							next: () => {
-								this.store.dispatch(new fromStore.CleanTaskSelected());
-							},
-						});
-				},
-			});
-		}
+		this.matDialog.open(TaskDetailsComponent);
 	}
 }

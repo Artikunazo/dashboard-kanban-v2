@@ -5,6 +5,7 @@ import {provideRouter} from '@angular/router';
 import {provideEffects} from '@ngrx/effects';
 import {provideState, provideStore} from '@ngrx/store';
 
+import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {routes} from './app.routes';
 import {effects} from './store';
 import * as fromBoardReducer from './store/reducers/board_reducers';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
 		provideAnimationsAsync(),
 		provideEffects(effects),
 		provideStore(),
+		provideStoreDevtools(),
 		provideState({name: 'tasks', reducer: fromTasksReducer.reducer}),
 		provideState({name: 'theme', reducer: fromThemeReducer.reducer}),
 		provideState({name: 'board', reducer: fromBoardReducer.reducer}),

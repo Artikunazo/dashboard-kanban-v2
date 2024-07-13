@@ -100,7 +100,7 @@ export function reducer(
 		}
 
 		case tasksActionTypes.CLEAN_TASK_SELECTED: {
-			return {...state, task: null};
+			return {...state, task: null, isLoading: false, error: ''};
 		}
 
 		default: {

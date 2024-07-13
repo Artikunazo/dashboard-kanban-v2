@@ -1,15 +1,15 @@
 <section class="row task-overview-container">
 	<div class="col">
-		<h2>{{ task.title }}</h2>
+		<h2>{{ task?.title }}</h2>
 	</div>
 
 	<div class="col">
-		<p>{{ task.description }}</p>
+		<p>{{ task?.description }}</p>
 	</div>
 
 	<div class="col">
 		<h3>Subtasks</h3>
-		@for(subtask of task.subtasks; track subtask ) {
+		@for(subtask of task?.subtasks; track subtask ) {
 		<subtasks-overview
 			[subtask]="subtask"
 			(subtaskUpdated)="subtaskUpdated($event)"
@@ -23,9 +23,8 @@
 		<mat-form-field class="col">
 			<mat-select [formControl]="statusSelected">
 				@for(status of statusOptions; track status) {
-
-				<mat-option [value]="status.id">{{
-					status.name
+				<mat-option [value]="status?.id">{{
+					status?.name
 				}}</mat-option>
 				}
 			</mat-select>

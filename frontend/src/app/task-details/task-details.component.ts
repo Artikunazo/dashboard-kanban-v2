@@ -39,8 +39,14 @@ export class TaskDetailsComponent implements OnInit {
 			},
 		});
 
-		this.task = this.matDialogData;
-		this.statusSelected.setValue(this.task.statusId);
+		this.store.select(fromStore.selectTask).subscribe({
+			next: (task: Task | null) => {
+				if (!task) return;
+
+				this.task = task;
+				this.statusSelected.setValue(task.statusId);
+			},
+		});
 	}
 
 	ngOnInit(): void {
