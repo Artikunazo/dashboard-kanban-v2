@@ -1,7 +1,10 @@
 import {Component, Inject, OnInit, inject} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
@@ -17,6 +20,9 @@ import * as fromStore from '../store';
 		MatSelectModule,
 		MatFormFieldModule,
 		ReactiveFormsModule,
+		MatButtonModule,
+		MatMenuModule,
+		MatIconModule,
 	],
 	templateUrl: './task-details.component.html',
 	styleUrl: './task-details.component.scss',

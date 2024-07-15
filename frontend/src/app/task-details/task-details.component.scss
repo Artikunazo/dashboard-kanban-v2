@@ -5,3 +5,7 @@
 :host(.dark-theme) .task-overview-container {
 	color: white !important;
 }
+
+.task-menu-button {
+	justify-self: flex-end;
+}

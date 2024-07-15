@@ -40,11 +40,11 @@ public class TaskController {
   }
 
   @DeleteMapping("/delete/{idTask}")
-  public ResponseEntity<String> deleteTask(@PathVariable("idTask") int idTask) {
+  public ResponseEntity<Boolean> deleteTask(@PathVariable("idTask") int idTask) {
     if(!taskService.deleteTask(idTask)) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     } else {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(true, HttpStatus.OK);
     }
   }
 }

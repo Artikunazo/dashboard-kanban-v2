@@ -6,3 +6,10 @@ export const boardDialogConfig: MatDialogConfig = {
 	delayFocusTrap: true,
 	closeOnNavigation: true,
 };
+
+export const deleteConfirmationConfig: MatDialogConfig = {
+	width: '30%',
+	height: 'fit-content',
+	delayFocusTrap: true,
+	closeOnNavigation: true,
+};

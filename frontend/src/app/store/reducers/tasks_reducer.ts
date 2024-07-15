@@ -84,7 +84,12 @@ export function reducer(
 		}
 
 		case tasksActionTypes.DELETE_TASK_SUCCESS: {
-			return taskAdapter.removeOne(action.payload, state);
+			return taskAdapter.removeOne(action.payload, {
+				...state,
+				isLoading: false,
+				error: '',
+				task: null,
+			});
 		}
 
 		case tasksActionTypes.DELETE_TASK_FAIL: {

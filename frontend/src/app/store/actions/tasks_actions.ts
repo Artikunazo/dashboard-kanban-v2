@@ -116,7 +116,7 @@ export class DeleteTask implements Action {
 export class DeleteTaskSuccess implements Action {
 	readonly type = TasksActionType.DELETE_TASK_SUCCESS;
 
-	constructor(public payload: number) {}
+	constructor(public payload: any) {}
 }
 
 export class DeleteTaskFail implements Action {

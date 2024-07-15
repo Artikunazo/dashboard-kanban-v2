@@ -104,8 +104,8 @@ export class TasksEffects {
 			ofType(this.tasksActionsTypes.DELETE_TASK),
 			mergeMap((data: fromTasksActions.DeleteTask) => {
 				return this.taskService.delete(data.payload).pipe(
-					map((dataResponse: any) => {
-						return new fromTasksAction.DeleteTaskSuccess(dataResponse);
+					map(() => {
+						return new fromTasksAction.DeleteTaskSuccess(data.payload);
 					}),
 					catchError((error: any) => {
 						return of(new fromTasksAction.DeleteTaskFail(error));

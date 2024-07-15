@@ -1,6 +1,16 @@
 <section class="row task-overview-container">
-	<div class="col">
-		<h2>{{ task?.title }}</h2>
+	<div class="col row">
+		<h2 class="col-6">
+			{{ task?.title }}
+		</h2>
+		<button
+			mat-button
+			[matMenuTriggerFor]="menu"
+			[matMenuTriggerData]="task"
+			class="col-6 task-menu-button"
+		>
+			<mat-icon>more_vert</mat-icon>
+		</button>
 	</div>
 
 	<div class="col">
@@ -31,3 +41,10 @@
 		</mat-form-field>
 	</div>
 </section>
+
+<mat-menu #menu="matMenu">
+	<ng-template matMenuContent>
+		<button mat-menu-item>Edit</button>
+		<button mat-menu-item>Delete</button>
+	</ng-template>
+</mat-menu>
