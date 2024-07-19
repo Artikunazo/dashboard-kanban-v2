@@ -35,7 +35,7 @@ export class LoadTask implements Action {
 	readonly type = TasksActionType.LOAD_TASK;
 
 	// Payload = idTask
-	constructor(public payload: number) {}
+	constructor(public payload: string | number) {}
 }
 
 export class LoadTaskSuccess implements Action {

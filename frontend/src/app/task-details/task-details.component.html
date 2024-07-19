@@ -44,7 +44,17 @@
 
 <mat-menu #menu="matMenu">
 	<ng-template matMenuContent>
-		<button mat-menu-item>Edit</button>
-		<button mat-menu-item>Delete</button>
+		<button
+			mat-menu-item
+			(click)="deleteConfirmation(false)"
+		>
+			Edit
+		</button>
+		<button
+			mat-menu-item
+			(click)="deleteConfirmation(true)"
+		>
+			Delete
+		</button>
 	</ng-template>
 </mat-menu>

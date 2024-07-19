@@ -26,7 +26,7 @@ export function ApiTaskOverviewToTaskOverview(
 	apiTaskOverwivew: ApiTaskOverwivew,
 ): TaskOverview {
 	return {
-		id: apiTaskOverwivew.idTask,
+		id: apiTaskOverwivew.idTask.toString(),
 		title: apiTaskOverwivew.taskName,
 		countSubtasks: apiTaskOverwivew.totalSubtasks,
 		status: apiTaskOverwivew.statusName,
@@ -56,6 +56,7 @@ export function taskToApiTask(task: Task): ApiTask {
 		taskDescription: task.description,
 		statusId: task.statusId,
 		boardId: task.boardId,
+		taskId: +task.id,
 		subtasks,
 	};
 }

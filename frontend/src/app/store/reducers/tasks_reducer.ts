@@ -11,7 +11,7 @@ export interface TasksState extends EntityState<TaskOverview> {
 }
 
 export const taskAdapter = createEntityAdapter<TaskOverview>({
-	selectId: (TaskOverview) => TaskOverview.id,
+	selectId: (TaskOverview) => +TaskOverview.id,
 });
 
 export const initialState: TasksState = taskAdapter.getInitialState({
@@ -76,7 +76,12 @@ export function reducer(
 		}
 
 		case tasksActionTypes.UPDATE_TASK_SUCCESS: {
-			return taskAdapter.updateOne(action.payload, state);
+			console.log('reducer', action.payload);
+			return taskAdapter.updateOne(action.payload, {
+				...state,
+				isLoading: false,
+				error: '',
+			});
 		}
 
 		case tasksActionTypes.UPDATE_TASK_FAIL: {

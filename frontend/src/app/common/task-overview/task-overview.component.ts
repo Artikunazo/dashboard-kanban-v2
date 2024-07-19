@@ -32,7 +32,7 @@ export class KanbanCardComponent {
 				next: (resultDeleting: boolean) => {
 					if (!resultDeleting) return;
 
-					this.store.dispatch(new fromStore.DeleteTask(this.task().id));
+					this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
 				},
 			});
 	}

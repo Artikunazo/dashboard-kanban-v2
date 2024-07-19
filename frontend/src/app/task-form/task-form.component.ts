@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
 import {
 	FormArray,
 	FormBuilder,
@@ -6,13 +6,14 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Status} from '../models/status_models';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
@@ -40,17 +41,36 @@ export class TaskFormComponent {
 	public taskForm!: FormGroup;
 	public statusOptions: Status[] = [];
 
-	constructor() {
+	constructor(@Inject(MAT_DIALOG_DATA) public matDialogData: Task) {
+		let subtasks = [
+			this.formBuilder.group({
+				title: this.formBuilder.control('', [Validators.required]),
+				status: this.formBuilder.control('ToDo'),
+			}),
+		];
+
+		if (matDialogData) {
+			subtasks = this.matDialogData.subtasks.map((subtask) => {
+				return this.formBuilder.group({
+					title: this.formBuilder.control(subtask.title ?? '', [
+						Validators.required,
+					]),
+					status: this.formBuilder.control(!subtask.isDone ? 'ToDo' : 'Done'),
+				});
+			});
+		}
+
 		this.taskForm = this.formBuilder.group({
-			title: this.formBuilder.control('', [Validators.required]),
-			description: this.formBuilder.control('', [Validators.required]),
-			subtasks: this.formBuilder.array([
-				this.formBuilder.group({
-					title: this.formBuilder.control('', [Validators.required]),
-					status: this.formBuilder.control('ToDo'),
-				}),
+			title: this.formBuilder.control(matDialogData?.title || '', [
+				Validators.required,
 			]),
-			status: this.formBuilder.control('', [Validators.required]),
+			description: this.formBuilder.control(matDialogData?.description || '', [
+				Validators.required,
+			]),
+			subtasks: this.formBuilder.array(subtasks),
+			status: this.formBuilder.control(matDialogData?.statusId || '', [
+				Validators.required,
+			]),
 		});
 	}
 
@@ -101,16 +121,27 @@ export class TaskFormComponent {
 	createTask() {
 		if (this.taskForm.invalid) return;
 
-		this.store.dispatch(
-			new fromStore.AddTask({
-				title: this.taskForm.value.title,
-				description: this.taskForm.value.description,
-				statusId: this.taskForm.value.status,
-				boardId: this.boardSelected,
-				subtasks: <[]>this.taskForm.value.subtasks,
-			}),
-		);
+		const newTaskData: Task = {
+			id: '',
+			title: this.taskForm.value.title,
+			description: this.taskForm.value.description,
+			statusId: this.taskForm.value.status,
+			boardId: this.boardSelected,
+			subtasks: <[]>this.taskForm.value.subtasks,
+		};
+
+		if (this.matDialogData) {
+			newTaskData['id'] = this.matDialogData.id;
+			console.log(newTaskData);
+			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
+		} else {
+			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
+		}
 
 		this.closeDialog();
+	}
+
+	updateTask() {
+		if (this.taskForm.invalid) return;
 	}
 }

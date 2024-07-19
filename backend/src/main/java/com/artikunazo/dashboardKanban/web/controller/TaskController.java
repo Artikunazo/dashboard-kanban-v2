@@ -39,6 +39,15 @@ public class TaskController {
     return new ResponseEntity<>(taskService.saveTask(taskDomain), HttpStatus.CREATED);
   }
 
+  @PostMapping("/update")
+  public ResponseEntity<Boolean> updateTask(@RequestBody TaskDomain taskDomain){
+    if(!taskService.updateTask(taskDomain)) {
+      return  new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    } else {
+      return  new ResponseEntity<>(true, HttpStatus.OK);
+    }
+  }
+
   @DeleteMapping("/delete/{idTask}")
   public ResponseEntity<Boolean> deleteTask(@PathVariable("idTask") int idTask) {
     if(!taskService.deleteTask(idTask)) {

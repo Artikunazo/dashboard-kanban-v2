@@ -1,7 +1,7 @@
 import {ApiSubtask, Subtask} from './subtask_models';
 
 export interface Task {
-	id?: number;
+	id: string | number;
 	title: string;
 	description: string;
 	statusId: number;
@@ -10,7 +10,7 @@ export interface Task {
 }
 
 export interface ApiTask {
-	taskId?: number;
+	taskId: number;
 	taskTitle: string;
 	taskDescription: string;
 	statusId: number;
@@ -33,7 +33,7 @@ export interface ApiTaskOverwivew {
 }
 
 export interface TaskOverview {
-	id: number;
+	id: string | number;
 	title: string;
 	countSubtasks: number;
 	status: string;

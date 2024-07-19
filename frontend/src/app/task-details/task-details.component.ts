@@ -1,16 +1,19 @@
-import {Component, Inject, OnInit, inject} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
+import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
+import {deleteConfirmationConfig} from '../common/modal_configs';
 import {SubtasksOverviewComponent} from '../common/subtasks-overview/subtasks-overview.component';
 import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
 	selector: 'task-details',
@@ -29,15 +32,13 @@ import * as fromStore from '../store';
 })
 export class TaskDetailsComponent implements OnInit {
 	protected readonly store = inject(Store);
+	protected readonly matDialog = inject(MatDialog);
 
 	public task!: Task;
 	public statusSelected = new FormControl();
 	public statusOptions: Status[] = [];
 
-	constructor(
-		@Inject(MAT_DIALOG_DATA)
-		private readonly matDialogData: Task,
-	) {
+	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
 		this.store.select(fromStore.selectStatusData).subscribe({
 			next: (status: Status[]) => {
@@ -98,5 +99,32 @@ export class TaskDetailsComponent implements OnInit {
 		// this.store.dispatch(
 		//   new fromStore.UpdateTask({...this.task}),
 		// );
+	}
+
+	deleteConfirmation(isDeleting: boolean): void {
+		if (isDeleting) {
+			this.matDialog
+				.open(DeleteConfirmationComponent, deleteConfirmationConfig)
+				.afterClosed()
+				.subscribe({
+					next: (resultDeleting: boolean) => {
+						if (!resultDeleting) return;
+
+						if (!this.task.id) {
+							return;
+						}
+
+						this.store.dispatch(new fromStore.DeleteTask(+this.task.id));
+					},
+				});
+			return;
+		}
+
+		//Edit mode on
+		this.matDialog.open(TaskFormComponent, {
+			width: '65%',
+			maxHeight: '90vh',
+			data: this.task,
+		});
 	}
 }

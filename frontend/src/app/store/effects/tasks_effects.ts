@@ -34,7 +34,7 @@ export class TasksEffects {
 		return this.actions$.pipe(
 			ofType(this.tasksActionsTypes.LOAD_TASK),
 			mergeMap((loadTaskData: fromTasksActions.LoadTask) =>
-				this.taskService.getTaskById(loadTaskData.payload).pipe(
+				this.taskService.getTaskById(+loadTaskData.payload).pipe(
 					map((response: ApiTask) => {
 						// @ToDo: parse from base64 to string
 						const task: Task = ApiTaskToTask(response);
@@ -84,20 +84,25 @@ export class TasksEffects {
 		);
 	});
 
-	// saveTaskUpdated$: Observable<Action> = createEffect(() => {
-	// 	return this.actions$.pipe(
-	// 		ofType(this.tasksActionsTypes.UPDATE_TASK),
-	// 		mergeMap((data: fromTasksActions.UpdateTask) => {
-	// 			this.taskService.updateAndSave(data.payload);
-	// 			return of(
-	// 				new fromTasksAction.UpdateTasksSuccess({
-	// 					id: data.payload.id,
-	// 					changes: {...data.payload},
-	// 				}),
-	// 			);
-	// 		}),
-	// 	);
-	// });
+	updateTask$: Observable<Action> = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(this.tasksActionsTypes.UPDATE_TASK),
+			mergeMap((data: fromTasksActions.UpdateTask) => {
+				const apiTask: ApiTask = taskToApiTask(data.payload);
+				return this.taskService.update(apiTask).pipe(
+					map((apiTaskUpdated: boolean) => {
+						return new fromTasksAction.UpdateTasksSuccess({
+							id: +data.payload.id,
+							changes: {...data.payload},
+						});
+					}),
+					catchError((error) => {
+						return of(new fromTasksAction.UpdateTasksFail(error));
+					}),
+				);
+			}),
+		);
+	});
 
 	deleteTask$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(

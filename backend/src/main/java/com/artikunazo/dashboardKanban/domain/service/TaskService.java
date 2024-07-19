@@ -56,10 +56,6 @@ public class TaskService {
   }
 
   public TaskDomain saveTask(TaskDomain taskDomain) {
-    // @ToDo: Save task first
-    // For get taskId stored
-    // We get that taskId and We use it to store each subtask
-
     TaskDomain taskSaved = taskDomainRepository.saveTask(taskDomain);
 
     List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
@@ -75,6 +71,13 @@ public class TaskService {
     // @ToDo: Delete subtasks related with task to delete
     return getTaskById(idTask).map(taskDomain -> {
       taskDomainRepository.deleteTask(idTask);
+      return true;
+    }).orElse(false);
+  }
+
+  public boolean updateTask(TaskDomain taskDomain) {
+    return getTaskById(taskDomain.getTaskId()).map(taskDomain1 -> {
+      taskDomainRepository.updateTask(taskDomain);
       return true;
     }).orElse(false);
   }
