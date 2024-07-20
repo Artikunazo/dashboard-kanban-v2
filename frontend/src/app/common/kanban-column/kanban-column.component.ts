@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {TaskOverview} from '../../models/tasks_models';
 import * as fromStore from '../../store';
-import {TaskDetailsComponent} from '../../task-details/task-details.component';
+import {TaskFormComponent} from '../../task-form/task-form.component';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
 import {KanbanCardComponent} from '../task-overview/task-overview.component';
 
@@ -30,8 +30,13 @@ export class KanbanColumnComponent {
 
 	showTaskSelected(task: TaskOverview): void {
 		this.store.dispatch(new fromStore.LoadTask(task.id));
-		this.store.select(fromStore.selectTask).subscribe();
 
-		this.matDialog.open(TaskDetailsComponent);
+		this.matDialog
+			.open(TaskFormComponent, {
+				width: '65%',
+				maxHeight: '90vh',
+			})
+			.afterClosed()
+			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
 	}
 }

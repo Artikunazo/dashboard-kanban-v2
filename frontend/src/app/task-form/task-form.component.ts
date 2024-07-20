@@ -102,17 +102,6 @@ export class TaskFormComponent {
 	}
 
 	ngOnInit() {
-		// @ToDo: validate if the task is in edit mode
-		// If editMode is on, dispatch get subtasks by idTask
-		// this.store.select(fromStore.getTasks).subscribe({
-		//   next: (tasks: Task[]) => {
-		//     if(tasks.length === 0) {
-		//       this.store.dispatch(new fromStore.LoadTasks());
-		//     } else {
-		//     }
-		//   }
-		// })
-
 		this.matDialogRef.afterClosed().subscribe(() => {
 			this.taskSelected = null;
 			this.taskForm.reset();
