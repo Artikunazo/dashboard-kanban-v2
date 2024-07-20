@@ -1,4 +1,4 @@
-import {Component, Inject, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
 	FormArray,
 	FormBuilder,
@@ -6,7 +6,7 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -40,8 +40,9 @@ export class TaskFormComponent {
 
 	public taskForm!: FormGroup;
 	public statusOptions: Status[] = [];
+	public taskSelected: Task | null = null;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public matDialogData: Task) {
+	constructor() {
 		let subtasks = [
 			this.formBuilder.group({
 				title: this.formBuilder.control('', [Validators.required]),
@@ -49,36 +50,6 @@ export class TaskFormComponent {
 			}),
 		];
 
-		if (matDialogData) {
-			subtasks = this.matDialogData.subtasks.map((subtask) => {
-				return this.formBuilder.group({
-					title: this.formBuilder.control(subtask.title ?? '', [
-						Validators.required,
-					]),
-					status: this.formBuilder.control(!subtask.isDone ? 'ToDo' : 'Done'),
-				});
-			});
-		}
-
-		this.taskForm = this.formBuilder.group({
-			title: this.formBuilder.control(matDialogData?.title || '', [
-				Validators.required,
-			]),
-			description: this.formBuilder.control(matDialogData?.description || '', [
-				Validators.required,
-			]),
-			subtasks: this.formBuilder.array(subtasks),
-			status: this.formBuilder.control(matDialogData?.statusId || '', [
-				Validators.required,
-			]),
-		});
-	}
-
-	get subtasks() {
-		return this.taskForm.get('subtasks') as FormArray;
-	}
-
-	ngOnInit() {
 		this.store
 			.select(fromStore.selectBoardSelected)
 			.subscribe((boardSelected: number) => {
@@ -92,6 +63,45 @@ export class TaskFormComponent {
 			},
 		});
 
+		this.store.select(fromStore.selectTask).subscribe({
+			next: (task: Task | null) => {
+				this.taskSelected = task;
+
+				if (this.taskSelected) {
+					subtasks = this.taskSelected.subtasks.map((subtask) => {
+						return this.formBuilder.group({
+							title: this.formBuilder.control(subtask.title ?? '', [
+								Validators.required,
+							]),
+							status: this.formBuilder.control(
+								!subtask.isDone ? 'ToDo' : 'Done',
+							),
+						});
+					});
+				}
+
+				this.taskForm = this.formBuilder.group({
+					title: this.formBuilder.control(this.taskSelected?.title || '', [
+						Validators.required,
+					]),
+					description: this.formBuilder.control(
+						this.taskSelected?.description || '',
+						[Validators.required],
+					),
+					subtasks: this.formBuilder.array(subtasks),
+					status: this.formBuilder.control(this.taskSelected?.statusId || '', [
+						Validators.required,
+					]),
+				});
+			},
+		});
+	}
+
+	get subtasks() {
+		return this.taskForm.get('subtasks') as FormArray;
+	}
+
+	ngOnInit() {
 		// @ToDo: validate if the task is in edit mode
 		// If editMode is on, dispatch get subtasks by idTask
 		// this.store.select(fromStore.getTasks).subscribe({
@@ -99,13 +109,18 @@ export class TaskFormComponent {
 		//     if(tasks.length === 0) {
 		//       this.store.dispatch(new fromStore.LoadTasks());
 		//     } else {
-
 		//     }
 		//   }
 		// })
+
+		this.matDialogRef.afterClosed().subscribe(() => {
+			this.taskSelected = null;
+			this.taskForm.reset();
+		});
 	}
 
 	closeDialog(): void {
+		this.taskSelected = null;
 		this.matDialogRef.close();
 	}
 
@@ -130,8 +145,8 @@ export class TaskFormComponent {
 			subtasks: <[]>this.taskForm.value.subtasks,
 		};
 
-		if (this.matDialogData) {
-			newTaskData['id'] = this.matDialogData.id;
+		if (this.taskSelected) {
+			newTaskData['id'] = this.taskSelected.id;
 			console.log(newTaskData);
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {

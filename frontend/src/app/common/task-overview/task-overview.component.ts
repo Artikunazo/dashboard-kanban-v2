@@ -7,6 +7,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {Store} from '@ngrx/store';
 import {TaskOverview} from '../../models/tasks_models';
 import * as fromStore from '../../store';
+import {TaskFormComponent} from '../../task-form/task-form.component';
 import {DeleteConfirmationComponent} from '../delete-confirmation/delete-confirmation.component';
 import {deleteConfirmationConfig} from '../modal_configs';
 
@@ -37,5 +38,15 @@ export class KanbanCardComponent {
 			});
 	}
 
-	showTaskForm(): void {}
+	showTaskForm(): void {
+		this.store.dispatch(new fromStore.LoadTask(this.task().id));
+
+		this.matDialog
+			.open(TaskFormComponent, {
+				width: '65%',
+				maxHeight: '90vh',
+			})
+			.afterClosed()
+			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
+	}
 }

@@ -54,9 +54,7 @@
 		</mat-form-field>
 
 		<custom-button
-			[text]="
-				!matDialogData ? 'Create task' : 'Update Task'
-			"
+			[text]="!taskSelected ? 'Create task' : 'Update Task'"
 			[colorButton]="'accent'"
 			(clickEvent)="createTask()"
 			class="col create-task-button"
