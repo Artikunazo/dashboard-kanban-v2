@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
+import {taskFormConfig} from '../common/modal_configs';
 import * as fromStore from '../store';
 import {TaskFormComponent} from '../task-form/task-form.component';
 
@@ -31,13 +32,6 @@ export class ToolbarComponent {
 	}
 
 	openTaskFormModal() {
-		const dialogRef = this.dialog.open(TaskFormComponent, {
-			width: '65%',
-			maxHeight: '90vh',
-		});
-
-		dialogRef.afterClosed().subscribe(() => {
-			// this.store.dispatch(new fromStore.LoadTask());
-		});
+		this.dialog.open(TaskFormComponent, taskFormConfig);
 	}
 }

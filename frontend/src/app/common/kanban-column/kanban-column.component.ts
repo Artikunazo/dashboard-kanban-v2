@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store';
 import {TaskOverview} from '../../models/tasks_models';
 import * as fromStore from '../../store';
 import {TaskFormComponent} from '../../task-form/task-form.component';
+import {taskFormConfig} from '../modal_configs';
 import {StatusCircleComponent} from '../status-circle/status-circle.component';
 import {KanbanCardComponent} from '../task-overview/task-overview.component';
 
@@ -32,10 +33,7 @@ export class KanbanColumnComponent {
 		this.store.dispatch(new fromStore.LoadTask(task.id));
 
 		this.matDialog
-			.open(TaskFormComponent, {
-				width: '65%',
-				maxHeight: '90vh',
-			})
+			.open(TaskFormComponent, taskFormConfig)
 			.afterClosed()
 			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
 	}

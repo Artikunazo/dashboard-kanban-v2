@@ -13,3 +13,8 @@ export const deleteConfirmationConfig: MatDialogConfig = {
 	delayFocusTrap: true,
 	closeOnNavigation: true,
 };
+
+export const taskFormConfig: MatDialogConfig = {
+	width: '65%',
+	maxHeight: '90vh',
+};

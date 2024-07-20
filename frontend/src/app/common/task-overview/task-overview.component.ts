@@ -9,7 +9,7 @@ import {TaskOverview} from '../../models/tasks_models';
 import * as fromStore from '../../store';
 import {TaskFormComponent} from '../../task-form/task-form.component';
 import {DeleteConfirmationComponent} from '../delete-confirmation/delete-confirmation.component';
-import {deleteConfirmationConfig} from '../modal_configs';
+import {deleteConfirmationConfig, taskFormConfig} from '../modal_configs';
 
 @Component({
 	selector: 'kanban-card',
@@ -42,10 +42,7 @@ export class KanbanCardComponent {
 		this.store.dispatch(new fromStore.LoadTask(this.task().id));
 
 		this.matDialog
-			.open(TaskFormComponent, {
-				width: '65%',
-				maxHeight: '90vh',
-			})
+			.open(TaskFormComponent, taskFormConfig)
 			.afterClosed()
 			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
 	}
