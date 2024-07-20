@@ -8,15 +8,17 @@
 			/>
 		</div>
 		<div class="col-7 toolbar-title">
-			<h2>{{ subtitle }}</h2>
+			<h2>{{ subtitle$ | async }}</h2>
 		</div>
 		<div class="col-4 justify-self-end">
+			@if((subtitle$ | async) !== "Dashboard Kanban") {
 			<custom-button
 				[text]="'Add new task'"
 				[colorButton]="'accent'"
 				(clickEvent)="openTaskFormModal()"
 				iconName="add"
 			/>
+			}
 		</div>
 	</mat-toolbar>
 </section>
