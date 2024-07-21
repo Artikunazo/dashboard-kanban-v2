@@ -56,4 +56,13 @@ public class TaskController {
       return new ResponseEntity<>(true, HttpStatus.OK);
     }
   }
+
+  @PostMapping("/update-status")
+  public ResponseEntity<Boolean> updateTaskStatus(@RequestBody TaskOverview taskOverview) {
+    if(!taskService.updateTaskStatus(taskOverview)){
+      return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    } else {
+      return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+  }
 }

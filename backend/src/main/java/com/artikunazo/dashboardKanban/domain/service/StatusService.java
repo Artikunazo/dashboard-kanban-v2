@@ -19,4 +19,8 @@ public class StatusService {
   public String getStatusNameOfTask(int idTask) {
     return statusDomainRepository.getStatusNameByTask(idTask);
   }
+
+  public Integer getStatusIdByStatusName(String statusName) {
+    return statusDomainRepository.getStatusIdByStatusName(statusName);
+  }
 }

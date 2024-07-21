@@ -6,6 +6,7 @@ import {TaskService} from '../../api/task.service';
 import {
 	ApiTaskToTask,
 	ApiTasksOverviewToTasksOverview,
+	taskOverviewToApiTaskOverview,
 	taskToApiTask,
 } from '../../converters/task_converter';
 import {
@@ -27,8 +28,6 @@ export class TasksEffects {
 	) {}
 
 	protected readonly tasksActionsTypes = fromTasksAction.TasksActionType;
-
-	// @Todo: loadTasksByBoard$:
 
 	loadTask$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
@@ -114,6 +113,26 @@ export class TasksEffects {
 					}),
 					catchError((error: any) => {
 						return of(new fromTasksAction.DeleteTaskFail(error));
+					}),
+				);
+			}),
+		);
+	});
+
+	updateTaskStatus$: Observable<Action> = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(this.tasksActionsTypes.UPDATE_TASK_STATUS_OVERVIEW),
+			mergeMap((data: fromTasksActions.UpdateStatusTaskOverview) => {
+				const apiTaskOverwivew = taskOverviewToApiTaskOverview(data.payload);
+				return this.taskService.updateStatus(apiTaskOverwivew).pipe(
+					map((apiTaskUpdated: boolean) => {
+						return new fromTasksAction.UpdateStatusTaskOverviewSuccess({
+							id: +data.payload.task.id,
+							changes: {...data.payload},
+						});
+					}),
+					catchError((error) => {
+						return of(new fromTasksAction.UpdateStatusTaskOverviewFail(error));
 					}),
 				);
 			}),

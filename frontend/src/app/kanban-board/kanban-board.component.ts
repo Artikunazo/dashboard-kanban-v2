@@ -18,8 +18,7 @@ export class KanbanBoardComponent implements OnInit {
 
 	public tasksList: TaskOverview[] = [];
 	public tasksListIndexed!: {[key: string]: TaskOverview[]};
-
-	constructor() {}
+	protected readonly statusList = {ToDo: 1, Doing: 2, Done: 3};
 
 	ngOnInit(): void {
 		this.store.select(fromStore.getAllTasks).subscribe({
@@ -41,10 +40,11 @@ export class KanbanBoardComponent implements OnInit {
 	}
 
 	drop(event: CdkDragDrop<TaskOverview[]>) {
-		const newStatus = event.container.element.nativeElement.id;
-		const task = event.item.dropContainer.data;
-		// this.store.dispatch(
-		// 	new fromStore.UpdateTask({...task[0], status: newStatus}),
-		// );
+		this.store.dispatch(
+			new fromStore.UpdateStatusTaskOverview({
+				task: event.previousContainer.data[event.previousIndex],
+				status: event.container.element.nativeElement.id,
+			}),
+		);
 	}
 }

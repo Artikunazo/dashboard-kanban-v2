@@ -11,4 +11,5 @@ public interface TaskDomainRepository {
   void deleteTask(int taskId);
   Optional<TaskDomain> getTaskById(int idTask);
   Integer updateTask(TaskDomain taskDomain);
+  Integer updateTaskStatus(int idStatus, int idTask);
 }

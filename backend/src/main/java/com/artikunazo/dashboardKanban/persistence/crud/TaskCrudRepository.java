@@ -17,4 +17,9 @@ public interface TaskCrudRepository extends CrudRepository<Task, Integer> {
   @Modifying
   @Query("UPDATE Task t SET t.title = :title, t.description = :description, t.idStatus = :idStatus WHERE t.idTask = :idTask")
   int updateTask(@Param("title") String title, @Param("description") String description, @Param("idStatus") int idStatus, @Param("idTask") int idTask);
+
+  @Transactional
+  @Modifying
+  @Query("UPDATE Task t SET t.idStatus = :idStatus WHERE t.idTask = :idTask")
+  int updateTaskStatus(@Param("idStatus") int idStatus, @Param("idTask") int idTask);
 }

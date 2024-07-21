@@ -60,3 +60,16 @@ export function taskToApiTask(task: Task): ApiTask {
 		subtasks,
 	};
 }
+
+export function taskOverviewToApiTaskOverview(taskOverview: {
+	task: TaskOverview;
+	status: string;
+}): ApiTaskOverwivew {
+	return {
+		idTask: +taskOverview.task.id,
+		taskName: taskOverview.task.title,
+		totalSubtasks: taskOverview.task.countSubtasks,
+		statusName: taskOverview.status,
+		totalIsDoneSubtasks: taskOverview.task.countDoneSubtasks,
+	};
+}

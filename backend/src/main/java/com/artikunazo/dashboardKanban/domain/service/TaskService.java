@@ -81,4 +81,12 @@ public class TaskService {
       return true;
     }).orElse(false);
   }
+
+  public boolean updateTaskStatus(TaskOverview taskOverview) {
+    int idStatus = statusService.getStatusIdByStatusName(taskOverview.getStatusName());
+    return getTaskById(taskOverview.getIdTask()).map(taskDomain -> {
+      taskDomainRepository.updateTaskStatus(idStatus, taskOverview.getIdTask());
+      return true;
+    }).orElse(false);
+  }
 }

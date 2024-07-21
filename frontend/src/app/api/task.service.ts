@@ -31,4 +31,11 @@ export class TaskService {
 	delete(idTask: number): Observable<any> {
 		return this.httpClient.delete<any>(`${this.URL}delete/${idTask}`);
 	}
+
+	updateStatus(taskOverview: ApiTaskOverwivew): Observable<boolean> {
+		return this.httpClient.post<boolean>(
+			`${this.URL}update-status`,
+			taskOverview,
+		);
+	}
 }

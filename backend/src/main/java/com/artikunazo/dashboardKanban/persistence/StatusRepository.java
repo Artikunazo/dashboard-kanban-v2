@@ -29,4 +29,9 @@ public class StatusRepository implements StatusDomainRepository {
   public String getStatusNameByTask(int idTask) {
     return statusCrudRepository.getStatusNameByTask(idTask);
   }
+
+  @Override
+  public int getStatusIdByStatusName(String statusName) {
+    return statusCrudRepository.getStatusIdByStatusName(statusName);
+  }
 }

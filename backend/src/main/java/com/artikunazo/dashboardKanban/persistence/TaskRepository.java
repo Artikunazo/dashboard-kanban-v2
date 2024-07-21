@@ -54,5 +54,9 @@ public class TaskRepository implements TaskDomainRepository {
     );
   }
 
+  @Override
+  public Integer updateTaskStatus(int idStatus, int idTask) {
+    return taskCrudRepository.updateTaskStatus(idStatus, idTask);
+  }
 
 }

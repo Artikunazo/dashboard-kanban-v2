@@ -28,6 +28,10 @@ export enum TasksActionType {
 	SAVE_TASK_FAIL = '[Task] Save Task Fail',
 
 	CLEAN_TASK_SELECTED = '[Task] Clean task selected',
+
+	UPDATE_TASK_STATUS_OVERVIEW = '[Task] Update Task Status Overview',
+	UPDATE_TASK_STATUS_OVERVIEW_SUCCESS = '[Task] Update Task Status Overview Success',
+	UPDATE_TASK_STATUS_OVERVIEW_FAIL = '[Task] Update Task Status Overview Fail',
 }
 
 // LOAD
@@ -148,6 +152,24 @@ export class CleanTaskSelected implements Action {
 	readonly type = TasksActionType.CLEAN_TASK_SELECTED;
 }
 
+export class UpdateStatusTaskOverview implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW;
+
+	constructor(public payload: {task: TaskOverview; status: string}) {}
+}
+
+export class UpdateStatusTaskOverviewSuccess implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW_SUCCESS;
+
+	constructor(public payload: Update<TaskOverview>) {}
+}
+
+export class UpdateStatusTaskOverviewFail implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW_FAIL;
+
+	constructor(public payload: any) {}
+}
+
 export type TasksActions =
 	| LoadTask
 	| LoadTaskSuccess
@@ -167,4 +189,7 @@ export type TasksActions =
 	| SaveTask
 	| SaveTaskSuccess
 	| SaveTaskFail
-	| CleanTaskSelected;
+	| CleanTaskSelected
+	| UpdateStatusTaskOverview
+	| UpdateStatusTaskOverviewSuccess
+	| UpdateStatusTaskOverviewFail;

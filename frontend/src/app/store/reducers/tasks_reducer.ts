@@ -76,7 +76,6 @@ export function reducer(
 		}
 
 		case tasksActionTypes.UPDATE_TASK_SUCCESS: {
-			console.log('reducer', action.payload);
 			return taskAdapter.updateOne(action.payload, {
 				...state,
 				isLoading: false,
@@ -111,6 +110,18 @@ export function reducer(
 
 		case tasksActionTypes.CLEAN_TASK_SELECTED: {
 			return {...state, task: null, isLoading: false, error: ''};
+		}
+
+		case tasksActionTypes.UPDATE_TASK_STATUS_OVERVIEW_SUCCESS: {
+			return taskAdapter.updateOne(action.payload, {
+				...state,
+				isLoading: false,
+				error: '',
+			});
+		}
+
+		case tasksActionTypes.UPDATE_TASK_STATUS_OVERVIEW_FAIL: {
+			return {...state, error: action.payload};
 		}
 
 		default: {
