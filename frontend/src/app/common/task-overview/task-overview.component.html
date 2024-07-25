@@ -3,9 +3,10 @@
 		<p>
 			{{ task()?.title }}
 		</p>
+
 		<p>
-			{{ task()?.countDoneSubtasks }} of
-			{{ task()?.countSubtasks }}
+			{{ task()?.countDoneSubtasks ?? 0 }} of
+			{{ task()?.subtasks?.length }}
 		</p>
 	</mat-card-content>
 	<mat-card-actions>

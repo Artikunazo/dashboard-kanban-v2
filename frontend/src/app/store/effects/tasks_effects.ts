@@ -5,16 +5,11 @@ import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {TaskService} from '../../api/task.service';
 import {
 	ApiTaskToTask,
-	ApiTasksOverviewToTasksOverview,
-	taskOverviewToApiTaskOverview,
+	apiTasksToTasks,
 	taskToApiTask,
+	taskWithNewStatusToApiTask,
 } from '../../converters/task_converter';
-import {
-	ApiTask,
-	ApiTaskOverwivew,
-	Task,
-	TaskOverview,
-} from '../../models/tasks_models';
+import {ApiTask, Task} from '../../models/tasks_models';
 import * as fromTasksAction from '../actions/tasks_actions';
 import * as fromTasksActions from '../actions/tasks_actions';
 
@@ -52,10 +47,10 @@ export class TasksEffects {
 			ofType(this.tasksActionsTypes.LOAD_TASKS_BY_BOARD),
 			mergeMap((action: fromTasksActions.LoadTasksByBoard) => {
 				return this.taskService.getTasksByBoard(action.payload).pipe(
-					map((response: ApiTaskOverwivew[]) => {
-						const tasksOverview: TaskOverview[] =
-							ApiTasksOverviewToTasksOverview(response);
-						return new fromTasksAction.LoadTasksByBoardSuccess(tasksOverview);
+					map((response: ApiTask[]) => {
+						const tasks: Task[] = apiTasksToTasks(response);
+						console.log({tasks});
+						return new fromTasksAction.LoadTasksByBoardSuccess(tasks);
 					}),
 					catchError((error: any) => {
 						return of(new fromTasksAction.LoadTasksByBoardFail(error));
@@ -123,8 +118,8 @@ export class TasksEffects {
 		return this.actions$.pipe(
 			ofType(this.tasksActionsTypes.UPDATE_TASK_STATUS_OVERVIEW),
 			mergeMap((data: fromTasksActions.UpdateStatusTaskOverview) => {
-				const apiTaskOverwivew = taskOverviewToApiTaskOverview(data.payload);
-				return this.taskService.updateStatus(apiTaskOverwivew).pipe(
+				const apiTask = taskWithNewStatusToApiTask(data.payload);
+				return this.taskService.updateStatus(apiTask).pipe(
 					map((apiTaskUpdated: boolean) => {
 						return new fromTasksAction.UpdateStatusTaskOverviewSuccess({
 							id: +data.payload.task.id,

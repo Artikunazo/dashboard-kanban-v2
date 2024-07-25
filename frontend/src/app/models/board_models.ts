@@ -1,5 +1,5 @@
 export interface Board {
-	id?: string;
+	id: number | null;
 	title: string;
 }
 

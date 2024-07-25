@@ -6,8 +6,10 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
@@ -25,6 +27,8 @@ import * as fromStore from '../store';
 		MatInputModule,
 		MatSelectModule,
 		CustomButtonComponent,
+		MatCheckboxModule,
+		MatIconModule,
 	],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
@@ -132,11 +136,11 @@ export class TaskFormComponent {
 			statusId: this.taskForm.value.status,
 			boardId: this.boardSelected,
 			subtasks: <[]>this.taskForm.value.subtasks,
+			countDoneSubtasks: this.taskForm.value.subtasks.length,
 		};
 
 		if (this.taskSelected) {
 			newTaskData['id'] = this.taskSelected.id;
-			console.log(newTaskData);
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
@@ -145,7 +149,8 @@ export class TaskFormComponent {
 		this.closeDialog();
 	}
 
-	updateTask() {
-		if (this.taskForm.invalid) return;
+	removeSubtask(index: number) {
+		console.log(index);
+		this.subtasks.removeAt(index);
 	}
 }

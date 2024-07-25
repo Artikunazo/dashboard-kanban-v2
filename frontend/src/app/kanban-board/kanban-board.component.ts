@@ -3,7 +3,7 @@ import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.compo
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';
-import {TaskOverview} from '../models/tasks_models';
+import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
@@ -16,30 +16,30 @@ import * as fromStore from '../store';
 export class KanbanBoardComponent implements OnInit {
 	private readonly store = inject(Store);
 
-	public tasksList: TaskOverview[] = [];
-	public tasksListIndexed!: {[key: string]: TaskOverview[]};
-	protected readonly statusList = {ToDo: 1, Doing: 2, Done: 3};
+	public tasksList: Task[] = [];
+	public tasksListIndexed!: {[key: string]: Task[]};
 
 	ngOnInit(): void {
 		this.store.select(fromStore.getAllTasks).subscribe({
-			next: (tasks: TaskOverview[]) => {
-				this.tasksList = tasks || [];
+			next: (tasks: Task[]) => {
+				this.tasksList = tasks;
 				this.indexTasks();
+				console.log(this.tasksListIndexed);
 			},
 		});
 	}
 
 	indexTasks() {
 		this.tasksListIndexed = this.tasksList.reduce(
-			(previous: any, current: any) => ({
+			(previous: any, task: Task) => ({
 				...previous,
-				[current['status']]: [...(previous[current['status']] || []), current],
+				[task.status ?? '']: [...(previous[task.status ?? ''] || []), task],
 			}),
 			{},
 		);
 	}
 
-	drop(event: CdkDragDrop<TaskOverview[]>) {
+	drop(event: CdkDragDrop<Task[]>) {
 		this.store.dispatch(
 			new fromStore.UpdateStatusTaskOverview({
 				task: event.previousContainer.data[event.previousIndex],

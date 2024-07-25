@@ -14,6 +14,7 @@ export class CustomButtonComponent {
 	public text = input<string>('');
 	public colorButton = input('');
 	public iconName = input<string>('');
+	public disabled = input<boolean>(false);
 
 	public clickEvent = output();
 }

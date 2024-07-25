@@ -66,7 +66,7 @@ export class BoardEffects {
 				return this.boardService.update(apiBoard).pipe(
 					map(() => {
 						return new fromBoardActions.UpdateBoardSuccess({
-							id: data.payload.id ?? '',
+							id: data.payload.id?.toString() ?? '',
 							changes: {...data.payload},
 						});
 					}),

@@ -54,3 +54,7 @@ $m3-light-theme: matx.define-theme(
 .add-board-item .mdc-list-item__content {
 	padding: 12px;
 }
+
+.mat-mdc-raised-button > .mat-icon {
+	margin-right: 0 !important;
+}

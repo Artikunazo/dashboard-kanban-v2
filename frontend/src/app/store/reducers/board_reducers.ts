@@ -9,7 +9,7 @@ export interface BoardState extends EntityState<Board> {
 }
 
 export const boardAdapter = createEntityAdapter<Board>({
-	selectId: (board: Board) => board.id ?? '',
+	selectId: (board: Board) => board.id || 0,
 });
 
 export const initialState: BoardState = boardAdapter.getInitialState({

@@ -63,7 +63,7 @@ export class LoadTasksByBoard implements Action {
 export class LoadTasksByBoardSuccess implements Action {
 	readonly type = TasksActionType.LOAD_TASKS_BY_BOARD_SUCCESS;
 
-	constructor(public payload: TaskOverview[]) {}
+	constructor(public payload: Task[]) {}
 }
 
 export class LoadTasksByBoardFail implements Action {
@@ -155,7 +155,7 @@ export class CleanTaskSelected implements Action {
 export class UpdateStatusTaskOverview implements Action {
 	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW;
 
-	constructor(public payload: {task: TaskOverview; status: string}) {}
+	constructor(public payload: {task: Task; status: string}) {}
 }
 
 export class UpdateStatusTaskOverviewSuccess implements Action {

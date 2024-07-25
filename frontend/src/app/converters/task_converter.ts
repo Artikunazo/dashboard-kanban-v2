@@ -19,6 +19,8 @@ export function ApiTaskToTask(apiTask: ApiTask): Task {
 		statusId: apiTask.statusId,
 		boardId: apiTask.boardId,
 		subtasks,
+		countDoneSubtasks: apiTask.totalIsDoneSubtasks,
+		status: apiTask.statusName,
 	};
 }
 
@@ -58,18 +60,39 @@ export function taskToApiTask(task: Task): ApiTask {
 		boardId: task.boardId,
 		taskId: +task.id,
 		subtasks,
+		totalIsDoneSubtasks: task.countDoneSubtasks ?? 0,
 	};
 }
 
 export function taskOverviewToApiTaskOverview(taskOverview: {
-	task: TaskOverview;
+	task: Task;
 	status: string;
 }): ApiTaskOverwivew {
 	return {
 		idTask: +taskOverview.task.id,
 		taskName: taskOverview.task.title,
-		totalSubtasks: taskOverview.task.countSubtasks,
 		statusName: taskOverview.status,
-		totalIsDoneSubtasks: taskOverview.task.countDoneSubtasks,
+		totalIsDoneSubtasks: taskOverview.task.countDoneSubtasks ?? 0,
+		totalSubtasks: taskOverview.task.subtasks.length,
+	};
+}
+
+export function taskWithNewStatusToApiTask(taskToUpdate: {
+	task: Task;
+	status: string;
+}): ApiTask {
+	const subtasks: ApiSubtask[] = taskToUpdate.task.subtasks.map(
+		(subtask: Subtask) => subtasktoApiSubtask(subtask),
+	);
+
+	return {
+		taskTitle: taskToUpdate.task.title,
+		taskDescription: taskToUpdate.task.description,
+		statusId: taskToUpdate.task.statusId,
+		boardId: taskToUpdate.task.boardId,
+		taskId: +taskToUpdate.task.id,
+		subtasks,
+		totalIsDoneSubtasks: taskToUpdate.task.countDoneSubtasks ?? 0,
+		statusName: taskToUpdate.status,
 	};
 }

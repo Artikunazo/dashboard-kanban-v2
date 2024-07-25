@@ -2,12 +2,10 @@ package com.artikunazo.dashboardKanban.domain.service;
 
 import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
-import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,25 +22,17 @@ public class TaskService {
   @Autowired
   private StatusService statusService;
 
-  public List<TaskOverview> getTasksByBoardId(int boardId) {
-    ArrayList<TaskOverview> taskOverviewList = new ArrayList<>();
+  public List<TaskDomain> getTasksByBoardId(int boardId) {
     List<TaskDomain> tasks = taskDomainRepository.getTasksByBoardId(boardId);
 
     tasks.forEach(taskDomain -> {
-      taskOverviewList.add(
-          new TaskOverview(
-              taskDomain.getTaskId(),
-              taskDomain.getTaskTitle(),
-              subtaskService.getCountSubtasksByIdTask(
-                  taskDomain.getTaskId()
-              ),
-              statusService.getStatusNameOfTask(taskDomain.getTaskId()),
-              subtaskService.getIsDoneSubTaskByTask(taskDomain.getTaskId())
-          )
-      );
+      int taskId = taskDomain.getTaskId();
+      taskDomain.setTotalIsDoneSubtasks(subtaskService.getIsDoneSubTaskByTask(taskId));
+      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskId));
+      taskDomain.setStatusName(statusService.getStatusNameOfTask(taskId));
     });
 
-    return taskOverviewList;
+    return tasks;
   }
 
   public Optional<TaskDomain> getTaskById(int idTask) {
@@ -82,10 +72,10 @@ public class TaskService {
     }).orElse(false);
   }
 
-  public boolean updateTaskStatus(TaskOverview taskOverview) {
-    int idStatus = statusService.getStatusIdByStatusName(taskOverview.getStatusName());
-    return getTaskById(taskOverview.getIdTask()).map(taskDomain -> {
-      taskDomainRepository.updateTaskStatus(idStatus, taskOverview.getIdTask());
+  public boolean updateTaskStatus(TaskDomain taskDomain) {
+    int idStatus = statusService.getStatusIdByStatusName(taskDomain.getStatusName());
+    return getTaskById(taskDomain.getTaskId()).map(taskDomain1 -> {
+      taskDomainRepository.updateTaskStatus(idStatus, taskDomain1.getTaskId());
       return true;
     }).orElse(false);
   }

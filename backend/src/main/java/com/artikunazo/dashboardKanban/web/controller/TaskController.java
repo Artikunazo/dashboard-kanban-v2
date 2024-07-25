@@ -1,7 +1,6 @@
 package com.artikunazo.dashboardKanban.web.controller;
 
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
-import com.artikunazo.dashboardKanban.domain.TaskOverview;
 import com.artikunazo.dashboardKanban.domain.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class TaskController {
   }
 
   @GetMapping("/all/{idBoard}")
-  public ResponseEntity<List<TaskOverview>> getTasksByBoardId(@PathVariable("idBoard") int idBoard) {
+  public ResponseEntity<List<TaskDomain>> getTasksByBoardId(@PathVariable("idBoard") int idBoard) {
     return new ResponseEntity<>(taskService.getTasksByBoardId(idBoard), HttpStatus.OK);
   }
 
@@ -58,8 +57,8 @@ public class TaskController {
   }
 
   @PostMapping("/update-status")
-  public ResponseEntity<Boolean> updateTaskStatus(@RequestBody TaskOverview taskOverview) {
-    if(!taskService.updateTaskStatus(taskOverview)){
+  public ResponseEntity<Boolean> updateTaskStatus(@RequestBody TaskDomain taskDomain) {
+    if(!taskService.updateTaskStatus(taskDomain)){
       return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     } else {
       return new ResponseEntity<>(true, HttpStatus.OK);

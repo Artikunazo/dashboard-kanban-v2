@@ -6,11 +6,6 @@ import * as fromTasksReducer from '../reducers/tasks_reducer';
 export const getTasksState =
 	createFeatureSelector<fromTasksReducer.TasksState>('tasks');
 
-export const getTasksData = createSelector(
-	getTasksState,
-	fromTasksReducer.getTaskData,
-);
-
 export const getTasksSelectors = fromTasksReducer.taskAdapter.getSelectors();
 
 export const getAllTasks = createSelector(

@@ -2,7 +2,7 @@ import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
 import {Component, inject, input} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {TaskOverview} from '../../models/tasks_models';
+import {Task} from '../../models/tasks_models';
 import * as fromStore from '../../store';
 import {TaskFormComponent} from '../../task-form/task-form.component';
 import {taskFormConfig} from '../modal_configs';
@@ -27,9 +27,9 @@ export class KanbanColumnComponent {
 	protected readonly matDialog = inject(MatDialog);
 
 	public columnType = input<string>('ToDo');
-	public tasks = input<TaskOverview[]>([]);
+	public tasks = input<Task[]>([]);
 
-	showTaskSelected(task: TaskOverview): void {
+	showTaskSelected(task: Task): void {
 		this.store.dispatch(new fromStore.LoadTask(task.id));
 
 		this.matDialog

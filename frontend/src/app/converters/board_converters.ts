@@ -2,7 +2,7 @@ import {ApiBoard, Board} from '../models/board_models';
 
 export function apiBoardToBoard(apiBoard: ApiBoard): Board {
 	return {
-		id: apiBoard.boardId.toString(),
+		id: +apiBoard.boardId,
 		title: apiBoard.title,
 	};
 }
@@ -13,7 +13,7 @@ export function apiBoardsToBoards(apiBoards: ApiBoard[]): Board[] {
 
 export function boardToApiBoard(board: Board): ApiBoard {
 	return {
-		boardId: board.id ?? '',
+		boardId: board.id?.toString() ?? '',
 		title: board.title,
 	};
 }

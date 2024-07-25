@@ -7,6 +7,8 @@ export interface Task {
 	statusId: number;
 	boardId: number;
 	subtasks: Subtask[];
+	countDoneSubtasks: number | null;
+	status?: string;
 }
 
 export interface ApiTask {
@@ -16,6 +18,8 @@ export interface ApiTask {
 	statusId: number;
 	boardId: number;
 	subtasks: ApiSubtask[];
+	totalIsDoneSubtasks: number;
+	statusName?: string;
 }
 
 export enum TaskStatus {

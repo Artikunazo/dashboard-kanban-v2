@@ -1,21 +1,19 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {Task, TaskOverview} from '../../models/tasks_models';
+import {Task} from '../../models/tasks_models';
 import * as fromTasksActions from '../actions/tasks_actions';
 
-export interface TasksState extends EntityState<TaskOverview> {
-	data: TaskOverview[];
+export interface TasksState extends EntityState<Task> {
 	boardSelected: number;
 	isLoading: boolean;
 	error: string;
 	task: Task | null;
 }
 
-export const taskAdapter = createEntityAdapter<TaskOverview>({
-	selectId: (TaskOverview) => +TaskOverview.id,
+export const taskAdapter = createEntityAdapter<Task>({
+	selectId: (task: Task) => +task.id,
 });
 
 export const initialState: TasksState = taskAdapter.getInitialState({
-	data: [],
 	boardSelected: 0,
 	isLoading: false,
 	error: '',
@@ -132,7 +130,6 @@ export function reducer(
 
 export const getTaskIsLoading = (state: TasksState) => state.isLoading;
 export const getTaskError = (state: TasksState) => state.error;
-export const getTaskData = (state: TasksState) => state.data;
 export const {selectAll, selectEntities, selectIds, selectTotal} =
 	taskAdapter.getSelectors();
 export const getBoardSelected = (state: TasksState) => state.boardSelected;
