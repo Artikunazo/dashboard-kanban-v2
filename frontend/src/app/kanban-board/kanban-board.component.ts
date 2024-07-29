@@ -1,5 +1,5 @@
 import {Component, OnInit, inject} from '@angular/core';
-import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
+import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';

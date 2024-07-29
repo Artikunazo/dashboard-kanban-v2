@@ -2,9 +2,9 @@ import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
 import {importProvidersFrom, signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Store, StoreModule} from '@ngrx/store';
-import {Task} from '../../models/tasks_models';
-import {reducers} from '../../store/reducers';
-import {StatusCircleComponent} from '../status-circle/status-circle.component';
+import {StatusCircleComponent} from '../common/status-circle/status-circle.component';
+import {Task} from '../models/tasks_models';
+import {reducers} from '../store/reducers';
 import {KanbanCardComponent} from '../task-overview/task-overview.component';
 import {KanbanColumnComponent} from './kanban-column.component';
 

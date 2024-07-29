@@ -1,8 +1,8 @@
 import {signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {Subtask} from '../../models/tasks_models';
-import {SubtaskDoneDirective} from '../subtask-done.directive';
+import {SubtaskDoneDirective} from '../common/subtask-done.directive';
+import {Subtask} from '../models/tasks_models';
 import {SubtasksOverviewComponent} from './subtasks-overview.component';
 
 describe('SubtasksOverviewComponent', () => {

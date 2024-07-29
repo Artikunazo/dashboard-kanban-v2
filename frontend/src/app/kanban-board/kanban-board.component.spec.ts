@@ -1,7 +1,7 @@
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Store, StoreModule} from '@ngrx/store';
-import {KanbanColumnComponent} from '../common/kanban-column/kanban-column.component';
+import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 import * as fromTaskReducer from '../store/reducers/tasks_reducer';

@@ -2,11 +2,11 @@ import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
 import {Component, inject, input} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {Task} from '../../models/tasks_models';
-import * as fromStore from '../../store';
-import {TaskFormComponent} from '../../task-form/task-form.component';
-import {taskFormConfig} from '../modal_configs';
-import {StatusCircleComponent} from '../status-circle/status-circle.component';
+import {taskFormConfig} from '../common/modal_configs';
+import {StatusCircleComponent} from '../common/status-circle/status-circle.component';
+import {Task} from '../models/tasks_models';
+import * as fromStore from '../store';
+import {TaskFormComponent} from '../task-form/task-form.component';
 import {KanbanCardComponent} from '../task-overview/task-overview.component';
 
 @Component({

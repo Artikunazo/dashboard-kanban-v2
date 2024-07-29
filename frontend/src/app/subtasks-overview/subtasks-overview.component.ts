@@ -1,7 +1,7 @@
 import {Component, input, output} from '@angular/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {Subtask} from '../../models/subtask_models';
-import {SubtaskDoneDirective} from '../subtask-done.directive';
+import {SubtaskDoneDirective} from '../common/subtask-done.directive';
+import {Subtask} from '../models/subtask_models';
 
 @Component({
 	selector: 'subtasks-overview',
