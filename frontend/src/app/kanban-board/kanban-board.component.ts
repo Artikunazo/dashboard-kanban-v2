@@ -24,7 +24,6 @@ export class KanbanBoardComponent implements OnInit {
 			next: (tasks: Task[]) => {
 				this.tasksList = tasks;
 				this.indexTasks();
-				console.log(this.tasksListIndexed);
 			},
 		});
 	}

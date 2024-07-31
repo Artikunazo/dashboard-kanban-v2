@@ -1,5 +1,5 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {Task} from '../../models/tasks_models';
+import {Task} from 'src/app/models/tasks_models';
 import * as fromTasksActions from '../actions/tasks_actions';
 
 export interface TasksState extends EntityState<Task> {

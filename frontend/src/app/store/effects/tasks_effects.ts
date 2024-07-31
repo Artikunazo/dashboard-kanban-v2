@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {TaskService} from '../../api/task.service';
+import {TaskService} from 'src/app/api/task.service';
 import {
 	ApiTaskToTask,
 	apiTasksToTasks,
 	taskToApiTask,
 	taskWithNewStatusToApiTask,
-} from '../../converters/task_converter';
-import {ApiTask, Task} from '../../models/tasks_models';
+} from 'src/app/converters/task_converter';
+import {ApiTask, Task} from 'src/app/models/tasks_models';
 import * as fromTasksAction from '../actions/tasks_actions';
 import * as fromTasksActions from '../actions/tasks_actions';
 

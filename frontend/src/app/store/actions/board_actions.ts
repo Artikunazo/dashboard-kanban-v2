@@ -1,7 +1,7 @@
 import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
-import {Board} from '../../models/board_models';
-import {Task} from '../../models/tasks_models';
+import {Board} from 'src/app/models/board_models';
+import {Task} from 'src/app/models/tasks_models';
 
 export enum BoardActionsType {
 	LOAD_BOARDS = '[Board] Load Boards',

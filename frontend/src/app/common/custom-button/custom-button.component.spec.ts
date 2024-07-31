@@ -2,7 +2,7 @@
 import {signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {MaterialModule} from '../../material/material.module';
+import {MaterialModule} from 'src/app/material/material.module';
 import {CustomIconDirective} from '../custom-icon.directive';
 import {CustomButtonComponent} from './custom-button.component'; // Adjust the import path as necessary
 

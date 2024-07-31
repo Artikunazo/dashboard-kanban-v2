@@ -7,11 +7,14 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
-import {Task} from '../../models/tasks_models';
-import * as fromStore from '../../store';
-import {TaskFormComponent} from '../../task-form/task-form.component';
-import {DeleteConfirmationComponent} from '../delete-confirmation/delete-confirmation.component';
-import {deleteConfirmationConfig, taskFormConfig} from '../modal_configs';
+import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
+import {
+	deleteConfirmationConfig,
+	taskFormConfig,
+} from '../common/modal_configs';
+import {Task} from '../models/tasks_models';
+import * as fromStore from '../store';
+import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
 	selector: 'kanban-card',

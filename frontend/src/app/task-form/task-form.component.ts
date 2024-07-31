@@ -1,3 +1,4 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {
 	FormArray,
@@ -13,6 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
+import {BehaviorSubject, map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
@@ -29,6 +31,7 @@ import * as fromStore from '../store';
 		CustomButtonComponent,
 		MatCheckboxModule,
 		MatIconModule,
+		AsyncPipe,
 	],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
@@ -40,11 +43,10 @@ export class TaskFormComponent {
 		MatDialogRef,
 	) as MatDialogRef<TaskFormComponent>;
 
-	protected boardSelected!: number;
-
 	public taskForm!: FormGroup;
-	public statusOptions: Status[] = [];
-	public taskSelected: Task | null = null;
+	protected boardSelected$ = new BehaviorSubject<number>(0);
+	public statusOptions$ = new Observable<Status[]>();
+	public taskSelected$ = new BehaviorSubject<Task>({} as Task);
 
 	constructor() {
 		let subtasks = [
@@ -57,46 +59,44 @@ export class TaskFormComponent {
 		this.store
 			.select(fromStore.selectBoardSelected)
 			.subscribe((boardSelected: number) => {
-				this.boardSelected = boardSelected;
+				this.boardSelected$.next(boardSelected);
 			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
-		this.store.select(fromStore.selectStatusData).subscribe({
-			next: (status: Status[]) => {
-				this.statusOptions = status;
-			},
-		});
+		this.statusOptions$ = this.store
+			.select(fromStore.selectStatusData)
+			.pipe(map((status: Status[]) => status));
 
 		this.store.select(fromStore.selectTask).subscribe({
 			next: (task: Task | null) => {
-				this.taskSelected = task;
+				console.info('Before', task);
 
-				if (this.taskSelected) {
-					subtasks = this.taskSelected.subtasks.map((subtask) => {
-						return this.formBuilder.group({
-							title: this.formBuilder.control(subtask.title ?? '', [
-								Validators.required,
-							]),
-							status: this.formBuilder.control(
-								!subtask.isDone ? 'ToDo' : 'Done',
-							),
-						});
+				if (!task) return;
+
+				console.info('after !task condition', task);
+				subtasks = task.subtasks.map((subtask) => {
+					return this.formBuilder.group({
+						title: this.formBuilder.control(subtask.title ?? '', [
+							Validators.required,
+						]),
+						status: this.formBuilder.control(!subtask.isDone ? 'ToDo' : 'Done'),
 					});
-				}
+				});
 
 				this.taskForm = this.formBuilder.group({
-					title: this.formBuilder.control(this.taskSelected?.title || '', [
+					title: this.formBuilder.control(task?.title || '', [
 						Validators.required,
 					]),
-					description: this.formBuilder.control(
-						this.taskSelected?.description || '',
-						[Validators.required],
-					),
+					description: this.formBuilder.control(task?.description || '', [
+						Validators.required,
+					]),
 					subtasks: this.formBuilder.array(subtasks),
-					status: this.formBuilder.control(this.taskSelected?.statusId || '', [
+					status: this.formBuilder.control(task?.statusId || '', [
 						Validators.required,
 					]),
 				});
+
+				this.taskSelected$.next(task);
 			},
 		});
 	}
@@ -107,13 +107,13 @@ export class TaskFormComponent {
 
 	ngOnInit() {
 		this.matDialogRef.afterClosed().subscribe(() => {
-			this.taskSelected = null;
+			this.taskSelected$.complete();
 			this.taskForm.reset();
 		});
 	}
 
 	closeDialog(): void {
-		this.taskSelected = null;
+		this.taskSelected$.complete();
 		this.matDialogRef.close();
 	}
 
@@ -134,13 +134,13 @@ export class TaskFormComponent {
 			title: this.taskForm.value.title,
 			description: this.taskForm.value.description,
 			statusId: this.taskForm.value.status,
-			boardId: this.boardSelected,
+			boardId: this.boardSelected$.getValue(),
 			subtasks: <[]>this.taskForm.value.subtasks,
 			countDoneSubtasks: this.taskForm.value.subtasks.length,
 		};
 
-		if (this.taskSelected) {
-			newTaskData['id'] = this.taskSelected.id;
+		if (this.taskSelected$.getValue()) {
+			newTaskData['id'] = this.taskSelected$.getValue().id;
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
@@ -152,5 +152,10 @@ export class TaskFormComponent {
 	removeSubtask(index: number) {
 		console.log(index);
 		this.subtasks.removeAt(index);
+	}
+
+	ngOnDestroy() {
+		this.boardSelected$.complete();
+		this.taskSelected$.complete();
 	}
 }

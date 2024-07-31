@@ -1,5 +1,5 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {Subtask} from '../../models/subtask_models';
+import {Subtask} from 'src/app/models/subtask_models';
 import * as fromSubtaskActions from '../actions/subtask_actions';
 
 export interface SubtaskState extends EntityState<Subtask> {

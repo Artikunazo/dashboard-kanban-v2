@@ -1,1 +1,57 @@
-<p>task-details works!</p>
+<section class="row task-overview-container">
+	<div class="col row">
+		<h2 class="col-6">
+			{{ (task$ | async)?.title }}
+		</h2>
+		<button
+			mat-button
+			[matMenuTriggerFor]="menu"
+			[matMenuTriggerData]="task$ | async"
+			class="col-6 task-menu-button"
+		>
+			<mat-icon>more_vert</mat-icon>
+		</button>
+	</div>
+
+	<div class="col">
+		<p>{{ (task$ | async)?.description }}</p>
+	</div>
+
+	<div class="col">
+		<h3>Subtasks</h3>
+		@for(subtask of (task$ | async)?.subtasks; track subtask
+		) {
+		<subtasks-overview
+			[subtask]="subtask"
+			(subtaskUpdated)="subtaskUpdated($event)"
+			[index]="$index"
+		/>
+		}
+	</div>
+
+	<div class="col row">
+		<h3>Status</h3>
+		<mat-form-field class="col">
+			<mat-select [formControl]="statusSelected">
+				@for(status of statusOptions$ | async; track status)
+				{
+				<mat-option [value]="status?.id">{{
+					status?.name
+				}}</mat-option>
+				}
+			</mat-select>
+		</mat-form-field>
+	</div>
+</section>
+
+<mat-menu #menu="matMenu">
+	<ng-template matMenuContent>
+		<button mat-menu-item (click)="editTask()">Edit</button>
+		<button
+			mat-menu-item
+			(click)="deleteConfirmation(true)"
+		>
+			Delete
+		</button>
+	</ng-template>
+</mat-menu>

@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {SubtaskService} from '../../api/subtask.service';
-import {Subtask} from '../../models/subtask_models';
+import {SubtaskService} from 'src/app/api/subtask.service';
+import {Subtask} from 'src/app/models/subtask_models';
 import * as fromSubtaskActions from '../actions/subtask_actions';
 
 @Injectable({

@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {BoardService} from '../../api/board.service';
-import {TaskService} from '../../api/task.service';
+import {BoardService} from 'src/app/api/board.service';
+import {TaskService} from 'src/app/api/task.service';
 import {
 	apiBoardToBoard,
 	apiBoardsToBoards,
 	boardToApiBoard,
-} from '../../converters/board_converters';
-import {ApiBoard} from '../../models/board_models';
+} from 'src/app/converters/board_converters';
+import {ApiBoard} from 'src/app/models/board_models';
 import * as fromBoardActions from '../actions/board_actions';
 
 @Injectable({

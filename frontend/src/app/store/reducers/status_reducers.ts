@@ -1,4 +1,4 @@
-import {Status} from '../../models/status_models';
+import {Status} from 'src/app/models/status_models';
 import * as fromStatusActions from '../actions/status_actions';
 
 export interface StatusState {

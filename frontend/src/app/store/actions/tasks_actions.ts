@@ -1,6 +1,6 @@
 import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
-import {Task, TaskOverview} from '../../models/tasks_models';
+import {Task, TaskOverview} from 'src/app/models/tasks_models';
 
 export enum TasksActionType {
 	LOAD_TASK = '[Task] Load Task',

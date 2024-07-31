@@ -6,7 +6,7 @@ import {taskFormConfig} from '../common/modal_configs';
 import {StatusCircleComponent} from '../common/status-circle/status-circle.component';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import {TaskFormComponent} from '../task-form/task-form.component';
+import {TaskDetailsComponent} from '../task-details/task-details.component';
 import {KanbanCardComponent} from '../task-overview/task-overview.component';
 
 @Component({
@@ -33,7 +33,7 @@ export class KanbanColumnComponent {
 		this.store.dispatch(new fromStore.LoadTask(task.id));
 
 		this.matDialog
-			.open(TaskFormComponent, taskFormConfig)
+			.open(TaskDetailsComponent, taskFormConfig)
 			.afterClosed()
 			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
 	}

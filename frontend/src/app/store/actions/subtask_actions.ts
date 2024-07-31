@@ -1,6 +1,6 @@
 import {Update} from '@ngrx/entity';
 import {Action} from '@ngrx/store';
-import {Subtask} from '../../models/subtask_models';
+import {Subtask} from 'src/app/models/subtask_models';
 
 export enum SubtaskActionType {
 	LOAD_SUBTASKS = '[Subtask] Load Subtasks',

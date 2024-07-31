@@ -5,10 +5,10 @@
 // 	MatDialogRef,
 // } from '@angular/material/dialog';
 // import {Store, StoreModule} from '@ngrx/store';
-// import {Task} from '../../models/tasks_models';
-// import * as fromStore from '../../store';
-// import * as fromTaskReducer from '../../store/reducers/tasks_reducer';
-// import {TaskOverviewComponent} from '../../task-overview/task-overview.component';
+// import {Task} from 'src/app/models/tasks_models';
+// import * as fromStore from 'src/app/store';
+// import * as fromTaskReducer from 'src/app/store/reducers/tasks_reducer';
+// import {TaskOverviewComponent} from 'src/app/task-overview/task-overview.component';
 // import {KanbanCardComponent} from './task-overview.component';
 
 // describe('KanbanCardComponent', () => {

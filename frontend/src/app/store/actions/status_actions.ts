@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Status} from '../../models/status_models';
+import {Status} from 'src/app/models/status_models';
 
 export enum StatusActionType {
 	LOAD_STATUSES = '[Status] Load Statuses',

@@ -1,5 +1,5 @@
 import {EntityState, createEntityAdapter} from '@ngrx/entity';
-import {Board} from '../../models/board_models';
+import {Board} from 'src/app/models/board_models';
 import * as fromBoardActions from '../actions/board_actions';
 
 export interface BoardState extends EntityState<Board> {
