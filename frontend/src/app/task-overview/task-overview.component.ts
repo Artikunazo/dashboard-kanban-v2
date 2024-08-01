@@ -15,7 +15,7 @@ import {
 } from '../common/modal_configs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import {TaskFormComponent} from '../task-form/task-form.component';
+import {TaskDetailsComponent} from '../task-details/task-details.component';
 
 @Component({
 	selector: 'kanban-card',
@@ -60,9 +60,9 @@ export class KanbanCardComponent implements OnDestroy {
 			});
 	}
 
-	editTaskModal(): void {
+	openTaskDetailsModal(): void {
 		this.matDialog
-			.open(TaskFormComponent, {
+			.open(TaskDetailsComponent, {
 				...taskFormConfig,
 				data: {
 					taskId: this.task()?.id,

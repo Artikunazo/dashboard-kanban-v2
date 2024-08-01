@@ -1,16 +1,21 @@
 <section class="row task-overview-container">
 	<div class="col row">
-		<h2 class="col-6">
+		<h2 class="col-8">
 			{{ (task$ | async)?.title }}
 		</h2>
-		<button
-			mat-button
-			[matMenuTriggerFor]="menu"
-			[matMenuTriggerData]="task$ | async"
-			class="col-6 task-menu-button"
-		>
-			<mat-icon>more_vert</mat-icon>
-		</button>
+		<div class="col-4">
+			<button mat-button (click)="editTask()">
+				<mat-icon>edit</mat-icon>
+			</button>
+			<button
+				mat-button
+				[matMenuTriggerFor]="menu"
+				[matMenuTriggerData]="task$ | async"
+				class="task-menu-button"
+			>
+				<mat-icon>more_vert</mat-icon>
+			</button>
+		</div>
 	</div>
 
 	<div class="col">
@@ -46,7 +51,6 @@
 
 <mat-menu #menu="matMenu">
 	<ng-template matMenuContent>
-		<button mat-menu-item (click)="editTask()">Edit</button>
 		<button
 			mat-menu-item
 			(click)="deleteConfirmation(true)"
