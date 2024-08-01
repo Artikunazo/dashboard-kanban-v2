@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
-import {Component, inject, input, output} from '@angular/core';
+import {Component, inject, input, OnDestroy, output} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialog} from '@angular/material/dialog';
@@ -29,7 +30,7 @@ import {TaskFormComponent} from '../task-form/task-form.component';
 	templateUrl: './task-overview.component.html',
 	styleUrl: './task-overview.component.scss',
 })
-export class KanbanCardComponent {
+export class KanbanCardComponent implements OnDestroy {
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
@@ -40,6 +41,7 @@ export class KanbanCardComponent {
 	constructor() {
 		this.store
 			.select(fromStore.selectBoardSelected)
+			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) =>
 				this.boardSelected$.next(boardSelected),
 			);
@@ -58,11 +60,14 @@ export class KanbanCardComponent {
 			});
 	}
 
-	showTaskForm(): void {
-		this.store.dispatch(new fromStore.LoadTask(this.task().id));
-
+	editTaskModal(): void {
 		this.matDialog
-			.open(TaskFormComponent, taskFormConfig)
+			.open(TaskFormComponent, {
+				...taskFormConfig,
+				data: {
+					taskId: this.task()?.id,
+				},
+			})
 			.afterClosed()
 			.subscribe(() => {
 				this.store.dispatch(new fromStore.CleanTaskSelected());
@@ -70,5 +75,25 @@ export class KanbanCardComponent {
 					new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
 				);
 			});
+
+		// this.store
+		// 	.select(fromStore.selectTask)
+		// 	.pipe(
+		// 		map((task: Task | null) => {
+		// 			if (task !== null) return task;
+
+		// 			return {} as Task;
+		// 		}),
+		// 	)
+		// 	.subscribe((task: Task) => {
+		// 		console.log('task', task);
+		// 		if (task.id) {
+
+		// 		}
+		// 	});
+	}
+
+	ngOnDestroy() {
+		this.boardSelected$.complete();
 	}
 }

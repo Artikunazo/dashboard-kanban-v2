@@ -30,10 +30,13 @@ export class KanbanColumnComponent {
 	public tasks = input<Task[]>([]);
 
 	showTaskSelected(task: Task): void {
-		this.store.dispatch(new fromStore.LoadTask(task.id));
-
 		this.matDialog
-			.open(TaskDetailsComponent, taskFormConfig)
+			.open(TaskDetailsComponent, {
+				...taskFormConfig,
+				data: {
+					taskId: task.id,
+				},
+			})
 			.afterClosed()
 			.subscribe(() => this.store.dispatch(new fromStore.CleanTaskSelected()));
 	}

@@ -1,6 +1,7 @@
 <section class="task-form-container">
 	<h3 class="task-form-title">Task information</h3>
 
+	@if((taskSelected$ | async)) {
 	<form [formGroup]="taskForm" class="row">
 		<mat-form-field class="col">
 			<mat-label>Title</mat-label>
@@ -46,13 +47,13 @@
 			</div>
 			}
 			<!-- <mat-form-field
-				class="col-2"
-				[formGroupName]="$index"
-			>
-				<mat-checkbox formControlName="isDone">
-					Done
-				</mat-checkbox>
-			</mat-form-field> -->
+          class="col-2"
+          [formGroupName]="$index"
+        >
+          <mat-checkbox formControlName="isDone">
+            Done
+          </mat-checkbox>
+        </mat-form-field> -->
 			}
 
 			<custom-button
@@ -87,4 +88,7 @@
 			(clickEvent)="createTask()"
 		/>
 	</form>
+	} @else {
+	<p>Loading...</p>
+	}
 </section>

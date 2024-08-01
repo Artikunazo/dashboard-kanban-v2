@@ -1,8 +1,10 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
+import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
@@ -13,23 +15,26 @@ import * as fromStore from '../store';
 	templateUrl: './kanban-board.component.html',
 	styleUrl: './kanban-board.component.scss',
 })
-export class KanbanBoardComponent implements OnInit {
+export class KanbanBoardComponent implements OnDestroy {
 	private readonly store = inject(Store);
 
-	public tasksList: Task[] = [];
+	public tasksList$ = new BehaviorSubject<Task[]>([]);
 	public tasksListIndexed!: {[key: string]: Task[]};
 
-	ngOnInit(): void {
-		this.store.select(fromStore.getAllTasks).subscribe({
-			next: (tasks: Task[]) => {
-				this.tasksList = tasks;
-				this.indexTasks();
-			},
-		});
+	constructor() {
+		this.store
+			.select(fromStore.getAllTasks)
+			.pipe(takeUntilDestroyed())
+			.subscribe({
+				next: (tasks: Task[]) => {
+					this.tasksList$.next(tasks);
+					this.indexTasks();
+				},
+			});
 	}
 
 	indexTasks() {
-		this.tasksListIndexed = this.tasksList.reduce(
+		this.tasksListIndexed = this.tasksList$.getValue().reduce(
 			(previous: any, task: Task) => ({
 				...previous,
 				[task.status ?? '']: [...(previous[task.status ?? ''] || []), task],
@@ -45,5 +50,9 @@ export class KanbanBoardComponent implements OnInit {
 				status: event.container.element.nativeElement.id,
 			}),
 		);
+	}
+
+	ngOnDestroy() {
+		this.tasksList$.complete();
 	}
 }

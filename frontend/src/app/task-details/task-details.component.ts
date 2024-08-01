@@ -1,9 +1,13 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, DestroyRef, inject} from '@angular/core';
+import {Component, DestroyRef, inject, OnDestroy} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {
+	MAT_DIALOG_DATA,
+	MatDialog,
+	MatDialogRef,
+} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -38,11 +42,14 @@ import {TaskFormComponent} from '../task-form/task-form.component';
 	templateUrl: './task-details.component.html',
 	styleUrl: './task-details.component.scss',
 })
-export class TaskDetailsComponent {
+export class TaskDetailsComponent implements OnDestroy {
 	protected readonly store = inject(Store);
 	protected readonly matDialog = inject(MatDialog);
-	protected readonly matDialogRef = inject(MatDialogRef<TaskDetailsComponent>);
+	protected readonly matDialogRef = inject(
+		MatDialogRef,
+	) as MatDialogRef<TaskDetailsComponent>;
 	protected readonly destroyRef = inject(DestroyRef);
+	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
 	public task$ = new BehaviorSubject<Task>({} as Task);
 	public statusOptions$ = new Observable<Status[]>();
@@ -57,7 +64,19 @@ export class TaskDetailsComponent {
 
 		this.store
 			.select(fromStore.selectTask)
-			.pipe(takeUntilDestroyed())
+			.pipe(
+				map((task: Task | null) => {
+					if (!task) {
+						this.store.dispatch(
+							new fromStore.LoadTask(this.matDialogData.taskId),
+						);
+						return null;
+					}
+
+					return task;
+				}),
+				takeUntilDestroyed(),
+			)
 			.subscribe({
 				next: (task: Task | null) => {
 					if (!task) return;
@@ -125,11 +144,17 @@ export class TaskDetailsComponent {
 		}
 
 		this.matDialog
-			.open(TaskFormComponent, taskFormConfig)
+			.open(TaskFormComponent, {
+				...taskFormConfig,
+				data: {
+					taskId: this.task$.getValue().id,
+				},
+			})
 			.afterClosed()
 			.subscribe(() => {
 				this.store.dispatch(new fromStore.CleanTaskSelected());
 			});
+
 		this.matDialogRef.close();
 	}
 

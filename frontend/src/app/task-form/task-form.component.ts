@@ -1,5 +1,6 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
 	FormArray,
 	FormBuilder,
@@ -8,7 +9,7 @@ import {
 	Validators,
 } from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
@@ -36,12 +37,13 @@ import * as fromStore from '../store';
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnDestroy {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
 	private matDialogRef = inject(
 		MatDialogRef,
 	) as MatDialogRef<TaskFormComponent>;
+	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
 	public taskForm!: FormGroup;
 	protected boardSelected$ = new BehaviorSubject<number>(0);
@@ -58,47 +60,54 @@ export class TaskFormComponent {
 
 		this.store
 			.select(fromStore.selectBoardSelected)
+			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) => {
 				this.boardSelected$.next(boardSelected);
 			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
-		this.statusOptions$ = this.store
-			.select(fromStore.selectStatusData)
-			.pipe(map((status: Status[]) => status));
+		this.statusOptions$ = this.store.select(fromStore.selectStatusData).pipe(
+			map((status: Status[]) => status),
+			takeUntilDestroyed(),
+		);
 
-		this.store.select(fromStore.selectTask).subscribe({
-			next: (task: Task | null) => {
-				console.info('Before', task);
+		this.store
+			.select(fromStore.selectTask)
+			.pipe(takeUntilDestroyed())
+			.subscribe({
+				next: (task: Task | null) => {
+					console.info('Before', task);
 
-				if (!task) return;
+					if (task) {
+						console.info('after !task condition', task);
+						subtasks = task.subtasks.map((subtask) => {
+							return this.formBuilder.group({
+								title: this.formBuilder.control(subtask.title ?? '', [
+									Validators.required,
+								]),
+								status: this.formBuilder.control(
+									!subtask.isDone ? 'ToDo' : 'Done',
+								),
+							});
+						});
 
-				console.info('after !task condition', task);
-				subtasks = task.subtasks.map((subtask) => {
-					return this.formBuilder.group({
-						title: this.formBuilder.control(subtask.title ?? '', [
-							Validators.required,
-						]),
-						status: this.formBuilder.control(!subtask.isDone ? 'ToDo' : 'Done'),
-					});
-				});
+						this.taskForm = this.formBuilder.group({
+							title: this.formBuilder.control(task?.title ?? '', [
+								Validators.required,
+							]),
+							description: this.formBuilder.control(task?.description ?? '', [
+								Validators.required,
+							]),
+							subtasks: this.formBuilder.array(subtasks),
+							status: this.formBuilder.control(task?.statusId ?? '', [
+								Validators.required,
+							]),
+						});
 
-				this.taskForm = this.formBuilder.group({
-					title: this.formBuilder.control(task?.title || '', [
-						Validators.required,
-					]),
-					description: this.formBuilder.control(task?.description || '', [
-						Validators.required,
-					]),
-					subtasks: this.formBuilder.array(subtasks),
-					status: this.formBuilder.control(task?.statusId || '', [
-						Validators.required,
-					]),
-				});
-
-				this.taskSelected$.next(task);
-			},
-		});
+						this.taskSelected$.next(task);
+					}
+				},
+			});
 	}
 
 	get subtasks() {
