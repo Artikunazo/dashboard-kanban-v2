@@ -49,7 +49,6 @@ export class TasksEffects {
 				return this.taskService.getTasksByBoard(action.payload).pipe(
 					map((response: ApiTask[]) => {
 						const tasks: Task[] = apiTasksToTasks(response);
-						console.log({tasks});
 						return new fromTasksAction.LoadTasksByBoardSuccess(tasks);
 					}),
 					catchError((error: any) => {

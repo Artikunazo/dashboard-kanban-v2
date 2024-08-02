@@ -159,7 +159,6 @@ export class TaskFormComponent implements OnDestroy {
 	}
 
 	removeSubtask(index: number) {
-		console.log(index);
 		this.subtasks.removeAt(index);
 	}
 

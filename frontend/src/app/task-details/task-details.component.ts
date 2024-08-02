@@ -133,6 +133,7 @@ export class TaskDetailsComponent implements OnDestroy {
 						}
 
 						this.store.dispatch(new fromStore.DeleteTask(+task.id));
+						this.matDialogRef.close();
 					},
 				});
 		}
