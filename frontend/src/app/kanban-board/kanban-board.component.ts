@@ -2,7 +2,6 @@ import {Component, inject, OnDestroy} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
@@ -22,15 +21,12 @@ export class KanbanBoardComponent implements OnDestroy {
 	public tasksListIndexed!: {[key: string]: Task[]};
 
 	constructor() {
-		this.store
-			.select(fromStore.getAllTasks)
-			.pipe(takeUntilDestroyed())
-			.subscribe({
-				next: (tasks: Task[]) => {
-					this.tasksList$.next(tasks);
-					this.indexTasks();
-				},
-			});
+		this.store.select(fromStore.getAllTasks).subscribe({
+			next: (tasks: Task[]) => {
+				this.tasksList$.next(tasks);
+				this.indexTasks();
+			},
+		});
 	}
 
 	indexTasks() {

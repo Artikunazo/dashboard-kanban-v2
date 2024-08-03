@@ -5,9 +5,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {Store} from '@ngrx/store';
 import {map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {taskFormConfig} from '../common/modal_configs';
 import * as fromStore from '../store';
-import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
 	selector: 'toolbar',
@@ -21,6 +19,7 @@ export class ToolbarComponent {
 	protected readonly store = inject(Store);
 
 	public openNav = output();
+	public createTaskClicked = output<boolean>();
 
 	public subtitle$ = new Observable<string>();
 
@@ -31,6 +30,6 @@ export class ToolbarComponent {
 	}
 
 	openTaskFormModal() {
-		this.dialog.open(TaskFormComponent, taskFormConfig);
+		this.createTaskClicked.emit(true);
 	}
 }

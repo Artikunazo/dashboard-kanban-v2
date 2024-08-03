@@ -63,11 +63,9 @@ export function reducer(
 			return {...state, error: action.payload, isLoading: false};
 		}
 
-		// case tasksActionTypes.ADD_TASK_SUCCESS: {
-		// 	// La API tiene que regresar el task overview
-		// 	// No debe regresar la informacion del task completa
-		// 	// return taskAdapter.addOne(action.payload, state);
-		// }
+		case tasksActionTypes.ADD_TASK_SUCCESS: {
+			return taskAdapter.addOne(action.payload, state);
+		}
 
 		case tasksActionTypes.ADD_TASK_FAIL: {
 			return {...state, error: action.payload};
@@ -99,7 +97,8 @@ export function reducer(
 		}
 
 		case tasksActionTypes.SAVE_TASK_SUCCESS: {
-			return {...state};
+			// console.info('reducer', action);
+			return taskAdapter.addOne(action.payload, state);
 		}
 
 		case tasksActionTypes.SAVE_TASK_FAIL: {

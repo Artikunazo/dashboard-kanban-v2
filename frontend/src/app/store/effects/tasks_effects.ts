@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
@@ -17,10 +17,8 @@ import * as fromTasksActions from '../actions/tasks_actions';
 	providedIn: 'root',
 })
 export class TasksEffects {
-	constructor(
-		private actions$: Actions,
-		private readonly taskService: TaskService,
-	) {}
+	private actions$ = inject(Actions);
+	private readonly taskService = inject(TaskService);
 
 	protected readonly tasksActionsTypes = fromTasksAction.TasksActionType;
 
@@ -59,18 +57,18 @@ export class TasksEffects {
 		);
 	});
 
-	saveTask$: Observable<Action> = createEffect(() => {
+	addTask$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(this.tasksActionsTypes.ADD_TASK),
 			mergeMap((data: fromTasksActions.AddTask) => {
 				const apiTask: ApiTask = taskToApiTask(data.payload);
-				return this.taskService.save(apiTask).pipe(
+				return this.taskService.add(apiTask).pipe(
 					map((dataResponse: ApiTask) => {
 						const task: Task = ApiTaskToTask(dataResponse);
-						return new fromTasksAction.SaveTaskSuccess(task);
+						return new fromTasksAction.AddTaskSuccess(task);
 					}),
 					catchError((error: any) => {
-						return of(new fromTasksAction.SaveTaskFail(error));
+						return of(new fromTasksAction.AddTaskFail(error));
 					}),
 				);
 			}),

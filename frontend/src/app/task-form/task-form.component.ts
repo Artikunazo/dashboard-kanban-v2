@@ -51,12 +51,7 @@ export class TaskFormComponent implements OnDestroy {
 	public taskSelected$ = new BehaviorSubject<Task>({} as Task);
 
 	constructor() {
-		let subtasks = [
-			this.formBuilder.group({
-				title: this.formBuilder.control('', [Validators.required]),
-				status: this.formBuilder.control('ToDo'),
-			}),
-		];
+		this.initTaskForm();
 
 		this.store
 			.select(fromStore.selectBoardSelected)
@@ -79,8 +74,7 @@ export class TaskFormComponent implements OnDestroy {
 					console.info('Before', task);
 
 					if (task) {
-						console.info('after !task condition', task);
-						subtasks = task.subtasks.map((subtask) => {
+						const subtasks = task.subtasks.map((subtask) => {
 							return this.formBuilder.group({
 								title: this.formBuilder.control(subtask.title ?? '', [
 									Validators.required,
@@ -91,18 +85,10 @@ export class TaskFormComponent implements OnDestroy {
 							});
 						});
 
-						this.taskForm = this.formBuilder.group({
-							title: this.formBuilder.control(task?.title ?? '', [
-								Validators.required,
-							]),
-							description: this.formBuilder.control(task?.description ?? '', [
-								Validators.required,
-							]),
-							subtasks: this.formBuilder.array(subtasks),
-							status: this.formBuilder.control(task?.statusId ?? '', [
-								Validators.required,
-							]),
-						});
+						this.taskForm.get('title')?.setValue(task.title);
+						this.taskForm.get('description')?.setValue(task.description);
+						this.taskForm.get('status')?.setValue(task.status);
+						this.taskForm.get('subtasks')?.setValue(subtasks);
 
 						this.taskSelected$.next(task);
 					}
@@ -112,6 +98,15 @@ export class TaskFormComponent implements OnDestroy {
 
 	get subtasks() {
 		return this.taskForm.get('subtasks') as FormArray;
+	}
+
+	initTaskForm() {
+		this.taskForm = this.formBuilder.group({
+			title: this.formBuilder.control('', [Validators.required]),
+			description: this.formBuilder.control('', [Validators.required]),
+			subtasks: this.formBuilder.array([]),
+			status: this.formBuilder.control('', [Validators.required]),
+		});
 	}
 
 	ngOnInit() {
@@ -148,7 +143,7 @@ export class TaskFormComponent implements OnDestroy {
 			countDoneSubtasks: this.taskForm.value.subtasks.length,
 		};
 
-		if (this.taskSelected$.getValue()) {
+		if (this.taskSelected$.getValue().id) {
 			newTaskData['id'] = this.taskSelected$.getValue().id;
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {

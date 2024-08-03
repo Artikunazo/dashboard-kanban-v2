@@ -75,22 +75,6 @@ export class KanbanCardComponent implements OnDestroy {
 					new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
 				);
 			});
-
-		// this.store
-		// 	.select(fromStore.selectTask)
-		// 	.pipe(
-		// 		map((task: Task | null) => {
-		// 			if (task !== null) return task;
-
-		// 			return {} as Task;
-		// 		}),
-		// 	)
-		// 	.subscribe((task: Task) => {
-		// 		console.log('task', task);
-		// 		if (task.id) {
-
-		// 		}
-		// 	});
 	}
 
 	ngOnDestroy() {

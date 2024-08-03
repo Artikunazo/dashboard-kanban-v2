@@ -8,9 +8,13 @@ import {
 import {apiSubtaskToSubtask, subtasktoApiSubtask} from './subtask_converters';
 
 export function ApiTaskToTask(apiTask: ApiTask): Task {
-	const subtasks: Subtask[] = apiTask.subtasks.map((subtask: ApiSubtask) =>
-		apiSubtaskToSubtask(subtask),
-	);
+	let subtasks: Subtask[] = [];
+
+	if (apiTask.subtasks) {
+		subtasks = apiTask.subtasks.map((subtask: ApiSubtask) =>
+			apiSubtaskToSubtask(subtask),
+		);
+	}
 
 	return {
 		id: apiTask.taskId,

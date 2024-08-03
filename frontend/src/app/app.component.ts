@@ -9,13 +9,17 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Store} from '@ngrx/store';
 import {BoardFormComponent} from './board-form/board-form.component';
-import {boardDialogConfig} from './common/modal_configs';
+import {boardDialogConfig, taskFormConfig} from './common/modal_configs';
 import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
 import {ThemeSwitcherComponent} from './theme-switcher/theme-switcher.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 
+import {AsyncPipe} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BehaviorSubject} from 'rxjs';
 import {Board} from './models/board_models';
 import * as fromStore from './store';
+import {TaskFormComponent} from './task-form/task-form.component';
 
 @Component({
 	selector: 'app-root',
@@ -32,6 +36,7 @@ import * as fromStore from './store';
 		BoardFormComponent,
 		MatMenuModule,
 		MatProgressSpinner,
+		AsyncPipe,
 	],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
@@ -40,29 +45,29 @@ export class AppComponent {
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
-	boards: Board[] = [];
-	isLoading = false;
-	title = 'dashboard-kanban';
+	boards$ = new BehaviorSubject<Board[]>([]);
+	isLoading$ = new BehaviorSubject<boolean>(true);
+	boardSelected$ = new BehaviorSubject<number>(0);
 
-	ngOnInit() {
-		this.store.select(fromStore.getBoardIsLoading).subscribe({
-			next: (loading) => {
-				this.isLoading = loading;
-			},
-		});
-
+	constructor() {
 		this.store.dispatch(new fromStore.LoadBoards());
 
-		this.store.select(fromStore.selectAllBoards).subscribe({
-			next: (data: Board[]) => {
-				this.boards = data;
-			},
-		});
+		this.store
+			.select(fromStore.selectAllBoards)
+			.pipe(takeUntilDestroyed())
+			.subscribe({
+				next: (data: Board[]) => {
+					this.boards$.next(data);
+					this.isLoading$.next(false);
+				},
+			});
 	}
 
 	loadTasksByBoard(board: Board) {
 		this.store.dispatch(new fromStore.LoadTasksByBoard(board.id ?? 0));
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
+		this.boardSelected$.next(board.id ?? 0);
+
 		// @ToDo: check if sidebar can to close
 	}
 
@@ -79,5 +84,24 @@ export class AppComponent {
 
 	deleteBoard(idBoard: number | string) {
 		this.store.dispatch(new fromStore.DeleteBoard(idBoard));
+	}
+
+	openCreateTaskModal(event: boolean) {
+		if (event) {
+			this.matDialog
+				.open(TaskFormComponent, taskFormConfig)
+				.afterClosed()
+				.subscribe(() => {
+					this.store.dispatch(
+						new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
+					);
+				});
+		}
+	}
+
+	ngOnDestroy() {
+		this.boardSelected$.complete();
+		this.isLoading$.complete();
+		this.boards$.complete();
 	}
 }

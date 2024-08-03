@@ -24,6 +24,10 @@ export class TaskService {
 		return this.httpClient.post<ApiTask>(this.URL + 'save', task);
 	}
 
+	add(task: ApiTask): Observable<ApiTask> {
+		return this.httpClient.post<ApiTask>(this.URL + 'save', task);
+	}
+
 	update(task: ApiTask): Observable<boolean> {
 		return this.httpClient.post<boolean>(this.URL + 'update', task);
 	}

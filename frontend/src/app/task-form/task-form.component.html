@@ -22,7 +22,6 @@
 			formArrayName="subtasks"
 		>
 			<h3 class="col">Subtasks</h3>
-
 			@for(subtask of subtasks.controls; track subtask) {
 			<mat-form-field
 				class="col-10"
@@ -45,19 +44,10 @@
 					class="remove-subtask-button"
 				></custom-button>
 			</div>
-			}
-			<!-- <mat-form-field
-          class="col-2"
-          [formGroupName]="$index"
-        >
-          <mat-checkbox formControlName="isDone">
-            Done
-          </mat-checkbox>
-        </mat-form-field> -->
-			}
+			} }
 
 			<custom-button
-				[text]="'Add new subtask'"
+				[text]="'Add subtask'"
 				(clickEvent)="addSubtask()"
 				class="col add-subtasks-button"
 				[colorButton]="'accent'"
@@ -80,7 +70,7 @@
 			[colorButton]="'accent'"
 			[disabled]="!taskForm.valid"
 			[text]="
-				!(taskSelected$ | async)
+				!(taskSelected$ | async)?.id
 					? 'Create task'
 					: 'Update Task'
 			"
