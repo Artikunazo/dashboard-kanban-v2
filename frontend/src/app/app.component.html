@@ -1,7 +1,8 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
 		<mat-nav-list class="sidebar-options">
-			@for (board of boards$ | async; track board.id) {
+			@if((isLoading$ | async) === false) { @for (board of
+			boards$ | async; track board.id) {
 			<mat-list-item
 				class="add-board-item"
 				(click)="loadTasksByBoard(board)"
@@ -20,6 +21,8 @@
 			</mat-list-item>
 			} @empty {
 			<span> There are no items.</span>
+			} } @else {
+			<span>Loading...</span>
 			}
 
 			<mat-list-item class="add-board-item">
