@@ -4,7 +4,7 @@ import * as fromBoardActions from '../actions/board_actions';
 
 export interface BoardState extends EntityState<Board> {
 	boardTitle: string;
-	isLoading: boolean;
+	isLoading: boolean; // @ToDo: Delete this
 	error: string;
 }
 

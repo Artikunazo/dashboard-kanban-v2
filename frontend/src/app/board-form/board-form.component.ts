@@ -40,10 +40,11 @@ export class BoardFormComponent {
 		title: this.formBuilder.control('', [Validators.required]),
 	});
 
-	public isLoading = false;
+	public isLoading = false; //@ToDo: Change to BehaivorSubject
 	public isEdit = !!this.matDialogData;
 
 	ngOnInit() {
+		// @ToDo: Delete this
 		this.store.select(fromStore.getBoardIsLoading).subscribe({
 			next: (isLoading) => {
 				this.isLoading = isLoading;

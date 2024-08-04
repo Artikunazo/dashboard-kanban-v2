@@ -3,7 +3,7 @@ import * as fromStatusActions from '../actions/status_actions';
 
 export interface StatusState {
 	status: Status[];
-	isLoading: boolean;
+	isLoading: boolean; //@ToDo: Delete this
 	error: string;
 }
 

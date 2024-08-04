@@ -4,7 +4,7 @@ import * as fromSubtaskActions from '../actions/subtask_actions';
 
 export interface SubtaskState extends EntityState<Subtask> {
 	data: Subtask[];
-	isLoading: boolean;
+	isLoading: boolean; //@ToDo: Delete this
 	error: any;
 }
 

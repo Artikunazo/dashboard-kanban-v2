@@ -4,7 +4,7 @@ import * as fromTasksActions from '../actions/tasks_actions';
 
 export interface TasksState extends EntityState<Task> {
 	boardSelected: number;
-	isLoading: boolean;
+	isLoading: boolean; //@ToDo: Delete this
 	error: string;
 	task: Task | null;
 }

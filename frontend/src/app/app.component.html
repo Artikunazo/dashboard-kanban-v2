@@ -3,11 +3,11 @@
 		<mat-nav-list class="sidebar-options">
 			@if((isLoading$ | async) === false) { @for (board of
 			boards$ | async; track board.id) {
-			<mat-list-item
-				class="add-board-item"
-				(click)="loadTasksByBoard(board)"
-			>
-				<span matListItemTitle>
+			<mat-list-item class="add-board-item">
+				<span
+					matListItemTitle
+					(click)="loadTasksByBoard(board)"
+				>
 					{{ board.title }}
 				</span>
 				<button

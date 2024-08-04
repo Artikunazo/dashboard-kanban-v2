@@ -11,7 +11,7 @@ import {Subtask} from '../models/subtask_models';
 	styleUrl: './subtasks-overview.component.scss',
 })
 export class SubtasksOverviewComponent {
-	public subtask = input<Subtask>({title: '', isDone: false, taskId: null});
+	public subtask = input<Subtask>({} as Subtask);
 	public index = input<number>(0);
 	public subtaskUpdated = output<{}>();
 

@@ -1,5 +1,5 @@
 import {provideHttpClient} from '@angular/common/http';
-import {ApplicationConfig} from '@angular/core';
+import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideRouter} from '@angular/router';
 import {provideEffects} from '@ngrx/effects';
@@ -28,5 +28,8 @@ export const appConfig: ApplicationConfig = {
 		provideState({name: 'subtask', reducer: fromSubtaskReducer.reducer}),
 		provideAnimationsAsync(),
 		provideHttpClient(),
+		provideZoneChangeDetection({
+			eventCoalescing: true,
+		}),
 	],
 };
