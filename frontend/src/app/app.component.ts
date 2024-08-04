@@ -1,11 +1,11 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatDrawer, MatSidenavModule} from '@angular/material/sidenav';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Store} from '@ngrx/store';
 import {BoardFormComponent} from './board-form/board-form.component';
@@ -42,6 +42,8 @@ import {TaskFormComponent} from './task-form/task-form.component';
 	styleUrl: './app.component.scss',
 })
 export class AppComponent {
+	@ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
+
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
@@ -68,7 +70,7 @@ export class AppComponent {
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.boardSelected$.next(board.id ?? 0);
 
-		// @ToDo: check if sidebar can to close
+		this.drawer.toggle();
 	}
 
 	showNewBoardDialog(): void {
