@@ -1,15 +1,15 @@
-import {Injectable, inject} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {Action} from '@ngrx/store';
-import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {TaskService} from 'src/app/api/task.service';
+import { Injectable, inject } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { Observable, catchError, map, mergeMap, of } from 'rxjs';
+import { TaskService } from 'src/app/api/task.service';
 import {
-	ApiTaskToTask,
-	apiTasksToTasks,
-	taskToApiTask,
-	taskWithNewStatusToApiTask,
+  ApiTaskToTask,
+  apiTasksToTasks,
+  taskToApiTask,
+  taskWithNewStatusToApiTask,
 } from 'src/app/converters/task_converter';
-import {ApiTask, Task} from 'src/app/models/tasks_models';
+import { ApiTask, Task } from 'src/app/models/tasks_models';
 import * as fromTasksAction from '../actions/tasks_actions';
 import * as fromTasksActions from '../actions/tasks_actions';
 
@@ -113,18 +113,18 @@ export class TasksEffects {
 
 	updateTaskStatus$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
-			ofType(this.tasksActionsTypes.UPDATE_TASK_STATUS_OVERVIEW),
-			mergeMap((data: fromTasksActions.UpdateStatusTaskOverview) => {
+			ofType(this.tasksActionsTypes.UPDATE_TASK_STATUS),
+			mergeMap((data: fromTasksActions.UpdateStatusTask) => {
 				const apiTask = taskWithNewStatusToApiTask(data.payload);
 				return this.taskService.updateStatus(apiTask).pipe(
 					map((apiTaskUpdated: boolean) => {
-						return new fromTasksAction.UpdateStatusTaskOverviewSuccess({
+						return new fromTasksAction.UpdateStatusTaskSuccess({
 							id: +data.payload.task.id,
 							changes: {...data.payload},
 						});
 					}),
 					catchError((error) => {
-						return of(new fromTasksAction.UpdateStatusTaskOverviewFail(error));
+						return of(new fromTasksAction.UpdateStatusTaskFail(error));
 					}),
 				);
 			}),

@@ -109,7 +109,7 @@ export function reducer(
 			return {...state, task: null, isLoading: false, error: ''};
 		}
 
-		case tasksActionTypes.UPDATE_TASK_STATUS_OVERVIEW_SUCCESS: {
+		case tasksActionTypes.UPDATE_TASK_STATUS_SUCCESS: {
 			return taskAdapter.updateOne(action.payload, {
 				...state,
 				isLoading: false,
@@ -117,7 +117,7 @@ export function reducer(
 			});
 		}
 
-		case tasksActionTypes.UPDATE_TASK_STATUS_OVERVIEW_FAIL: {
+		case tasksActionTypes.UPDATE_TASK_STATUS_FAIL: {
 			return {...state, error: action.payload};
 		}
 

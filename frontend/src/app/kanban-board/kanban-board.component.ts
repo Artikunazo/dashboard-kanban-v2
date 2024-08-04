@@ -41,7 +41,7 @@ export class KanbanBoardComponent implements OnDestroy {
 
 	drop(event: CdkDragDrop<Task[]>) {
 		this.store.dispatch(
-			new fromStore.UpdateStatusTaskOverview({
+			new fromStore.UpdateStatusTask({
 				task: event.previousContainer.data[event.previousIndex],
 				status: event.container.element.nativeElement.id,
 			}),

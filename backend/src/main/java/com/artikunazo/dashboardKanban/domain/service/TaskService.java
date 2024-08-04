@@ -39,7 +39,9 @@ public class TaskService {
     Optional<TaskDomain> task = taskDomainRepository.getTaskById(idTask);
 
     task.ifPresent(taskDomain -> {
-      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskDomain.getTaskId()));
+      int taskId = taskDomain.getTaskId();
+      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskId));
+      taskDomain.setStatusName(statusService.getStatusNameOfTask(taskId));
     });
 
     return task;

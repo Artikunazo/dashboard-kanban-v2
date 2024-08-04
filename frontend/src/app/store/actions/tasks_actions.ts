@@ -1,6 +1,6 @@
-import {Update} from '@ngrx/entity';
-import {Action} from '@ngrx/store';
-import {Task, TaskOverview} from 'src/app/models/tasks_models';
+import { Update } from '@ngrx/entity';
+import { Action } from '@ngrx/store';
+import { Task } from 'src/app/models/tasks_models';
 
 export enum TasksActionType {
 	LOAD_TASK = '[Task] Load Task',
@@ -29,9 +29,9 @@ export enum TasksActionType {
 
 	CLEAN_TASK_SELECTED = '[Task] Clean task selected',
 
-	UPDATE_TASK_STATUS_OVERVIEW = '[Task] Update Task Status Overview',
-	UPDATE_TASK_STATUS_OVERVIEW_SUCCESS = '[Task] Update Task Status Overview Success',
-	UPDATE_TASK_STATUS_OVERVIEW_FAIL = '[Task] Update Task Status Overview Fail',
+	UPDATE_TASK_STATUS = '[Task] Update Task Status ',
+	UPDATE_TASK_STATUS_SUCCESS = '[Task] Update Task Status  Success',
+	UPDATE_TASK_STATUS_FAIL = '[Task] Update Task Status  Fail',
 }
 
 // LOAD
@@ -152,20 +152,20 @@ export class CleanTaskSelected implements Action {
 	readonly type = TasksActionType.CLEAN_TASK_SELECTED;
 }
 
-export class UpdateStatusTaskOverview implements Action {
-	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW;
+export class UpdateStatusTask implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS;
 
 	constructor(public payload: {task: Task; status: string}) {}
 }
 
-export class UpdateStatusTaskOverviewSuccess implements Action {
-	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW_SUCCESS;
+export class UpdateStatusTaskSuccess implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS_SUCCESS;
 
-	constructor(public payload: Update<TaskOverview>) {}
+	constructor(public payload: Update<Task>) {}
 }
 
-export class UpdateStatusTaskOverviewFail implements Action {
-	readonly type = TasksActionType.UPDATE_TASK_STATUS_OVERVIEW_FAIL;
+export class UpdateStatusTaskFail implements Action {
+	readonly type = TasksActionType.UPDATE_TASK_STATUS_FAIL;
 
 	constructor(public payload: any) {}
 }
@@ -190,6 +190,6 @@ export type TasksActions =
 	| SaveTaskSuccess
 	| SaveTaskFail
 	| CleanTaskSelected
-	| UpdateStatusTaskOverview
-	| UpdateStatusTaskOverviewSuccess
-	| UpdateStatusTaskOverviewFail;
+	| UpdateStatusTask
+	| UpdateStatusTaskSuccess
+	| UpdateStatusTaskFail;

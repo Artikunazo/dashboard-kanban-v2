@@ -1,6 +1,6 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
 	FormArray,
 	FormBuilder,
@@ -8,17 +8,17 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {Store} from '@ngrx/store';
-import {BehaviorSubject, map, Observable} from 'rxjs';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {Status} from '../models/status_models';
-import {Task} from '../models/tasks_models';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { CustomButtonComponent } from '../common/custom-button/custom-button.component';
+import { Status } from '../models/status_models';
+import { Task } from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
@@ -87,7 +87,7 @@ export class TaskFormComponent implements OnDestroy {
 
 						this.taskForm.get('title')?.setValue(task.title);
 						this.taskForm.get('description')?.setValue(task.description);
-						this.taskForm.get('status')?.setValue(task.status);
+						this.taskForm.get('status')?.setValue(task.statusId);
 						this.taskForm.get('subtasks')?.setValue(subtasks);
 
 						this.taskSelected$.next(task);

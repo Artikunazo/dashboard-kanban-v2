@@ -81,7 +81,17 @@ export class TaskDetailsComponent implements OnDestroy {
 				next: (task: Task | null) => {
 					if (!task) return;
 
-					this.statusSelected.setValue(task.statusId);
+					this.statusSelected.setValue(task.status);
+					this.statusSelected.valueChanges.subscribe({
+						next: (value: string) => {
+							this.store.dispatch(
+								new fromStore.UpdateStatusTask({
+									task: this.task$.getValue(),
+									status: value,
+								}),
+							);
+						},
+					});
 					this.task$.next(task);
 				},
 			});

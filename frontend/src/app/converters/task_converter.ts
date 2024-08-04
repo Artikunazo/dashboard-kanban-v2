@@ -1,11 +1,11 @@
-import {ApiSubtask, Subtask} from '../models/subtask_models';
+import { ApiSubtask, Subtask } from '../models/subtask_models';
 import {
-	ApiTask,
-	ApiTaskOverwivew,
-	Task,
-	TaskOverview,
+  ApiTask,
+  ApiTaskOverwivew,
+  Task,
+  TaskOverview,
 } from '../models/tasks_models';
-import {apiSubtaskToSubtask, subtasktoApiSubtask} from './subtask_converters';
+import { apiSubtaskToSubtask, subtasktoApiSubtask } from './subtask_converters';
 
 export function ApiTaskToTask(apiTask: ApiTask): Task {
 	let subtasks: Subtask[] = [];
