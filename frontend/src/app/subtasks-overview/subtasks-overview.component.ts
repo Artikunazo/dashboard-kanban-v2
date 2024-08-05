@@ -13,16 +13,12 @@ import {Subtask} from '../models/subtask_models';
 export class SubtasksOverviewComponent {
 	public subtask = input<Subtask>({} as Subtask);
 	public index = input<number>(0);
-	public subtaskUpdated = output<{}>();
-
-	public newSubtask = {} as Subtask;
+	public subtaskUpdated = output<Subtask>();
 
 	changed(checked: boolean) {
-		this.newSubtask = {
+		this.subtaskUpdated.emit({
 			...this.subtask(),
 			isDone: checked,
-		};
-
-		this.subtaskUpdated.emit(this.newSubtask);
+		});
 	}
 }

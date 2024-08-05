@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, ViewChild} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
@@ -41,7 +41,7 @@ import {TaskFormComponent} from './task-form/task-form.component';
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 	@ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
 
 	protected readonly matDialog = inject(MatDialog);
