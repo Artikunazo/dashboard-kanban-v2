@@ -15,15 +15,14 @@ export class SubtasksOverviewComponent {
 	public index = input<number>(0);
 	public subtaskUpdated = output<{}>();
 
-	public newSubtask!: Subtask;
+	public newSubtask = {} as Subtask;
 
 	changed(checked: boolean) {
 		this.newSubtask = {
-			title: this.subtask()?.title,
+			...this.subtask(),
 			isDone: checked,
-			taskId: null,
-			// index: this.index(),
 		};
+
 		this.subtaskUpdated.emit(this.newSubtask);
 	}
 }

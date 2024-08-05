@@ -17,7 +17,7 @@ export class SubtaskDoneDirective implements OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes) {
-			if (changes['subtaskDone']?.currentValue === 'Done') {
+			if (changes['subtaskDone']?.currentValue === true) {
 				this.el.nativeElement.classList.add('markedDone');
 			} else {
 				this.el.nativeElement.classList.remove('markedDone');

@@ -37,6 +37,12 @@ export class KanbanBoardComponent implements OnDestroy {
 			}),
 			{},
 		);
+
+		for (let column of Object.entries(this.tasksListIndexed)) {
+			this.tasksListIndexed[column[0]] = column[1].sort((a: Task, b: Task) => {
+				return +b.id - +a.id;
+			});
+		}
 	}
 
 	drop(event: CdkDragDrop<Task[]>) {

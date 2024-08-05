@@ -82,6 +82,7 @@ export class TaskDetailsComponent implements OnDestroy {
 					if (!task) return;
 
 					this.statusSelected.setValue(task.status);
+
 					this.statusSelected.valueChanges.subscribe({
 						next: (value: string) => {
 							this.store.dispatch(
@@ -92,12 +93,14 @@ export class TaskDetailsComponent implements OnDestroy {
 							);
 						},
 					});
+
 					this.task$.next(task);
 				},
 			});
 	}
 
 	subtaskUpdated(event: any) {
+		console.log('subtask updated', event);
 		// const {title, status, index} = event;
 		// const newSubtasks = [...this.task.subtasks];
 		// newSubtasks[index] = {title, status};
