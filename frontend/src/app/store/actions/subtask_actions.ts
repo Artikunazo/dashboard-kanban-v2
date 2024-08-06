@@ -74,6 +74,24 @@ export class DeleteSubtaskFail implements Action {
 	constructor(public payload: any) {}
 }
 
+export class UpdateSubtask implements Action {
+	readonly type = SubtaskActionType.UPDATE_SUBTASK;
+
+	constructor(public payload: Subtask) {}
+}
+
+export class UpdateSubtaskSuccess implements Action {
+	readonly type = SubtaskActionType.UPDATE_SUBTASK_SUCCESS;
+
+	constructor(public payload: Update<Subtask>) {}
+}
+
+export class UpdateSubtaskFail implements Action {
+	readonly type = SubtaskActionType.UPDATE_SUBTASK_FAIL;
+
+	constructor(public payload: any) {}
+}
+
 export type SubtaskActions =
 	| LoadSubtasks
 	| LoadSubtasksFail
@@ -83,4 +101,7 @@ export type SubtaskActions =
 	| SaveSubtaskSuccess
 	| DeleteSubtask
 	| DeleteSubtaskFail
-	| DeleteSubtaskSuccess;
+	| DeleteSubtaskSuccess
+	| UpdateSubtask
+	| UpdateSubtaskSuccess
+	| UpdateSubtaskFail;

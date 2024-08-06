@@ -41,7 +41,14 @@ public class SubtaskController {
     }
   }
 
-//  @PutMapping("/update-subtask")
-//  ResponseEntity<String> updateSubtask
+  @PutMapping("/update")
+  ResponseEntity<String> updateSubtask(@RequestBody SubtaskDomain subtaskDomain) {
+    System.out.println(subtaskDomain.getSubtaskId() + " " + subtaskDomain.getDone());
+    if(!subtaskService.updateSubtask(subtaskDomain)) {
+      return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+    } else {
+      return new ResponseEntity<String>(HttpStatus.OK);
+    }
+  }
 
 }

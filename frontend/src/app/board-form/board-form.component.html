@@ -12,16 +12,16 @@
 		</mat-form-field>
 
 		<div class="col justify-self-end">
-			@if (isLoading) {
+			@if (isLoading$ | async) {
 			<mat-spinner class="col" [diameter]="30" />
-			} @else if(isEdit && !isLoading) {
+			} @else if(isEdit && !(isLoading$ | async)) {
 			<custom-button
 				[text]="'Save'"
 				[colorButton]="'accent'"
 				(clickEvent)="updateBoard()"
 				class="col create-new-board-button"
 			/>
-			} @else if(!isEdit && !isLoading) {
+			} @else if(!isEdit && !(isLoading$ | async)) {
 			<custom-button
 				[text]="'Save'"
 				[colorButton]="'accent'"

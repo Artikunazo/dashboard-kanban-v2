@@ -3,10 +3,12 @@
 		<div class="col-1">
 			<mat-checkbox
 				(change)="changed($event.checked)"
+				[ngModel]="subtask()?.isDone"
+				[disabled]="subtask()?.isDone ?? false"
 			></mat-checkbox>
 		</div>
 		<div class="col-11 align-self-center">
-			<p [subtaskDone]="newSubtask?.isDone ?? false">
+			<p [subtaskDone]="subtask().isDone ?? false">
 				{{ subtask()?.title }}
 			</p>
 		</div>

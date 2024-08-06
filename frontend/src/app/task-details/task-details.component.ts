@@ -100,7 +100,8 @@ export class TaskDetailsComponent implements OnDestroy {
 	}
 
 	subtaskUpdated(event: any) {
-		console.log('subtask updated', event);
+		// console.log('subtask updated', event);
+		this.store.dispatch(new fromStore.UpdateSubtask(event));
 		// const {title, status, index} = event;
 		// const newSubtasks = [...this.task.subtasks];
 		// newSubtasks[index] = {title, status};

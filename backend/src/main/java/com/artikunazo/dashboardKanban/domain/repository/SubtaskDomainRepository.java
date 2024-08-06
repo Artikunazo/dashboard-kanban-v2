@@ -12,4 +12,5 @@ public interface SubtaskDomainRepository {
   Optional<SubtaskDomain> getSubtaskById(int idSubtask);
   Integer getCountSubtasksByIdTask(int idTask);
   Integer getIsDoneSubTaskByTask(int idTask);
+  void updateSubtask(SubtaskDomain subtaskDomain);
 }

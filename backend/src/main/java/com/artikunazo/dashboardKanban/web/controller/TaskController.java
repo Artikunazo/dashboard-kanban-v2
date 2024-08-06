@@ -56,7 +56,7 @@ public class TaskController {
     }
   }
 
-  @PostMapping("/update-status")
+  @PutMapping("/update-status")
   public ResponseEntity<Boolean> updateTaskStatus(@RequestBody TaskDomain taskDomain) {
     if(!taskService.updateTaskStatus(taskDomain)){
       return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);

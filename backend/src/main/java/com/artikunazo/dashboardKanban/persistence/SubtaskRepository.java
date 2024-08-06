@@ -54,4 +54,13 @@ public class SubtaskRepository implements SubtaskDomainRepository {
     return subtaskCrudRepository.getIsDoneSubTaskByTask(idTask);
   }
 
+  @Override
+  public void updateSubtask(SubtaskDomain subtaskDomain) {
+    subtaskCrudRepository.updateSubtask(
+        subtaskDomain.getTitleSubtask(),
+        subtaskDomain.getDone(),
+        subtaskDomain.getSubtaskId()
+    );
+  }
+
 }

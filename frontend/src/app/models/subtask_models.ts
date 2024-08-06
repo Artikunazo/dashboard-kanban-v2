@@ -8,6 +8,6 @@ export interface Subtask {
 export interface ApiSubtask {
 	subtaskId: number | null;
 	titleSubtask: string;
-	done: boolean;
+	done: number;
 	taskId: number | null;
 }

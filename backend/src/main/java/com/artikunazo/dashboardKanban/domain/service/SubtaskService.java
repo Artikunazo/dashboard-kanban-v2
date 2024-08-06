@@ -39,4 +39,13 @@ public class SubtaskService {
   public Integer getIsDoneSubTaskByTask(int idTask){
     return subtaskDomainRepository.getIsDoneSubTaskByTask(idTask);
   }
+
+  public boolean updateSubtask(SubtaskDomain subtaskDomain) {
+    System.out.println(subtaskDomain.getSubtaskId() + " " + subtaskDomain.getDone());
+    return getSubtaskById(subtaskDomain.getSubtaskId()).map(subtaskDomain1 -> {
+      subtaskDomainRepository.updateSubtask(subtaskDomain);
+      return true;
+    }).orElse(false);
+
+  }
 }

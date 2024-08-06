@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Observable} from 'rxjs';
 import {CONTEXT_PATH, URL_BASE} from '../common/constants';
-import {Subtask} from '../models/subtask_models';
+import {ApiSubtask, Subtask} from '../models/subtask_models';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,5 +22,9 @@ export class SubtaskService {
 
 	delete(idSubtask: number): Observable<any> {
 		return this.httpClient.delete<any>(`${this.URL}delete/${idSubtask}`);
+	}
+
+	update(subtask: ApiSubtask): Observable<ApiSubtask> {
+		return this.httpClient.put<ApiSubtask>(`${this.URL}update`, subtask);
 	}
 }

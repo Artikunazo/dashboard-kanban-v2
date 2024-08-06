@@ -3,7 +3,12 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
 import {SubtaskService} from 'src/app/api/subtask.service';
-import {Subtask} from 'src/app/models/subtask_models';
+import {
+	apiSubtaskToSubtask,
+	subtasktoApiSubtask,
+} from 'src/app/converters/subtask_converters';
+import {ApiSubtask, Subtask} from 'src/app/models/subtask_models';
+import * as fromStore from 'src/app/store';
 import * as fromSubtaskActions from '../actions/subtask_actions';
 
 @Injectable({
@@ -62,6 +67,27 @@ export class SubtaskEffects {
 					}),
 					catchError((error: any) => {
 						return of(new fromSubtaskActions.DeleteSubtaskFail(error));
+					}),
+				);
+			}),
+		);
+	});
+
+	updateSubtask$: Observable<Action> = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(this.subtaskActionType.UPDATE_SUBTASK),
+			mergeMap((subtask: fromStore.UpdateSubtask) => {
+				const apiSubtask = subtasktoApiSubtask(subtask.payload);
+				return this.subtaskService.update(apiSubtask).pipe(
+					map((apiSubtask: ApiSubtask) => {
+						const subtask = apiSubtaskToSubtask(apiSubtask);
+						return new fromStore.UpdateSubtaskSuccess({
+							id: subtask.id ?? 0,
+							changes: {...subtask},
+						});
+					}),
+					catchError((error) => {
+						return of(new fromStore.UpdateSubtaskFail(error));
 					}),
 				);
 			}),

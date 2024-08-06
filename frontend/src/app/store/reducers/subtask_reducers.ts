@@ -89,6 +89,20 @@ export function reducer(
 			};
 		}
 
+		case subtaskActionType.UPDATE_SUBTASK_SUCCESS: {
+			return subtaskAdapter.updateOne(action.payload, {
+				...state,
+				isLoading: false,
+			});
+		}
+
+		case subtaskActionType.UPDATE_SUBTASK_FAIL: {
+			return {
+				...state,
+				error: action.payload,
+			};
+		}
+
 		default: {
 			return {...state};
 		}

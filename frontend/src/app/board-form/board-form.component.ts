@@ -1,4 +1,5 @@
-import {Component, inject} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {
 	FormBuilder,
 	FormGroup,
@@ -11,6 +12,7 @@ import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Store} from '@ngrx/store';
+import {BehaviorSubject} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Board} from '../models/board_models';
 import * as fromStore from '../store';
@@ -25,11 +27,12 @@ import * as fromStore from '../store';
 		MatFormField,
 		CustomButtonComponent,
 		MatProgressSpinnerModule,
+		AsyncPipe,
 	],
 	templateUrl: './board-form.component.html',
 	styleUrl: './board-form.component.scss',
 })
-export class BoardFormComponent {
+export class BoardFormComponent implements OnDestroy {
 	protected readonly formBuilder = inject(FormBuilder);
 	protected readonly store = inject(Store<fromStore.AppState>);
 	protected readonly matDialogRef: MatDialogRef<BoardFormComponent> =
@@ -40,17 +43,10 @@ export class BoardFormComponent {
 		title: this.formBuilder.control('', [Validators.required]),
 	});
 
-	public isLoading = false; //@ToDo: Change to BehaivorSubject
+	public isLoading$ = new BehaviorSubject<boolean>(true);
 	public isEdit = !!this.matDialogData;
 
-	ngOnInit() {
-		// @ToDo: Delete this
-		this.store.select(fromStore.getBoardIsLoading).subscribe({
-			next: (isLoading) => {
-				this.isLoading = isLoading;
-			},
-		});
-
+	constructor() {
 		if (
 			this.matDialogData !== null &&
 			Object.hasOwn(this.matDialogData || {}, 'id')
@@ -63,6 +59,7 @@ export class BoardFormComponent {
 
 	saveBoard() {
 		this.store.dispatch(new fromStore.SaveBoard(this.boardForm.value));
+		this.isLoading$.next(false);
 		this.matDialogRef.close();
 	}
 
@@ -74,5 +71,8 @@ export class BoardFormComponent {
 			}),
 		);
 		this.matDialogRef.close();
+	}
+	ngOnDestroy(): void {
+		this.isLoading$.complete();
 	}
 }
