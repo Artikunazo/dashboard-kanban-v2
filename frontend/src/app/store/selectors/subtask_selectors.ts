@@ -7,11 +7,6 @@ export const selectSubtaskState =
 export const selectSubtasksByIdTask = (idTask: number) =>
 	createSelector(selectSubtaskState, (entities: any) => entities[idTask]);
 
-export const selectSubtaskIsLoading = createSelector(
-	selectSubtaskState,
-	fromSubtaskReducer.getSubtaskIsLoading,
-);
-
 export const selectSubtaskError = createSelector(
 	selectSubtaskState,
 	fromSubtaskReducer.getSubtaskError,

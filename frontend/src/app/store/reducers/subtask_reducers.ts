@@ -4,8 +4,6 @@ import * as fromSubtaskActions from '../actions/subtask_actions';
 
 //@ToDo: Lipiar la data cuando se cierre el modal de task details
 export interface SubtaskState extends EntityState<Subtask> {
-	data: Subtask[];
-	isLoading: boolean; //@ToDo: Delete this
 	error: any;
 }
 
@@ -14,8 +12,6 @@ export const subtaskAdapter = createEntityAdapter<Subtask>({
 });
 
 export const initialState: SubtaskState = subtaskAdapter.getInitialState({
-	data: [],
-	isLoading: false,
 	error: null,
 });
 
@@ -26,40 +22,19 @@ export function reducer(
 	const subtaskActionType = fromSubtaskActions.SubtaskActionType;
 
 	switch (action.type) {
-		case subtaskActionType.LOAD_SUBTASKS: {
-			return {
-				...state,
-				isLoading: true,
-			};
-		}
-
 		case subtaskActionType.LOAD_SUBTASKS_SUCCESS: {
-			return subtaskAdapter.setAll(action.payload, {
-				...state,
-				isLoading: false,
-			});
+			return subtaskAdapter.setAll(action.payload, state);
 		}
 
 		case subtaskActionType.LOAD_SUBTASKS_FAIL: {
 			return {
 				...state,
-				isLoading: false,
 				error: action.payload,
 			};
 		}
 
-		case subtaskActionType.SAVE_SUBTASK: {
-			return {
-				...state,
-				isLoading: true,
-			};
-		}
-
 		case subtaskActionType.SAVE_SUBTASK_SUCCESS: {
-			return subtaskAdapter.updateOne(action.payload, {
-				...state,
-				isLoading: false,
-			});
+			return subtaskAdapter.updateOne(action.payload, state);
 		}
 
 		case subtaskActionType.SAVE_SUBTASK_FAIL: {
@@ -69,23 +44,13 @@ export function reducer(
 			};
 		}
 
-		case subtaskActionType.DELETE_SUBTASK: {
-			return {
-				...state,
-				isLoading: true,
-			};
-		}
 		case subtaskActionType.DELETE_SUBTASK_SUCCESS: {
-			return subtaskAdapter.removeOne(action.payload, {
-				...state,
-				isLoading: false,
-			});
+			return subtaskAdapter.removeOne(action.payload, state);
 		}
 
 		case subtaskActionType.DELETE_SUBTASK_FAIL: {
 			return {
 				...state,
-				isLoading: false,
 				error: action.payload,
 			};
 		}
@@ -93,7 +58,6 @@ export function reducer(
 		case subtaskActionType.UPDATE_SUBTASK_SUCCESS: {
 			return subtaskAdapter.updateOne(action.payload, {
 				...state,
-				isLoading: false,
 			});
 		}
 
@@ -111,7 +75,6 @@ export function reducer(
 }
 
 export const getSubtaskEntities = (state: SubtaskState) => state.entities;
-export const getSubtaskIsLoading = (state: SubtaskState) => state.isLoading;
 export const getSubtaskError = (state: SubtaskState) => state.error;
 export const {selectEntities, selectAll, selectIds, selectTotal} =
 	subtaskAdapter.getSelectors();

@@ -3,13 +3,11 @@ import * as fromStatusActions from '../actions/status_actions';
 
 export interface StatusState {
 	status: Status[];
-	isLoading: boolean; //@ToDo: Delete this
 	error: string;
 }
 
 export const initialState: StatusState = {
 	status: [],
-	isLoading: false,
 	error: '',
 };
 
@@ -20,15 +18,10 @@ export function reducer(
 	const statusActionType = fromStatusActions.StatusActionType;
 
 	switch (action.type) {
-		case statusActionType.LOAD_STATUSES: {
-			return {...state, isLoading: true, error: ''};
-		}
-
 		case statusActionType.LOAD_STATUSES_SUCCESS: {
 			return {
 				...state,
 				status: action.payload,
-				isLoading: false,
 				error: '',
 			};
 		}
@@ -37,7 +30,6 @@ export function reducer(
 			return {
 				...state,
 				status: [],
-				isLoading: false,
 				error: action.payload,
 			};
 		}
@@ -50,4 +42,3 @@ export function reducer(
 
 export const getStatuses = (state: StatusState) => state.status;
 export const getStatusError = (state: StatusState) => state.error;
-export const getStatusIsLoading = (state: StatusState) => state.isLoading;

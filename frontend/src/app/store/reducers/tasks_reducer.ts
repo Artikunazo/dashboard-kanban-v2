@@ -4,7 +4,6 @@ import * as fromTasksActions from '../actions/tasks_actions';
 
 export interface TasksState extends EntityState<Task> {
 	boardSelected: number;
-	isLoading: boolean; //@ToDo: Delete this
 	error: string;
 	task: Task | null;
 }
@@ -15,7 +14,6 @@ export const taskAdapter = createEntityAdapter<Task>({
 
 export const initialState: TasksState = taskAdapter.getInitialState({
 	boardSelected: 0,
-	isLoading: false,
 	error: '',
 	task: null,
 });
@@ -31,7 +29,6 @@ export function reducer(
 			return {
 				...state,
 				boardSelected: action.payload,
-				isLoading: true,
 			};
 		}
 
@@ -40,27 +37,19 @@ export function reducer(
 		}
 
 		case tasksActionTypes.LOAD_TASKS_BY_BOARD_FAIL: {
-			return {...state, error: action.payload, isLoading: false};
-		}
-
-		case tasksActionTypes.LOAD_TASK: {
-			return {
-				...state,
-				isLoading: true,
-			};
+			return {...state, error: action.payload};
 		}
 
 		case tasksActionTypes.LOAD_TASK_SUCCESS: {
 			return {
 				...state,
-				isLoading: false,
 				error: '',
 				task: action.payload,
 			};
 		}
 
 		case tasksActionTypes.LOAD_TASK_FAIL: {
-			return {...state, error: action.payload, isLoading: false};
+			return {...state, error: action.payload};
 		}
 
 		case tasksActionTypes.ADD_TASK_SUCCESS: {
@@ -74,7 +63,6 @@ export function reducer(
 		case tasksActionTypes.UPDATE_TASK_SUCCESS: {
 			return taskAdapter.updateOne(action.payload, {
 				...state,
-				isLoading: false,
 				error: '',
 			});
 		}
@@ -86,7 +74,6 @@ export function reducer(
 		case tasksActionTypes.DELETE_TASK_SUCCESS: {
 			return taskAdapter.removeOne(action.payload, {
 				...state,
-				isLoading: false,
 				error: '',
 				task: null,
 			});
@@ -97,7 +84,6 @@ export function reducer(
 		}
 
 		case tasksActionTypes.SAVE_TASK_SUCCESS: {
-			// console.info('reducer', action);
 			return taskAdapter.addOne(action.payload, state);
 		}
 
@@ -106,13 +92,12 @@ export function reducer(
 		}
 
 		case tasksActionTypes.CLEAN_TASK_SELECTED: {
-			return {...state, task: null, isLoading: false, error: ''};
+			return {...state, task: null, error: ''};
 		}
 
 		case tasksActionTypes.UPDATE_TASK_STATUS_SUCCESS: {
 			return taskAdapter.updateOne(action.payload, {
 				...state,
-				isLoading: false,
 				error: '',
 			});
 		}
@@ -127,7 +112,6 @@ export function reducer(
 	}
 }
 
-export const getTaskIsLoading = (state: TasksState) => state.isLoading;
 export const getTaskError = (state: TasksState) => state.error;
 export const {selectAll, selectEntities, selectIds, selectTotal} =
 	taskAdapter.getSelectors();

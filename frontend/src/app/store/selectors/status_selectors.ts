@@ -9,11 +9,6 @@ export const selectStatusData = createSelector(
 	fromStatusReducer.getStatuses,
 );
 
-export const selectStatusIsLoading = createSelector(
-	selectStatusState,
-	fromStatusReducer.getStatusIsLoading,
-);
-
 export const selectStatusError = createSelector(
 	selectStatusState,
 	fromStatusReducer.getStatusError,
