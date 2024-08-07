@@ -48,19 +48,12 @@ public class TaskService {
   }
 
   public TaskDomain saveTask(TaskDomain taskDomain) {
-    TaskDomain taskSaved = taskDomainRepository.saveTask(taskDomain);
-
-    List<SubtaskDomain> subtasks = taskDomain.getSubtasks();
-    for (SubtaskDomain subtask : subtasks) {
-      subtask.setTaskId(taskSaved.getTaskId());
-      subtaskService.saveSubtask(subtask);
-    }
-
-    return taskSaved;
+    return taskDomainRepository.saveTask(taskDomain);
   }
 
   public boolean deleteTask(int idTask) {
     // @ToDo: Delete subtasks related with task to delete
+    // Apply with base on status in other column: isDeleted: true | false
     return getTaskById(idTask).map(taskDomain -> {
       taskDomainRepository.deleteTask(idTask);
       return true;

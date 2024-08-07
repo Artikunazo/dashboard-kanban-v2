@@ -21,6 +21,7 @@ import {
 	taskFormConfig,
 } from '../common/modal_configs';
 import {Status} from '../models/status_models';
+import {Subtask} from '../models/subtask_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
@@ -99,36 +100,8 @@ export class TaskDetailsComponent implements OnDestroy {
 			});
 	}
 
-	subtaskUpdated(event: any) {
-		// console.log('subtask updated', event);
+	subtaskUpdated(event: Subtask) {
 		this.store.dispatch(new fromStore.UpdateSubtask(event));
-		// const {title, status, index} = event;
-		// const newSubtasks = [...this.task.subtasks];
-		// newSubtasks[index] = {title, status};
-		// this.task = {...this.task, subtasks: newSubtasks};
-		// console.log('after', this.task());
-		// this.store.dispatch(new fromStore.UpdateTask(this.task()));
-		// const {title, status, index} = event;
-		// this.matDialogData.subTasks[index] = {...title, ...status};
-		// const newSubtask = {
-		// 	...this.task.subtasks[index],
-		// 	...{status: status},
-		// };
-		// this.task.subtasks[index] = [...newSubtask.title, ...newSubtask.status];
-		// console.log(this.task);
-		// this.task.subtasks[index] = {
-		// 	...title,
-		// 	...status,
-		// };
-		// this.task.subtasks[event.index] = {...event};
-		// this.task.subtasks[event.index] = {
-		// 	...this.task.subtasks[event.index],
-		// 	status: event.checked,
-		// };
-		// console.log('task after', this.task);
-		// this.store.dispatch(
-		//   new fromStore.UpdateTask({...this.task}),
-		// );
 	}
 
 	deleteConfirmation(isDeleting: boolean): void {
@@ -171,6 +144,10 @@ export class TaskDetailsComponent implements OnDestroy {
 			});
 
 		this.matDialogRef.close();
+	}
+
+	addSubtask() {
+		console.info('Add subtask');
 	}
 
 	ngOnDestroy() {

@@ -17,42 +17,7 @@
 			></textarea>
 		</mat-form-field>
 
-		<div
-			class="col row subtasks-container"
-			formArrayName="subtasks"
-		>
-			<h3 class="col">Subtasks</h3>
-			@for(subtask of subtasks.controls; track subtask) {
-			<mat-form-field
-				class="col-10"
-				[formGroupName]="$index"
-			>
-				<input
-					matInput
-					formControlName="title"
-					placeholder="Example"
-					type="text"
-					autocomplete="false"
-				/>
-			</mat-form-field>
-			@if(subtasks.length > 0) {
-
-			<div class="col-2">
-				<custom-button
-					(clickEvent)="removeSubtask($index)"
-					[iconName]="'delete'"
-					class="remove-subtask-button"
-				></custom-button>
-			</div>
-			} }
-
-			<custom-button
-				[text]="'Add subtask'"
-				(clickEvent)="addSubtask()"
-				class="col add-subtasks-button"
-				[colorButton]="'accent'"
-			/>
-		</div>
+		<!-- Subtask is managemented In Task Details Component -->
 
 		<mat-form-field class="col">
 			<mat-label>Status</mat-label>

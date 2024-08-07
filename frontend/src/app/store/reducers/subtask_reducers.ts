@@ -2,6 +2,7 @@ import {EntityState, createEntityAdapter} from '@ngrx/entity';
 import {Subtask} from 'src/app/models/subtask_models';
 import * as fromSubtaskActions from '../actions/subtask_actions';
 
+//@ToDo: Lipiar la data cuando se cierre el modal de task details
 export interface SubtaskState extends EntityState<Subtask> {
 	data: Subtask[];
 	isLoading: boolean; //@ToDo: Delete this

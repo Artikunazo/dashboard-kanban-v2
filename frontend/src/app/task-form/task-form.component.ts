@@ -2,7 +2,6 @@ import {AsyncPipe} from '@angular/common';
 import {Component, inject, OnDestroy} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
-	FormArray,
 	FormBuilder,
 	FormGroup,
 	ReactiveFormsModule,
@@ -74,21 +73,9 @@ export class TaskFormComponent implements OnDestroy {
 					console.info('Before', task);
 
 					if (task) {
-						const subtasks = task.subtasks.map((subtask) => {
-							return this.formBuilder.group({
-								title: this.formBuilder.control(subtask.title ?? '', [
-									Validators.required,
-								]),
-								status: this.formBuilder.control(
-									!subtask.isDone ? 'ToDo' : 'Done',
-								),
-							});
-						});
-
 						this.taskForm.get('title')?.setValue(task.title);
 						this.taskForm.get('description')?.setValue(task.description);
 						this.taskForm.get('status')?.setValue(task.statusId);
-						this.taskForm.get('subtasks')?.setValue(subtasks);
 
 						this.taskSelected$.next(task);
 					}
@@ -96,15 +83,10 @@ export class TaskFormComponent implements OnDestroy {
 			});
 	}
 
-	get subtasks() {
-		return this.taskForm.get('subtasks') as FormArray;
-	}
-
 	initTaskForm() {
 		this.taskForm = this.formBuilder.group({
 			title: this.formBuilder.control('', [Validators.required]),
 			description: this.formBuilder.control('', [Validators.required]),
-			subtasks: this.formBuilder.array([]),
 			status: this.formBuilder.control('', [Validators.required]),
 		});
 	}
@@ -121,15 +103,6 @@ export class TaskFormComponent implements OnDestroy {
 		this.matDialogRef.close();
 	}
 
-	addSubtask() {
-		return this.subtasks.push(
-			this.formBuilder.group({
-				title: this.formBuilder.control('', [Validators.required]),
-				status: this.formBuilder.control('ToDo'),
-			}),
-		);
-	}
-
 	createTask() {
 		if (this.taskForm.invalid) return;
 
@@ -139,8 +112,8 @@ export class TaskFormComponent implements OnDestroy {
 			description: this.taskForm.value.description,
 			statusId: this.taskForm.value.status,
 			boardId: this.boardSelected$.getValue(),
-			subtasks: <[]>this.taskForm.value.subtasks,
-			countDoneSubtasks: this.taskForm.value.subtasks.length,
+			subtasks: [],
+			countDoneSubtasks: 0,
 		};
 
 		if (this.taskSelected$.getValue().id) {
@@ -151,10 +124,6 @@ export class TaskFormComponent implements OnDestroy {
 		}
 
 		this.closeDialog();
-	}
-
-	removeSubtask(index: number) {
-		this.subtasks.removeAt(index);
 	}
 
 	ngOnDestroy() {

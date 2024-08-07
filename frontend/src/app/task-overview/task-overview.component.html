@@ -4,10 +4,12 @@
 			{{ task()?.title }}
 		</p>
 
+		@if(task()?.subtasks) {
 		<p>
 			{{ task()?.countDoneSubtasks ?? 0 }} of
 			{{ task()?.subtasks?.length }}
 		</p>
+		}
 	</mat-card-content>
 	<mat-card-actions>
 		<button mat-button (click)="openTaskDetailsModal()">

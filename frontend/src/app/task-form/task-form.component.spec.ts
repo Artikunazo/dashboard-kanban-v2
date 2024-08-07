@@ -1,25 +1,23 @@
+import {importProvidersFrom} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TaskFormComponent} from './task-form.component';
 import {
-	ReactiveFormsModule,
-	Validators,
-	FormBuilder,
 	FormArray,
-	FormGroup,
+	FormBuilder,
 	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
 } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
+import {MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Store, StoreModule} from '@ngrx/store';
 import * as uuid from 'uuid';
-import {MatDialogRef} from '@angular/material/dialog';
+import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import * as fromStore from '../store';
-import * as fromTaskReducer from '../store/reducers/tasks_reducer';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {reducers} from '../store/reducers';
-import {importProvidersFrom} from '@angular/core';
+import {TaskFormComponent} from './task-form.component';
 
 describe('TaskFormComponent', () => {
 	let component: TaskFormComponent;
