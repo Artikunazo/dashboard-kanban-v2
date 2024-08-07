@@ -4,9 +4,10 @@
 			{{ task()?.title }}
 		</p>
 
-		@if(task()?.subtasks) {
+		@if(task()?.subtasks?.length) {
 		<p>
-			{{ task()?.countDoneSubtasks ?? 0 }} of
+			Subtasks:
+			{{ task()?.countDoneSubtasks ?? 0 }} completed of
 			{{ task()?.subtasks?.length }}
 		</p>
 		}
