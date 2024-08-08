@@ -1,5 +1,12 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, DestroyRef, inject, OnDestroy} from '@angular/core';
+import {
+	Component,
+	DestroyRef,
+	inject,
+	OnDestroy,
+	ViewChild,
+	ViewContainerRef,
+} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
@@ -24,6 +31,7 @@ import {Status} from '../models/status_models';
 import {Subtask} from '../models/subtask_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import {SubtaskFormComponent} from '../subtask-form/subtask-form.component';
 import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
 import {TaskFormComponent} from '../task-form/task-form.component';
 
@@ -52,9 +60,13 @@ export class TaskDetailsComponent implements OnDestroy {
 	protected readonly destroyRef = inject(DestroyRef);
 	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
+	@ViewChild('newSubtasks', {read: ViewContainerRef})
+	public newSubtasksContainer!: ViewContainerRef;
+
 	public task$ = new BehaviorSubject<Task>({} as Task);
 	public statusOptions$ = new Observable<Status[]>();
 	public statusSelected = new FormControl();
+	protected readonly subtaskFormComponentClass = SubtaskFormComponent;
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
@@ -147,7 +159,23 @@ export class TaskDetailsComponent implements OnDestroy {
 	}
 
 	addSubtask() {
-		console.info('Add subtask');
+		const newComponent = this.newSubtasksContainer.createComponent(
+			this.subtaskFormComponentClass,
+		);
+
+		newComponent.instance.subtaskSaved.subscribe((response: string) => {
+			if (response.length < 1) return;
+
+			this.store.dispatch(
+				new fromStore.SaveSubtask({
+					title: response.toString(),
+					isDone: false,
+					taskId: +this.task$.getValue().id,
+				} as Subtask),
+			);
+
+			newComponent.destroy(); // This remove the component from view
+		});
 	}
 
 	ngOnDestroy() {
