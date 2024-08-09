@@ -37,6 +37,6 @@ export class TaskService {
 	}
 
 	updateStatus(task: ApiTask): Observable<boolean> {
-		return this.httpClient.post<boolean>(`${this.URL}update-status`, task);
+		return this.httpClient.put<boolean>(`${this.URL}update-status`, task);
 	}
 }
