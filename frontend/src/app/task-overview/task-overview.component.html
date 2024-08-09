@@ -4,11 +4,11 @@
 			{{ task()?.title }}
 		</p>
 
-		@if(task()?.subtasks?.length) {
+		@if(task()?.countDoneSubtasks) {
 		<p>
 			Subtasks:
-			{{ task()?.countDoneSubtasks ?? 0 }} completed of
-			{{ task()?.subtasks?.length }}
+			{{ task()?.countDoneSubtasks }} completed of
+			{{ task()?.totalSubtasks }}
 		</p>
 		}
 	</mat-card-content>

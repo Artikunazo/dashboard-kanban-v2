@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject, output} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatDialog} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {Store} from '@ngrx/store';
@@ -23,10 +24,11 @@ export class ToolbarComponent {
 
 	public subtitle$ = new Observable<string>();
 
-	ngOnInit() {
-		this.subtitle$ = this.store
-			.select(fromStore.selectBoardTitle)
-			.pipe(map((title: string) => title));
+	constructor() {
+		this.subtitle$ = this.store.select(fromStore.selectBoardTitle).pipe(
+			map((title: string) => title),
+			takeUntilDestroyed(),
+		);
 	}
 
 	openTaskFormModal() {

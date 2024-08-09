@@ -174,7 +174,7 @@ export class TaskDetailsComponent implements OnDestroy {
 				} as Subtask),
 			);
 
-			newComponent.destroy(); // This remove the component from view
+			newComponent.destroy(); // Remove current component from template
 		});
 	}
 

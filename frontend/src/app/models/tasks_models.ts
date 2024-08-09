@@ -1,14 +1,12 @@
-import {ApiSubtask, Subtask} from './subtask_models';
-
 export interface Task {
 	id: string | number;
 	title: string;
 	description: string;
 	statusId: number;
 	boardId: number;
-	subtasks: Subtask[];
 	countDoneSubtasks: number | null;
 	status?: string;
+	totalSubtasks: number;
 }
 
 export interface ApiTask {
@@ -17,29 +15,13 @@ export interface ApiTask {
 	taskDescription: string;
 	statusId: number;
 	boardId: number;
-	subtasks: ApiSubtask[];
 	totalIsDoneSubtasks: number;
 	statusName?: string;
+	totalSubtasks: number;
 }
 
 export enum TaskStatus {
 	ToDo = 'ToDo',
 	Doing = 'Doing',
 	Done = 'Done',
-}
-
-export interface ApiTaskOverwivew {
-	idTask: number;
-	taskName: string;
-	totalSubtasks: number;
-	statusName: string;
-	totalIsDoneSubtasks: number;
-}
-
-export interface TaskOverview {
-	id: string | number;
-	title: string;
-	countSubtasks: number;
-	status: string;
-	countDoneSubtasks: number;
 }

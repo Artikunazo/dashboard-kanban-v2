@@ -14,7 +14,7 @@ public class TaskDomain {
   private String taskDescription;
   private int statusId;
   private int boardId;
-  private List<SubtaskDomain> subtasks;
   private int totalIsDoneSubtasks;
   private String statusName;
+  private int totalSubtasks;
 }

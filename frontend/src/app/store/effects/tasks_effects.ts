@@ -1,15 +1,15 @@
-import { Injectable, inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-import { Observable, catchError, map, mergeMap, of } from 'rxjs';
-import { TaskService } from 'src/app/api/task.service';
+import {Injectable, inject} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {Action} from '@ngrx/store';
+import {Observable, catchError, map, mergeMap, of} from 'rxjs';
+import {TaskService} from 'src/app/api/task.service';
 import {
-  ApiTaskToTask,
-  apiTasksToTasks,
-  taskToApiTask,
-  taskWithNewStatusToApiTask,
+	ApiTaskToTask,
+	apiTasksToTasks,
+	taskToApiTask,
+	taskWithNewStatusToApiTask,
 } from 'src/app/converters/task_converter';
-import { ApiTask, Task } from 'src/app/models/tasks_models';
+import {ApiTask, Task} from 'src/app/models/tasks_models';
 import * as fromTasksAction from '../actions/tasks_actions';
 import * as fromTasksActions from '../actions/tasks_actions';
 
@@ -64,7 +64,10 @@ export class TasksEffects {
 				const apiTask: ApiTask = taskToApiTask(data.payload);
 				return this.taskService.add(apiTask).pipe(
 					map((dataResponse: ApiTask) => {
-						const task: Task = ApiTaskToTask(dataResponse);
+						const task: Task = ApiTaskToTask({
+							...dataResponse,
+							statusName: data.payload.status,
+						});
 						return new fromTasksAction.AddTaskSuccess(task);
 					}),
 					catchError((error: any) => {

@@ -24,7 +24,7 @@
 			<mat-select formControlName="status">
 				@for(status of statusOptions$ | async; track
 				status.id) {
-				<mat-option [value]="status.id">{{
+				<mat-option [value]="status">{{
 					status.name
 				}}</mat-option>
 				}

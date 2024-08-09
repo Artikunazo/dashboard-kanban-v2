@@ -94,9 +94,9 @@ export class AppComponent implements OnDestroy {
 				.open(TaskFormComponent, taskFormConfig)
 				.afterClosed()
 				.subscribe(() => {
-					this.store.dispatch(
-						new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
-					);
+					// this.store.dispatch(
+					// 	new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
+					// );
 				});
 		}
 	}

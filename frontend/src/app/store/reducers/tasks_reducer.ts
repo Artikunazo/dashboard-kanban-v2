@@ -33,7 +33,7 @@ export function reducer(
 		}
 
 		case tasksActionTypes.LOAD_TASKS_BY_BOARD_SUCCESS: {
-			return taskAdapter.setAll(action.payload, {...state, isLoading: false});
+			return taskAdapter.setAll(action.payload, state);
 		}
 
 		case tasksActionTypes.LOAD_TASKS_BY_BOARD_FAIL: {

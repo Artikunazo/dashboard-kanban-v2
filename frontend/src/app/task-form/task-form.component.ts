@@ -70,8 +70,6 @@ export class TaskFormComponent implements OnDestroy {
 			.pipe(takeUntilDestroyed())
 			.subscribe({
 				next: (task: Task | null) => {
-					console.info('Before', task);
-
 					if (task) {
 						this.taskForm.get('title')?.setValue(task.title);
 						this.taskForm.get('description')?.setValue(task.description);
@@ -110,10 +108,11 @@ export class TaskFormComponent implements OnDestroy {
 			id: '',
 			title: this.taskForm.value.title,
 			description: this.taskForm.value.description,
-			statusId: this.taskForm.value.status,
+			statusId: this.taskForm.value.status.id,
 			boardId: this.boardSelected$.getValue(),
-			subtasks: [],
 			countDoneSubtasks: 0,
+			totalSubtasks: 0,
+			status: this.taskForm.value.status.name,
 		};
 
 		if (this.taskSelected$.getValue().id) {

@@ -1,6 +1,5 @@
 package com.artikunazo.dashboardKanban.domain.service;
 
-import com.artikunazo.dashboardKanban.domain.SubtaskDomain;
 import com.artikunazo.dashboardKanban.domain.TaskDomain;
 import com.artikunazo.dashboardKanban.domain.repository.TaskDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ public class TaskService {
     tasks.forEach(taskDomain -> {
       int taskId = taskDomain.getTaskId();
       taskDomain.setTotalIsDoneSubtasks(subtaskService.getIsDoneSubTaskByTask(taskId));
-      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskId));
       taskDomain.setStatusName(statusService.getStatusNameOfTask(taskId));
+      taskDomain.setTotalSubtasks(subtaskService.getCountSubtasksByIdTask(taskId));
     });
 
     return tasks;
@@ -40,7 +39,6 @@ public class TaskService {
 
     task.ifPresent(taskDomain -> {
       int taskId = taskDomain.getTaskId();
-      taskDomain.setSubtasks(subtaskService.getAllByTaskId(taskId));
       taskDomain.setStatusName(statusService.getStatusNameOfTask(taskId));
     });
 
