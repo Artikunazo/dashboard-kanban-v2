@@ -30,7 +30,6 @@ export class KanbanBoardComponent implements OnDestroy {
 	}
 
 	indexTasks() {
-		console.log('task indexed', this.tasksListIndexed);
 		this.tasksListIndexed = this.tasksList$.getValue().reduce(
 			(previous: any, task: Task) => ({
 				...previous,
@@ -39,15 +38,11 @@ export class KanbanBoardComponent implements OnDestroy {
 			{},
 		);
 
-		console.log('task indexed', this.tasksListIndexed);
-
 		for (let column of Object.entries(this.tasksListIndexed)) {
 			this.tasksListIndexed[column[0]] = column[1].sort((a: Task, b: Task) => {
 				return +b.id - +a.id;
 			});
 		}
-
-		console.log('task indexed', this.tasksListIndexed);
 	}
 
 	drop(event: CdkDragDrop<Task[]>) {

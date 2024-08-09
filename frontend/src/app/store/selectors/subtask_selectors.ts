@@ -11,3 +11,8 @@ export const selectSubtaskError = createSelector(
 	selectSubtaskState,
 	fromSubtaskReducer.getSubtaskError,
 );
+
+export const selectSubtasks = createSelector(
+	selectSubtaskState,
+	fromSubtaskReducer.selectAll,
+);

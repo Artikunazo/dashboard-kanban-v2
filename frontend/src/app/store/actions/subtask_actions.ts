@@ -7,6 +7,10 @@ export enum SubtaskActionType {
 	LOAD_SUBTASKS_SUCCESS = '[Subtask] Load Subtasks Success',
 	LOAD_SUBTASKS_FAIL = '[Subtask] Load Subtasks Fail',
 
+	ADD_SUBTASK = '[Subtask] Add Subtask',
+	ADD_SUBTASK_SUCCESS = '[Subtask] Add Subtask Success',
+	ADD_SUBTASK_FAIL = '[Subtask] Add Subtask Fail',
+
 	SAVE_SUBTASK = '[Subtask] Save Subtask',
 	SAVE_SUBTASK_SUCCESS = '[Subtask] Save Subtask Success',
 	SAVE_SUBTASK_FAIL = '[Subtask] Save Subtask Fail',
@@ -34,6 +38,24 @@ export class LoadSubtasksSuccess implements Action {
 
 export class LoadSubtasksFail implements Action {
 	readonly type = SubtaskActionType.LOAD_SUBTASKS_FAIL;
+
+	constructor(public payload: any) {}
+}
+
+export class AddSubtask implements Action {
+	readonly type = SubtaskActionType.ADD_SUBTASK;
+
+	constructor(public payload: Subtask) {}
+}
+
+export class AddSubtaskSuccess implements Action {
+	readonly type = SubtaskActionType.ADD_SUBTASK_SUCCESS;
+
+	constructor(public payload: Subtask) {}
+}
+
+export class AddSubtaskFail implements Action {
+	readonly type = SubtaskActionType.ADD_SUBTASK_FAIL;
 
 	constructor(public payload: any) {}
 }

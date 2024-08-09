@@ -28,16 +28,15 @@
 		<div class="col-12">
 			<h3>Subtasks</h3>
 		</div>
-		<!-- <div class="col-12">
-			@for(subtask of (task$ | async)?.subtasks; track
-			subtask ) {
+		<div class="col-12">
+			@for(subtask of (subtasks$ | async); track subtask ) {
 			<subtasks-overview
 				[subtask]="subtask"
 				(subtaskUpdated)="subtaskUpdated($event)"
 				[index]="$index"
 			/>
 			}
-		</div> -->
+		</div>
 
 		<div class="col-12">
 			<ng-template #newSubtasks></ng-template>

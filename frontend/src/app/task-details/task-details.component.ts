@@ -64,6 +64,7 @@ export class TaskDetailsComponent implements OnDestroy {
 	public newSubtasksContainer!: ViewContainerRef;
 
 	public task$ = new BehaviorSubject<Task>({} as Task);
+	public subtasks$ = new BehaviorSubject<Subtask[]>([]);
 	public statusOptions$ = new Observable<Status[]>();
 	public statusSelected = new FormControl();
 	protected readonly subtaskFormComponentClass = SubtaskFormComponent;
@@ -96,20 +97,37 @@ export class TaskDetailsComponent implements OnDestroy {
 
 					this.statusSelected.setValue(task.status);
 
-					this.statusSelected.valueChanges.subscribe({
-						next: (value: string) => {
-							this.store.dispatch(
-								new fromStore.UpdateStatusTask({
-									task: this.task$.getValue(),
-									status: value,
-								}),
-							);
-						},
-					});
+					this.statusSelected.valueChanges
+						.pipe(takeUntilDestroyed())
+						.subscribe({
+							next: (value: string) => {
+								this.store.dispatch(
+									new fromStore.UpdateStatusTask({
+										task: this.task$.getValue(),
+										status: value,
+									}),
+								);
+							},
+						});
 
 					this.task$.next(task);
 				},
 			});
+
+		if (this.task$.getValue().totalSubtasks > 0) {
+			this.store.dispatch(
+				new fromStore.LoadSubtasks(this.matDialogData.taskId),
+			);
+
+			this.store
+				.select(fromStore.selectSubtasks)
+				.pipe(takeUntilDestroyed())
+				.subscribe({
+					next: (subtasks: Subtask[]) => {
+						this.subtasks$.next(subtasks);
+					},
+				});
+		}
 	}
 
 	subtaskUpdated(event: Subtask) {
