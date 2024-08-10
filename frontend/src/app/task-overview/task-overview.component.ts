@@ -65,7 +65,7 @@ export class KanbanCardComponent implements OnDestroy {
 			.open(TaskDetailsComponent, {
 				...taskFormConfig,
 				data: {
-					taskId: this.task()?.id,
+					...this.task(),
 				},
 			})
 			.afterClosed()

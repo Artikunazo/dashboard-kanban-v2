@@ -34,7 +34,7 @@ export class KanbanColumnComponent {
 			.open(TaskDetailsComponent, {
 				...taskFormConfig,
 				data: {
-					taskId: task.id,
+					...task,
 				},
 			})
 			.afterClosed()

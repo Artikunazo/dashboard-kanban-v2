@@ -58,7 +58,7 @@ export class TaskDetailsComponent implements OnDestroy {
 		MatDialogRef,
 	) as MatDialogRef<TaskDetailsComponent>;
 	protected readonly destroyRef = inject(DestroyRef);
-	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
+	protected readonly matDialogData = inject<Task>(MAT_DIALOG_DATA);
 
 	@ViewChild('newSubtasks', {read: ViewContainerRef})
 	public newSubtasksContainer!: ViewContainerRef;
@@ -76,48 +76,22 @@ export class TaskDetailsComponent implements OnDestroy {
 			map((status: Status[]) => status),
 		);
 
-		this.store
-			.select(fromStore.selectTask)
-			.pipe(
-				map((task: Task | null) => {
-					if (!task) {
-						this.store.dispatch(
-							new fromStore.LoadTask(this.matDialogData.taskId),
-						);
-						return null;
-					}
+		this.task$.next(this.matDialogData);
 
-					return task;
-				}),
-				takeUntilDestroyed(),
-			)
-			.subscribe({
-				next: (task: Task | null) => {
-					if (!task) return;
-
-					this.statusSelected.setValue(task.status);
-
-					this.statusSelected.valueChanges
-						.pipe(takeUntilDestroyed())
-						.subscribe({
-							next: (value: string) => {
-								this.store.dispatch(
-									new fromStore.UpdateStatusTask({
-										task: this.task$.getValue(),
-										status: value,
-									}),
-								);
-							},
-						});
-
-					this.task$.next(task);
-				},
-			});
+		this.statusSelected.setValue(this.task$.getValue().status);
+		this.statusSelected.valueChanges.pipe(takeUntilDestroyed()).subscribe({
+			next: (value: string) => {
+				this.store.dispatch(
+					new fromStore.UpdateStatusTask({
+						task: this.task$.getValue(),
+						status: value,
+					}),
+				);
+			},
+		});
 
 		if (this.task$.getValue().totalSubtasks > 0) {
-			this.store.dispatch(
-				new fromStore.LoadSubtasks(this.matDialogData.taskId),
-			);
+			this.store.dispatch(new fromStore.LoadSubtasks(+this.matDialogData.id));
 
 			this.store
 				.select(fromStore.selectSubtasks)
@@ -185,7 +159,7 @@ export class TaskDetailsComponent implements OnDestroy {
 			if (response.length < 1) return;
 
 			this.store.dispatch(
-				new fromStore.SaveSubtask({
+				new fromStore.AddSubtask({
 					title: response.toString(),
 					isDone: false,
 					taskId: +this.task$.getValue().id,

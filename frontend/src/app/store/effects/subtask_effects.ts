@@ -5,6 +5,7 @@ import {catchError, map, mergeMap, Observable, of} from 'rxjs';
 import {SubtaskService} from 'src/app/api/subtask.service';
 import {
 	apiSubtasksToSubtasks,
+	apiSubtaskToSubtask,
 	subtaskToApiSubtask,
 } from 'src/app/converters/subtask_converters';
 import {ApiSubtask, Subtask} from 'src/app/models/subtask_models';
@@ -91,24 +92,24 @@ export class SubtaskEffects {
 	// 	);
 	// });
 
-	// updateSubtask$: Observable<Action> = createEffect(() => {
-	// 	return this.actions$.pipe(
-	// 		ofType(this.subtaskActionType.UPDATE_SUBTASK),
-	// 		mergeMap((subtask: fromStore.UpdateSubtask) => {
-	// 			const apiSubtask = subtasktoApiSubtask(subtask.payload);
-	// 			return this.subtaskService.update(apiSubtask).pipe(
-	// 				map((apiSubtask: ApiSubtask) => {
-	// 					const subtask = apiSubtaskToSubtask(apiSubtask);
-	// 					return new fromStore.UpdateSubtaskSuccess({
-	// 						id: subtask.id ?? 0,
-	// 						changes: {...subtask},
-	// 					});
-	// 				}),
-	// 				catchError((error) => {
-	// 					return of(new fromStore.UpdateSubtaskFail(error));
-	// 				}),
-	// 			);
-	// 		}),
-	// 	);
-	// });
+	updateSubtask$: Observable<Action> = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(this.subtaskActionType.UPDATE_SUBTASK),
+			mergeMap((subtask: fromStore.UpdateSubtask) => {
+				const apiSubtask = subtaskToApiSubtask(subtask.payload);
+				return this.subtaskService.update(apiSubtask).pipe(
+					map((apiSubtask: ApiSubtask) => {
+						const subtask = apiSubtaskToSubtask(apiSubtask);
+						return new fromStore.UpdateSubtaskSuccess({
+							id: subtask.id ?? 0,
+							changes: {...subtask},
+						});
+					}),
+					catchError((error) => {
+						return of(new fromStore.UpdateSubtaskFail(error));
+					}),
+				);
+			}),
+		);
+	});
 }

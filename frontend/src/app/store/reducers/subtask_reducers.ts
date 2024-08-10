@@ -33,6 +33,17 @@ export function reducer(
 			};
 		}
 
+		case subtaskActionType.ADD_SUBTASK_SUCCESS: {
+			return subtaskAdapter.addOne(action.payload, state);
+		}
+
+		case subtaskActionType.ADD_SUBTASK_FAIL: {
+			return {
+				...state,
+				error: action.payload,
+			};
+		}
+
 		case subtaskActionType.SAVE_SUBTASK_SUCCESS: {
 			return subtaskAdapter.updateOne(action.payload, state);
 		}

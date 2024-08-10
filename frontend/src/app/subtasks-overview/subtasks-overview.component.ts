@@ -25,6 +25,7 @@ export class SubtasksOverviewComponent {
 	changed(checked: boolean) {
 		this.subtask().isDone = checked;
 
+		console.log('emit', this.subtask());
 		this.subtaskUpdated.emit(this.subtask());
 	}
 }

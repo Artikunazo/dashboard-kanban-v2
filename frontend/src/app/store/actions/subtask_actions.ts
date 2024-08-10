@@ -126,4 +126,7 @@ export type SubtaskActions =
 	| DeleteSubtaskSuccess
 	| UpdateSubtask
 	| UpdateSubtaskSuccess
-	| UpdateSubtaskFail;
+	| UpdateSubtaskFail
+	| AddSubtask
+	| AddSubtaskSuccess
+	| AddSubtaskFail;
