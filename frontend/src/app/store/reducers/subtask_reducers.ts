@@ -44,17 +44,6 @@ export function reducer(
 			};
 		}
 
-		case subtaskActionType.SAVE_SUBTASK_SUCCESS: {
-			return subtaskAdapter.updateOne(action.payload, state);
-		}
-
-		case subtaskActionType.SAVE_SUBTASK_FAIL: {
-			return {
-				...state,
-				error: action.payload,
-			};
-		}
-
 		case subtaskActionType.DELETE_SUBTASK_SUCCESS: {
 			return subtaskAdapter.removeOne(action.payload, state);
 		}
@@ -77,6 +66,10 @@ export function reducer(
 				...state,
 				error: action.payload,
 			};
+		}
+
+		case subtaskActionType.CLEAR_SUBTASKS: {
+			return subtaskAdapter.removeAll(state);
 		}
 
 		default: {

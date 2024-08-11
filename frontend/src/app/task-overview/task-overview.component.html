@@ -1,5 +1,5 @@
 <mat-card>
-	<mat-card-content (click)="taskSelected.emit(task())">
+	<mat-card-content (click)="emitShowTaskDialog()">
 		<p>
 			{{ task()?.title }}
 		</p>
@@ -13,7 +13,7 @@
 		}
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-button (click)="openTaskDetailsModal()">
+		<button mat-button (click)="emitShowTaskDialog()">
 			View details
 			<mat-icon>info</mat-icon>
 		</button>

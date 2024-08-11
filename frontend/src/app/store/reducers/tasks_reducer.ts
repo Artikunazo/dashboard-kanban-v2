@@ -40,17 +40,21 @@ export function reducer(
 			return {...state, error: action.payload};
 		}
 
-		case tasksActionTypes.LOAD_TASK_SUCCESS: {
-			return {
-				...state,
-				error: '',
-				task: action.payload,
-			};
+		case tasksActionTypes.LOAD_TASK: {
+			return {...state, task: action.payload};
 		}
 
-		case tasksActionTypes.LOAD_TASK_FAIL: {
-			return {...state, error: action.payload};
-		}
+		// case tasksActionTypes.LOAD_TASK_SUCCESS: {
+		// 	return {
+		// 		...state,
+		// 		error: '',
+		// 		task: action.payload,
+		// 	};
+		// }
+
+		// case tasksActionTypes.LOAD_TASK_FAIL: {
+		// 	return {...state, error: action.payload};
+		// }
 
 		case tasksActionTypes.ADD_TASK_SUCCESS: {
 			return taskAdapter.addOne(action.payload, state);

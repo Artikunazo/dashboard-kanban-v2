@@ -1,6 +1,6 @@
-import { Update } from '@ngrx/entity';
-import { Action } from '@ngrx/store';
-import { Task } from 'src/app/models/tasks_models';
+import {Update} from '@ngrx/entity';
+import {Action} from '@ngrx/store';
+import {Task} from 'src/app/models/tasks_models';
 
 export enum TasksActionType {
 	LOAD_TASK = '[Task] Load Task',
@@ -38,8 +38,7 @@ export enum TasksActionType {
 export class LoadTask implements Action {
 	readonly type = TasksActionType.LOAD_TASK;
 
-	// Payload = idTask
-	constructor(public payload: string | number) {}
+	constructor(public payload: Task) {}
 }
 
 export class LoadTaskSuccess implements Action {

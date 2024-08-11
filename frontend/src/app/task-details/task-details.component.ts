@@ -76,32 +76,45 @@ export class TaskDetailsComponent implements OnDestroy {
 			map((status: Status[]) => status),
 		);
 
-		this.task$.next(this.matDialogData);
+		this.store
+			.select(fromStore.selectTask)
+			.pipe(takeUntilDestroyed())
+			.subscribe({
+				next: (task: Task | null) => {
+					if (task) {
+						this.task$.next(task);
 
-		this.statusSelected.setValue(this.task$.getValue().status);
-		this.statusSelected.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-			next: (value: string) => {
-				this.store.dispatch(
-					new fromStore.UpdateStatusTask({
-						task: this.task$.getValue(),
-						status: value,
-					}),
-				);
-			},
-		});
+						this.statusSelected.setValue(this.task$.getValue().status);
+						this.statusSelected.valueChanges
+							.pipe(takeUntilDestroyed())
+							.subscribe({
+								next: (value: string) => {
+									this.store.dispatch(
+										new fromStore.UpdateStatusTask({
+											task: this.task$.getValue(),
+											status: value,
+										}),
+									);
+								},
+							});
 
-		if (this.task$.getValue().totalSubtasks > 0) {
-			this.store.dispatch(new fromStore.LoadSubtasks(+this.matDialogData.id));
+						if (this.task$.getValue().totalSubtasks > 0) {
+							this.store.dispatch(
+								new fromStore.LoadSubtasks(+this.task$.getValue().id),
+							);
 
-			this.store
-				.select(fromStore.selectSubtasks)
-				.pipe(takeUntilDestroyed())
-				.subscribe({
-					next: (subtasks: Subtask[]) => {
-						this.subtasks$.next(subtasks);
-					},
-				});
-		}
+							this.store
+								.select(fromStore.selectSubtasks)
+								.pipe(takeUntilDestroyed())
+								.subscribe({
+									next: (subtasks: Subtask[]) => {
+										this.subtasks$.next(subtasks);
+									},
+								});
+						}
+					}
+				},
+			});
 	}
 
 	subtaskUpdated(event: Subtask) {

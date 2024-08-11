@@ -38,7 +38,7 @@ public class TaskController {
     return new ResponseEntity<>(taskService.saveTask(taskDomain), HttpStatus.CREATED);
   }
 
-  @PostMapping("/update")
+  @PutMapping("/update")
   public ResponseEntity<Boolean> updateTask(@RequestBody TaskDomain taskDomain){
     if(!taskService.updateTask(taskDomain)) {
       return  new ResponseEntity<>(false, HttpStatus.NOT_FOUND);

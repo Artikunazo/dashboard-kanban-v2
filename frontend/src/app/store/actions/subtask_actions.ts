@@ -11,10 +11,6 @@ export enum SubtaskActionType {
 	ADD_SUBTASK_SUCCESS = '[Subtask] Add Subtask Success',
 	ADD_SUBTASK_FAIL = '[Subtask] Add Subtask Fail',
 
-	SAVE_SUBTASK = '[Subtask] Save Subtask',
-	SAVE_SUBTASK_SUCCESS = '[Subtask] Save Subtask Success',
-	SAVE_SUBTASK_FAIL = '[Subtask] Save Subtask Fail',
-
 	UPDATE_SUBTASK = '[Subtask] Update Subtask',
 	UPDATE_SUBTASK_SUCCESS = '[Subtask] Update Subtask Success',
 	UPDATE_SUBTASK_FAIL = '[Subtask] Update Subtask Fail',
@@ -22,6 +18,8 @@ export enum SubtaskActionType {
 	DELETE_SUBTASK = '[Subtask] Delete Subtask',
 	DELETE_SUBTASK_SUCCESS = '[Subtask] Delete Subtask Success',
 	DELETE_SUBTASK_FAIL = '[Subtask] Delete Subtask Fail',
+
+	CLEAR_SUBTASKS = '[Subtask] Clear Subtasks',
 }
 
 export class LoadSubtasks implements Action {
@@ -56,24 +54,6 @@ export class AddSubtaskSuccess implements Action {
 
 export class AddSubtaskFail implements Action {
 	readonly type = SubtaskActionType.ADD_SUBTASK_FAIL;
-
-	constructor(public payload: any) {}
-}
-
-export class SaveSubtask implements Action {
-	readonly type = SubtaskActionType.SAVE_SUBTASK;
-
-	constructor(public payload: Subtask) {}
-}
-
-export class SaveSubtaskSuccess implements Action {
-	readonly type = SubtaskActionType.SAVE_SUBTASK_SUCCESS;
-
-	constructor(public payload: Update<Subtask>) {}
-}
-
-export class SaveSubtaskFail implements Action {
-	readonly type = SubtaskActionType.SAVE_SUBTASK_FAIL;
 
 	constructor(public payload: any) {}
 }
@@ -114,13 +94,14 @@ export class UpdateSubtaskFail implements Action {
 	constructor(public payload: any) {}
 }
 
+export class ClearSubtasks implements Action {
+	readonly type = SubtaskActionType.CLEAR_SUBTASKS;
+}
+
 export type SubtaskActions =
 	| LoadSubtasks
 	| LoadSubtasksFail
 	| LoadSubtasksSuccess
-	| SaveSubtask
-	| SaveSubtaskFail
-	| SaveSubtaskSuccess
 	| DeleteSubtask
 	| DeleteSubtaskFail
 	| DeleteSubtaskSuccess
@@ -129,4 +110,5 @@ export type SubtaskActions =
 	| UpdateSubtaskFail
 	| AddSubtask
 	| AddSubtaskSuccess
-	| AddSubtaskFail;
+	| AddSubtaskFail
+	| ClearSubtasks;

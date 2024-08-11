@@ -22,23 +22,23 @@ export class TasksEffects {
 
 	protected readonly tasksActionsTypes = fromTasksAction.TasksActionType;
 
-	loadTask$: Observable<Action> = createEffect(() => {
-		return this.actions$.pipe(
-			ofType(this.tasksActionsTypes.LOAD_TASK),
-			mergeMap((loadTaskData: fromTasksActions.LoadTask) =>
-				this.taskService.getTaskById(+loadTaskData.payload).pipe(
-					map((response: ApiTask) => {
-						// @ToDo: parse from base64 to string
-						const task: Task = ApiTaskToTask(response);
-						return new fromTasksAction.LoadTaskSuccess(task);
-					}),
-					catchError((error: any) => {
-						return of(new fromTasksAction.LoadTaskFail(error));
-					}),
-				),
-			),
-		);
-	});
+	// loadTask$: Observable<Action> = createEffect(() => {
+	// 	return this.actions$.pipe(
+	// 		ofType(this.tasksActionsTypes.LOAD_TASK),
+	// 		mergeMap((loadTaskData: fromTasksActions.LoadTask) =>
+	// 			this.taskService.getTaskById(+loadTaskData.payload).pipe(
+	// 				map((response: ApiTask) => {
+	// 					// @ToDo: parse from base64 to string (apply in V3)
+	// 					const task: Task = ApiTaskToTask(response);
+	// 					return new fromTasksAction.LoadTaskSuccess(task);
+	// 				}),
+	// 				catchError((error: any) => {
+	// 					return of(new fromTasksAction.LoadTaskFail(error));
+	// 				}),
+	// 			),
+	// 		),
+	// 	);
+	// });
 
 	loadTasksByBoard$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(

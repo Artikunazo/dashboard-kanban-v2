@@ -6,10 +6,7 @@ import * as fromThemeActions from '../actions/theme_actions';
 	providedIn: 'root',
 })
 export class ThemeEffects {
-	constructor(
-		private actions$: Actions,
-	) // private readonly dataService: DataService,
-	{}
+	constructor(private actions$: Actions) {}
 
 	protected readonly themeActionsTypes = fromThemeActions.ThemeActionTypes;
 

@@ -9,13 +9,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
-import {
-	deleteConfirmationConfig,
-	taskFormConfig,
-} from '../common/modal_configs';
+import {deleteConfirmationConfig} from '../common/modal_configs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import {TaskDetailsComponent} from '../task-details/task-details.component';
 
 @Component({
 	selector: 'kanban-card',
@@ -60,21 +56,11 @@ export class KanbanCardComponent implements OnDestroy {
 			});
 	}
 
-	openTaskDetailsModal(): void {
-		this.matDialog
-			.open(TaskDetailsComponent, {
-				...taskFormConfig,
-				data: {
-					...this.task(),
-				},
-			})
-			.afterClosed()
-			.subscribe(() => {
-				this.store.dispatch(new fromStore.CleanTaskSelected());
-				this.store.dispatch(
-					new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
-				);
-			});
+	emitShowTaskDialog() {
+		if (!this.task()?.id) return;
+
+		this.store.dispatch(new fromStore.LoadTask(this.task()));
+		this.taskSelected.emit(this.task());
 	}
 
 	ngOnDestroy() {

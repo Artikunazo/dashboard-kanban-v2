@@ -57,41 +57,6 @@ export class SubtaskEffects {
 		);
 	});
 
-	// saveSubtask$: Observable<Action> = createEffect(() => {
-	// 	return this.actions$.pipe(
-	// 		ofType(this.subtaskActionType.SAVE_SUBTASK),
-	// 		mergeMap((data: fromStore.SaveSubtask) => {
-	// 			return this.subtaskService.save(data.payload).pipe(
-	// 				map((subtaskSaved: Subtask) => {
-	// 					return new fromSubtaskActions.SaveSubtaskSuccess({
-	// 						id: subtaskSaved.id ?? 0,
-	// 						changes: {...subtaskSaved},
-	// 					});
-	// 				}),
-	// 				catchError((error: any) => {
-	// 					return of(new fromSubtaskActions.SaveSubtaskFail(error));
-	// 				}),
-	// 			);
-	// 		}),
-	// 	);
-	// });
-
-	// deleteSubtask$: Observable<Action> = createEffect(() => {
-	// 	return this.actions$.pipe(
-	// 		ofType(this.subtaskActionType.DELETE_SUBTASK),
-	// 		mergeMap((idSubtask: number) => {
-	// 			return this.subtaskService.delete(idSubtask).pipe(
-	// 				map(() => {
-	// 					return new fromSubtaskActions.DeleteSubtaskSuccess(idSubtask);
-	// 				}),
-	// 				catchError((error: any) => {
-	// 					return of(new fromSubtaskActions.DeleteSubtaskFail(error));
-	// 				}),
-	// 			);
-	// 		}),
-	// 	);
-	// });
-
 	updateSubtask$: Observable<Action> = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(this.subtaskActionType.UPDATE_SUBTASK),
