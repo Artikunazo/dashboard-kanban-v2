@@ -2,6 +2,9 @@ import {Component, inject, OnDestroy} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
+import {AsyncPipe} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
@@ -10,7 +13,12 @@ import * as fromStore from '../store';
 @Component({
 	selector: 'kanban-board',
 	standalone: true,
-	imports: [KanbanColumnComponent, DragDropModule],
+	imports: [
+		KanbanColumnComponent,
+		DragDropModule,
+		AsyncPipe,
+		MatProgressSpinnerModule,
+	],
 	templateUrl: './kanban-board.component.html',
 	styleUrl: './kanban-board.component.scss',
 })
@@ -19,14 +27,26 @@ export class KanbanBoardComponent implements OnDestroy {
 
 	public tasksList$ = new BehaviorSubject<Task[]>([]);
 	public tasksListIndexed!: {[key: string]: Task[]};
+	public isLoading$ = new BehaviorSubject<boolean>(false);
+	protected boardSelected$ = new BehaviorSubject<number>(0);
 
 	constructor() {
-		this.store.select(fromStore.getAllTasks).subscribe({
-			next: (tasks: Task[]) => {
-				this.tasksList$.next(tasks);
-				this.indexTasks();
-			},
-		});
+		this.store
+			.select(fromStore.selectBoardSelected)
+			.pipe(takeUntilDestroyed())
+			.subscribe((boardSelected: number) =>
+				this.boardSelected$.next(boardSelected),
+			);
+
+		this.store
+			.select(fromStore.getAllTasks)
+			.pipe(takeUntilDestroyed())
+			.subscribe({
+				next: (tasks: Task[]) => {
+					this.tasksList$.next(tasks);
+					this.indexTasks();
+				},
+			});
 	}
 
 	indexTasks() {

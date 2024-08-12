@@ -31,7 +31,7 @@ export class KanbanCardComponent implements OnDestroy {
 	protected readonly store = inject(Store);
 
 	public task = input.required<Task>();
-	public taskSelected = output<Task>();
+	public taskSelected = output<boolean>();
 	protected boardSelected$ = new BehaviorSubject<number>(0);
 
 	constructor() {
@@ -60,7 +60,7 @@ export class KanbanCardComponent implements OnDestroy {
 		if (!this.task()?.id) return;
 
 		this.store.dispatch(new fromStore.LoadTask(this.task()));
-		this.taskSelected.emit(this.task());
+		this.taskSelected.emit(true);
 	}
 
 	ngOnDestroy() {

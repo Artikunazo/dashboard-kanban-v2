@@ -47,9 +47,10 @@ export class AppComponent implements OnDestroy {
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
-	boards$ = new BehaviorSubject<Board[]>([]);
+	boards$ = new BehaviorSubject<Board[]>([] as Board[]);
 	isLoading$ = new BehaviorSubject<boolean>(true);
 	boardSelected$ = new BehaviorSubject<number>(0);
+	kanbanBoardComponent = new KanbanBoardComponent();
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadBoards());
@@ -66,6 +67,7 @@ export class AppComponent implements OnDestroy {
 	}
 
 	loadTasksByBoard(board: Board) {
+		this.kanbanBoardComponent.isLoading$.next(true);
 		this.store.dispatch(new fromStore.LoadTasksByBoard(board.id ?? 0));
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.boardSelected$.next(board.id ?? 0);

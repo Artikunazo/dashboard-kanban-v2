@@ -10,11 +10,7 @@ import {
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {
-	MAT_DIALOG_DATA,
-	MatDialog,
-	MatDialogRef,
-} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -58,7 +54,6 @@ export class TaskDetailsComponent implements OnDestroy {
 		MatDialogRef,
 	) as MatDialogRef<TaskDetailsComponent>;
 	protected readonly destroyRef = inject(DestroyRef);
-	protected readonly matDialogData = inject<Task>(MAT_DIALOG_DATA);
 
 	@ViewChild('newSubtasks', {read: ViewContainerRef})
 	public newSubtasksContainer!: ViewContainerRef;

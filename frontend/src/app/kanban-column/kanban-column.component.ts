@@ -42,13 +42,10 @@ export class KanbanColumnComponent {
 			);
 	}
 
-	showTaskSelected(task: Task): void {
+	showTaskSelected(): void {
 		this.matDialog
 			.open(TaskDetailsComponent, {
 				...taskFormConfig,
-				data: {
-					...task,
-				},
 			})
 			.afterClosed()
 			.subscribe(() => {

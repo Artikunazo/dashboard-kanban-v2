@@ -71,7 +71,6 @@ export class TaskFormComponent implements OnDestroy {
 			.subscribe({
 				next: (task: Task | null) => {
 					if (task) {
-						console.log(task);
 						this.taskSelected$.next(task);
 
 						this.taskForm
@@ -80,14 +79,10 @@ export class TaskFormComponent implements OnDestroy {
 						this.taskForm
 							.get('description')
 							?.setValue(this.taskSelected$.getValue().description);
-						this.taskForm
-							.get('status')
-							?.setValue({
-								id: this.taskSelected$.getValue().statusId,
-								name: this.taskSelected$.getValue().status,
-							});
-
-						console.log(this.taskForm.value);
+						this.taskForm.get('status')?.setValue({
+							id: this.taskSelected$.getValue().statusId,
+							name: this.taskSelected$.getValue().status,
+						});
 					}
 				},
 			});
