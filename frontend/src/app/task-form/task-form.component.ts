@@ -12,6 +12,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
@@ -32,6 +33,7 @@ import * as fromStore from '../store';
 		MatCheckboxModule,
 		MatIconModule,
 		AsyncPipe,
+		MatProgressSpinnerModule,
 	],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
@@ -48,6 +50,7 @@ export class TaskFormComponent implements OnDestroy {
 	public statusOptions$ = new Observable<Status[]>();
 	protected boardSelected$ = new BehaviorSubject<number>(0);
 	public taskSelected$ = new BehaviorSubject<Task>({} as Task);
+	public isLoading$ = new BehaviorSubject<boolean>(false);
 
 	constructor() {
 		this.initTaskForm();
@@ -109,6 +112,7 @@ export class TaskFormComponent implements OnDestroy {
 	}
 
 	createTask() {
+		this.isLoading$.next(true);
 		if (this.taskForm.invalid) return;
 
 		const newTaskData: Task = {

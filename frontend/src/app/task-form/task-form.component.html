@@ -1,49 +1,59 @@
 <section class="task-form-container">
 	<h3 class="task-form-title">Task information</h3>
 
-	@if((taskSelected$ | async)) {
-	<form [formGroup]="taskForm" class="row">
-		<mat-form-field class="col">
-			<mat-label>Title</mat-label>
-			<input matInput formControlName="title" type="text" />
-		</mat-form-field>
+	@if (taskSelected$ | async) {
+		<form [formGroup]="taskForm" class="row">
+			<mat-form-field class="col">
+				<mat-label>Title</mat-label>
+				<input
+					matInput
+					formControlName="title"
+					type="text"
+				/>
+			</mat-form-field>
 
-		<mat-form-field class="col">
-			<mat-label>Description</mat-label>
-			<textarea
-				matInput
-				formControlName="description"
-				type="text"
-			></textarea>
-		</mat-form-field>
+			<mat-form-field class="col">
+				<mat-label>Description</mat-label>
+				<textarea
+					matInput
+					formControlName="description"
+					type="text"
+				></textarea>
+			</mat-form-field>
 
-		<!-- Subtask is managemented In Task Details Component -->
+			<!-- Subtask is managemented In Task Details Component -->
 
-		<mat-form-field class="col">
-			<mat-label>Status</mat-label>
-			<mat-select formControlName="status">
-				@for(status of statusOptions$ | async; track
-				status.id) {
-				<mat-option [value]="status">{{
-					status.name
-				}}</mat-option>
-				}
-			</mat-select>
-		</mat-form-field>
+			<mat-form-field class="col">
+				<mat-label>Status</mat-label>
+				<mat-select formControlName="status">
+					@for (
+						status of statusOptions$ | async;
+						track status.id
+					) {
+						<mat-option [value]="status">{{
+							status.name
+						}}</mat-option>
+					}
+				</mat-select>
+			</mat-form-field>
+		</form>
 
-		<custom-button
-			[colorButton]="'accent'"
-			[disabled]="!taskForm.valid"
-			[text]="
-				!(taskSelected$ | async)?.id
-					? 'Create task'
-					: 'Update Task'
-			"
-			class="col create-task-button"
-			(clickEvent)="createTask()"
-		/>
-	</form>
-	} @else {
-	<p>Loading...</p>
+		@if ((isLoading$ | async) === false) {
+			<custom-button
+				[colorButton]="'accent'"
+				[disabled]="!taskForm.valid"
+				[text]="
+					!(taskSelected$ | async)?.id
+						? 'Create task'
+						: 'Update Task'
+				"
+				class="col create-task-button"
+				(clickEvent)="createTask()"
+			/>
+		} @else {
+			<div class="row justify-items-center">
+				<mat-spinner class="col" [diameter]="30" />
+			</div>
+		}
 	}
 </section>
