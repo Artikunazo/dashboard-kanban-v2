@@ -19,6 +19,7 @@ import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
 	deleteConfirmationConfig,
 	taskFormConfig,
@@ -166,6 +167,8 @@ export class TaskDetailsComponent implements OnDestroy {
 		newComponent.instance.subtaskSaved.subscribe((response: string) => {
 			if (response.length < 1) return;
 
+			this.newSubtasksContainer.createComponent(MatProgressSpinner);
+
 			this.store.dispatch(
 				new fromStore.AddSubtask({
 					title: response.toString(),
@@ -174,6 +177,7 @@ export class TaskDetailsComponent implements OnDestroy {
 				} as Subtask),
 			);
 
+			// spinnerComponent.destroy();
 			newComponent.destroy(); // Remove current component from template
 		});
 	}

@@ -29,12 +29,12 @@
 			<h3>Subtasks</h3>
 		</div>
 		<div class="col-12">
-			@for(subtask of (subtasks$ | async); track subtask ) {
-			<subtasks-overview
-				[subtask]="subtask"
-				(subtaskUpdated)="subtaskUpdated($event)"
-				[index]="$index"
-			/>
+			@for (subtask of subtasks$ | async; track subtask) {
+				<subtasks-overview
+					[subtask]="subtask"
+					(subtaskUpdated)="subtaskUpdated($event)"
+					[index]="$index"
+				/>
 			}
 		</div>
 
@@ -52,11 +52,13 @@
 	<div class="col row status-dropdown">
 		<mat-form-field class="col">
 			<mat-select [formControl]="statusSelected">
-				@for(status of statusOptions$ | async; track status)
-				{
-				<mat-option [value]="status?.name">{{
-					status?.name
-				}}</mat-option>
+				@for (
+					status of statusOptions$ | async;
+					track status
+				) {
+					<mat-option [value]="status?.name">{{
+						status?.name
+					}}</mat-option>
 				}
 			</mat-select>
 		</mat-form-field>
