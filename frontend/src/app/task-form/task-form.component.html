@@ -38,7 +38,11 @@
 			</mat-form-field>
 		</form>
 
-		@if ((isLoading$ | async) === false) {
+		@if (isLoading$ | async) {
+			<div class="row justify-items-center">
+				<mat-spinner class="col" [diameter]="30" />
+			</div>
+		} @else {
 			<custom-button
 				[colorButton]="'accent'"
 				[disabled]="!taskForm.valid"
@@ -50,10 +54,6 @@
 				class="col create-task-button"
 				(clickEvent)="createTask()"
 			/>
-		} @else {
-			<div class="row justify-items-center">
-				<mat-spinner class="col" [diameter]="30" />
-			</div>
 		}
 	}
 </section>

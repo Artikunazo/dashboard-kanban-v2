@@ -45,6 +45,7 @@ export class KanbanBoardComponent implements OnDestroy {
 				next: (tasks: Task[]) => {
 					this.tasksList$.next(tasks);
 					this.indexTasks();
+					this.isLoading$.next(false);
 				},
 			});
 	}
@@ -76,5 +77,7 @@ export class KanbanBoardComponent implements OnDestroy {
 
 	ngOnDestroy() {
 		this.tasksList$.complete();
+		this.boardSelected$.complete();
+		this.isLoading$.complete();
 	}
 }

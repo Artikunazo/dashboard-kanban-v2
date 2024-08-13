@@ -139,5 +139,6 @@ export class TaskFormComponent implements OnDestroy {
 	ngOnDestroy() {
 		this.boardSelected$.complete();
 		this.taskSelected$.complete();
+		this.isLoading$.complete();
 	}
 }

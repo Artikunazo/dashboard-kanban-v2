@@ -1,5 +1,5 @@
 import {CdkDrag, CdkDropList, DragDropModule} from '@angular/cdk/drag-drop';
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, OnDestroy} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
@@ -24,7 +24,7 @@ import {KanbanCardComponent} from '../task-overview/task-overview.component';
 	templateUrl: './kanban-column.component.html',
 	styleUrl: './kanban-column.component.scss',
 })
-export class KanbanColumnComponent {
+export class KanbanColumnComponent implements OnDestroy {
 	protected readonly store = inject(Store);
 	protected readonly matDialog = inject(MatDialog);
 
@@ -59,5 +59,9 @@ export class KanbanColumnComponent {
 					new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
 				);
 			});
+	}
+
+	ngOnDestroy() {
+		this.boardSelected$.complete();
 	}
 }

@@ -1,67 +1,66 @@
 <section class="container-liquid">
-	<!-- @ToDo: Improve this with ngSwtich and ngTemplates -->
-	@if ((isLoading$ | async) === true) {
+	@if (isLoading$ | async) {
+		<p>Loading</p>
+
 		<div class="row justify-items-center">
 			<mat-spinner class="col" [diameter]="30" />
 		</div>
-	} @else if ((isLoading$ | async) === false) {
-		@if ((boardSelected$ | async) === 0 ?? 0) {
-			<div class="row justify-items-center">
-				<div class="col">
-					<h2>Board is not selected yet</h2>
-				</div>
+	} @else if (!(boardSelected$ | async)) {
+		<div class="row justify-items-center">
+			<div class="col">
+				<h2>Board is not selected yet</h2>
 			</div>
-		} @else if ((tasksList$ | async)?.length === 0) {
-			<div class="row justify-items-center">
-				<div class="col">
-					<h2>There are not task added</h2>
-				</div>
+		</div>
+	} @else if (!(tasksList$ | async)) {
+		<div class="row justify-items-center">
+			<div class="col">
+				<h2>There are not task added</h2>
 			</div>
-		} @else {
-			<div class="row" cdkDropListGroup>
-				<div
-					class="col-4 kanban-column"
-					id="ToDo"
-					cdkDropList
-					#todoList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['ToDo']"
-					[cdkDropListConnectedTo]="[doingList, doneList]"
-					(cdkDropListDropped)="drop($event)"
-				>
-					<kanban-column
-						[columnType]="'ToDo'"
-						[tasks]="tasksListIndexed['ToDo']"
-					/>
-				</div>
-				<div
-					class="col-4 kanban-column"
-					id="Doing"
-					cdkDropList
-					#doingList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['Doing']"
-					[cdkDropListConnectedTo]="[todoList, doneList]"
-					(cdkDropListDropped)="drop($event)"
-				>
-					<kanban-column
-						[columnType]="'Doing'"
-						[tasks]="tasksListIndexed['Doing']"
-					/>
-				</div>
-				<div
-					class="col-4 kanban-column"
-					id="Done"
-					cdkDropList
-					#doneList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['Done']"
-					[cdkDropListConnectedTo]="[todoList, doingList]"
-					(cdkDropListDropped)="drop($event)"
-				>
-					<kanban-column
-						[columnType]="'Done'"
-						[tasks]="tasksListIndexed['Done']"
-					/>
-				</div>
+		</div>
+	} @else {
+		<div class="row" cdkDropListGroup>
+			<div
+				class="col-4 kanban-column"
+				id="ToDo"
+				cdkDropList
+				#todoList="cdkDropList"
+				[cdkDropListData]="tasksListIndexed['ToDo']"
+				[cdkDropListConnectedTo]="[doingList, doneList]"
+				(cdkDropListDropped)="drop($event)"
+			>
+				<kanban-column
+					[columnType]="'ToDo'"
+					[tasks]="tasksListIndexed['ToDo']"
+				/>
 			</div>
-		}
+			<div
+				class="col-4 kanban-column"
+				id="Doing"
+				cdkDropList
+				#doingList="cdkDropList"
+				[cdkDropListData]="tasksListIndexed['Doing']"
+				[cdkDropListConnectedTo]="[todoList, doneList]"
+				(cdkDropListDropped)="drop($event)"
+			>
+				<kanban-column
+					[columnType]="'Doing'"
+					[tasks]="tasksListIndexed['Doing']"
+				/>
+			</div>
+			<div
+				class="col-4 kanban-column"
+				id="Done"
+				cdkDropList
+				#doneList="cdkDropList"
+				[cdkDropListData]="tasksListIndexed['Done']"
+				[cdkDropListConnectedTo]="[todoList, doingList]"
+				(cdkDropListDropped)="drop($event)"
+			>
+				<kanban-column
+					[columnType]="'Done'"
+					[tasks]="tasksListIndexed['Done']"
+				/>
+			</div>
+		</div>
 	}
 </section>

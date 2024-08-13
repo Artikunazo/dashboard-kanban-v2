@@ -1,10 +1,4 @@
 <section class="container-liquid">
-	<!-- <div class="row">
-		<div class="col">
-			<h3 class="board-form-title">Add New Board</h3>
-		</div>
-	</div> -->
-
 	<form [formGroup]="boardForm" class="row board-form">
 		<mat-form-field class="col">
 			<mat-label>Board title</mat-label>
@@ -13,21 +7,23 @@
 
 		<div class="col justify-self-end">
 			@if (isLoading$ | async) {
-			<mat-spinner class="col" [diameter]="30" />
-			} @else if(isEdit && !(isLoading$ | async)) {
-			<custom-button
-				[text]="'Save'"
-				[colorButton]="'accent'"
-				(clickEvent)="updateBoard()"
-				class="col create-new-board-button"
-			/>
-			} @else if(!isEdit && !(isLoading$ | async)) {
-			<custom-button
-				[text]="'Save'"
-				[colorButton]="'accent'"
-				(clickEvent)="saveBoard()"
-				class="col create-new-board-button"
-			/>
+				<mat-spinner class="col" [diameter]="30" />
+			} @else {
+				@if (isEdit) {
+					<custom-button
+						[text]="'Save'"
+						[colorButton]="'accent'"
+						(clickEvent)="updateBoard()"
+						class="col create-new-board-button"
+					/>
+				} @else {
+					<custom-button
+						[text]="'Save'"
+						[colorButton]="'accent'"
+						(clickEvent)="saveBoard()"
+						class="col create-new-board-button"
+					/>
+				}
 			}
 		</div>
 	</form>

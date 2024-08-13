@@ -1,68 +1,79 @@
 <section class="row task-details-container">
-	<div class="col row">
-		<h2 class="col-8">
-			{{ (task$ | async)?.title }}
-		</h2>
-		<div class="col-4">
-			<button mat-button (click)="editTask()">
-				<mat-icon>edit</mat-icon>
-			</button>
-			<button
-				mat-button
-				[matMenuTriggerFor]="menu"
-				[matMenuTriggerData]="task$ | async"
-				class="task-menu-button"
-			>
-				<mat-icon>more_vert</mat-icon>
-			</button>
-		</div>
-	</div>
-
-	<div class="col">
-		<p class="task-details-description">
-			{{ (task$ | async)?.description }}
-		</p>
-	</div>
-
-	<div class="col row subtasks-container">
-		<div class="col-12">
-			<h3>Subtasks</h3>
-		</div>
-		<div class="col-12">
-			@for (subtask of subtasks$ | async; track subtask) {
-				<subtasks-overview
-					[subtask]="subtask"
-					(subtaskUpdated)="subtaskUpdated($event)"
-					[index]="$index"
-				/>
-			}
+	@if (task$ | async; as task) {
+		<div class="col row">
+			<h2 class="col-8">
+				{{ task.title }}
+			</h2>
+			<div class="col-4">
+				<button mat-button (click)="editTask()">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button
+					mat-button
+					[matMenuTriggerFor]="menu"
+					[matMenuTriggerData]="task$ | async"
+					class="task-menu-button"
+				>
+					<mat-icon>more_vert</mat-icon>
+				</button>
+			</div>
 		</div>
 
-		<div class="col-12">
-			<ng-template #newSubtasks></ng-template>
+		<div class="col">
+			<p class="task-details-description">
+				{{ task.description }}
+			</p>
 		</div>
 
-		<div class="col-12">
-			<button mat-button (click)="addSubtask()">
-				<mat-icon>add</mat-icon>
-			</button>
-		</div>
-	</div>
-
-	<div class="col row status-dropdown">
-		<mat-form-field class="col">
-			<mat-select [formControl]="statusSelected">
-				@for (
-					status of statusOptions$ | async;
-					track status
-				) {
-					<mat-option [value]="status?.name">{{
-						status?.name
-					}}</mat-option>
+		<div class="col row subtasks-container">
+			<div class="col-12">
+				<h3>Subtasks</h3>
+			</div>
+			<div class="col-12">
+				@if (isLoadingSubtasks$ | async) {
+					<div class="row justify-items-center">
+						<mat-spinner class="col" [diameter]="30" />
+					</div>
+				} @else {
+					@for (
+						subtask of subtasks$ | async;
+						track subtask
+					) {
+						<subtasks-overview
+							[subtask]="subtask"
+							(subtaskUpdated)="subtaskUpdated($event)"
+							[index]="$index"
+						/>
+					}
 				}
-			</mat-select>
-		</mat-form-field>
-	</div>
+			</div>
+
+			<div class="col-12">
+				<ng-template #newSubtasks></ng-template>
+			</div>
+
+			<div class="col-12">
+				<button mat-button (click)="addSubtask()">
+					<mat-icon>add</mat-icon>
+				</button>
+			</div>
+		</div>
+
+		<div class="col row status-dropdown">
+			<mat-form-field class="col">
+				<mat-select [formControl]="statusSelected">
+					@for (
+						status of statusOptions$ | async;
+						track status
+					) {
+						<mat-option [value]="status?.name">{{
+							status?.name
+						}}</mat-option>
+					}
+				</mat-select>
+			</mat-form-field>
+		</div>
+	}
 </section>
 
 <mat-menu #menu="matMenu">

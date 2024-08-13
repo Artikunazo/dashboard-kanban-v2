@@ -19,7 +19,10 @@ import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {
+	MatProgressSpinner,
+	MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
 import {
 	deleteConfirmationConfig,
 	taskFormConfig,
@@ -44,6 +47,7 @@ import {TaskFormComponent} from '../task-form/task-form.component';
 		MatMenuModule,
 		MatIconModule,
 		AsyncPipe,
+		MatProgressSpinnerModule,
 	],
 	templateUrl: './task-details.component.html',
 	styleUrl: './task-details.component.scss',
@@ -59,11 +63,12 @@ export class TaskDetailsComponent implements OnDestroy {
 	@ViewChild('newSubtasks', {read: ViewContainerRef})
 	public newSubtasksContainer!: ViewContainerRef;
 
+	protected readonly subtaskFormComponentClass = SubtaskFormComponent;
 	public task$ = new BehaviorSubject<Task>({} as Task);
 	public subtasks$ = new BehaviorSubject<Subtask[]>([]);
 	public statusOptions$ = new Observable<Status[]>();
+	public isLoadingSubtasks$ = new BehaviorSubject<boolean>(true);
 	public statusSelected = new FormControl();
-	protected readonly subtaskFormComponentClass = SubtaskFormComponent;
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
@@ -108,6 +113,8 @@ export class TaskDetailsComponent implements OnDestroy {
 									},
 								});
 						}
+
+						this.isLoadingSubtasks$.next(false);
 					}
 				},
 			});
@@ -184,5 +191,7 @@ export class TaskDetailsComponent implements OnDestroy {
 
 	ngOnDestroy() {
 		this.task$.complete();
+		this.isLoadingSubtasks$.complete();
+		this.subtasks$.complete();
 	}
 }
