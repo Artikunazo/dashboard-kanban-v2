@@ -9,8 +9,9 @@
 				@for (board of boards$ | async; track board.id) {
 					<mat-list-item class="add-board-item">
 						<span
+							(keyup)="loadTasksByBoard(board)"
 							matListItemTitle
-							(click)="loadTasksByBoard(board)"
+							aria-hidden="true"
 						>
 							{{ board.title }}
 						</span>

@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {Component, inject, output} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatDialog} from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import * as fromStore from '../store';
 @Component({
 	selector: 'toolbar',
 	standalone: true,
-	imports: [CustomButtonComponent, MatToolbarModule, CommonModule],
+	imports: [CustomButtonComponent, MatToolbarModule, AsyncPipe],
 	templateUrl: './toolbar.component.html',
 	styleUrl: './toolbar.component.scss',
 })

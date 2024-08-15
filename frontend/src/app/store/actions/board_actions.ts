@@ -99,7 +99,7 @@ export class UpdateBoardFail implements Action {
 export class DeleteBoard implements Action {
 	readonly type = BoardActionsType.DELETE_BOARD;
 
-	constructor(public payload: number | string) {}
+	constructor(public payload: number) {}
 }
 
 export class DeleteBoardSucess implements Action {

@@ -67,10 +67,12 @@ export class AppComponent implements OnDestroy {
 	}
 
 	loadTasksByBoard(board: Board) {
+		if (!board || !board.id || !board.title) return;
+
 		this.kanbanBoardComponent.isLoading$.next(true);
-		this.store.dispatch(new fromStore.LoadTasksByBoard(board.id ?? 0));
+		this.store.dispatch(new fromStore.LoadTasksByBoard(+board.id));
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
-		this.boardSelected$.next(board.id ?? 0);
+		this.boardSelected$.next(+board.id);
 
 		this.drawer.toggle();
 	}
@@ -80,6 +82,8 @@ export class AppComponent implements OnDestroy {
 	}
 
 	editBoard(boardData: Board) {
+		if (!boardData || !boardData.id || !boardData.title) return;
+
 		this.matDialog.open(BoardFormComponent, {
 			...boardDialogConfig,
 			data: boardData,
@@ -87,19 +91,17 @@ export class AppComponent implements OnDestroy {
 	}
 
 	deleteBoard(idBoard: number | string) {
-		this.store.dispatch(new fromStore.DeleteBoard(idBoard));
+		idBoard = +idBoard;
+		if (!idBoard || isNaN(idBoard)) {
+			return;
+		}
+
+		this.store.dispatch(new fromStore.DeleteBoard(+idBoard));
 	}
 
 	openCreateTaskModal(event: boolean) {
 		if (event) {
-			this.matDialog
-				.open(TaskFormComponent, taskFormConfig)
-				.afterClosed()
-				.subscribe(() => {
-					// this.store.dispatch(
-					// 	new fromStore.LoadTasksByBoard(this.boardSelected$.getValue()),
-					// );
-				});
+			this.matDialog.open(TaskFormComponent, taskFormConfig);
 		}
 	}
 
