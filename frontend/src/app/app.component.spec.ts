@@ -72,6 +72,23 @@ describe('AppComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	//@ToDo
+	// describe('Constructor', () => {
+	// 	beforeEach(waitForAsync(() => {
+	// 		component = TestBed.createComponent(AppComponent).componentInstance;
+	// 		spyOn(store, 'dispatch').calls.reset;
+	// 		spyOn(store, 'select').and.returnValue(of([boardMock]));
+	// 	}));
+
+	// 	it('should initialize the component', waitForAsync(() => {
+	// 		const action = new fromStore.LoadBoards();
+	// 		expect(store.dispatch).toHaveBeenCalledWith(action);
+	// 		expect(store.select).toHaveBeenCalledTimes(1);
+	// 		expect(component.boards$.value).toEqual([boardMock]);
+	// 		expect(component.isLoading$.value).toBeFalse();
+	// 	}));
+	// });
+
 	describe('Boards', () => {
 		describe('Create Board', () => {
 			beforeEach(() => {
