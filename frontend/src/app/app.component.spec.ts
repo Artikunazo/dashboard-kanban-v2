@@ -18,6 +18,9 @@ import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
 import {Board} from './models/board_models';
 import * as fromStore from './store';
 import * as fromBoardReducer from './store/reducers/board_reducers';
+import * as fromStatusReducer from './store/reducers/status_reducers';
+import * as fromSubtaskReducer from './store/reducers/subtask_reducers';
+import * as fromThemeReducer from './store/reducers/theme_reducer';
 import {TaskFormComponent} from './task-form/task-form.component';
 import {ThemeSwitcherComponent} from './theme-switcher/theme-switcher.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
@@ -45,6 +48,19 @@ describe('AppComponent', () => {
 				AsyncPipe,
 				StoreModule.forRoot({}),
 				StoreModule.forFeature('board', fromBoardReducer.reducer),
+				StoreModule.forFeature('tasks', fromBoardReducer.reducer),
+				StoreModule.forFeature({
+					name: 'theme',
+					reducer: fromThemeReducer.reducer,
+				}),
+				StoreModule.forFeature({
+					name: 'status',
+					reducer: fromStatusReducer.reducer,
+				}),
+				StoreModule.forFeature({
+					name: 'subtask',
+					reducer: fromSubtaskReducer.reducer,
+				}),
 				BrowserAnimationsModule,
 				AppComponent,
 			],
@@ -88,6 +104,16 @@ describe('AppComponent', () => {
 	// 		expect(component.isLoading$.value).toBeFalse();
 	// 	}));
 	// });
+
+	describe('Life cycle', () => {
+		it('should destroy component', () => {
+			component.ngOnDestroy();
+
+			expect(component.boardSelected$.value).toBeFalsy();
+			expect(component.isLoading$.value).toBeFalsy();
+			expect(component.boards$.value).toEqual([]);
+		});
+	});
 
 	describe('Boards', () => {
 		describe('Create Board', () => {
