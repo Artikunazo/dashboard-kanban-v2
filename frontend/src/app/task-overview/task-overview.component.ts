@@ -14,7 +14,7 @@ import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'kanban-card',
+	selector: 'task-overview',
 	standalone: true,
 	imports: [
 		MatCardModule,
@@ -26,7 +26,7 @@ import * as fromStore from '../store';
 	templateUrl: './task-overview.component.html',
 	styleUrl: './task-overview.component.scss',
 })
-export class KanbanCardComponent implements OnDestroy {
+export class TaskOverviewComponent implements OnDestroy {
 	protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 

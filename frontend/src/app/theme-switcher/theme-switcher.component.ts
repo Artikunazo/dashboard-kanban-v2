@@ -1,4 +1,5 @@
-import {Component, OnInit, output} from '@angular/core';
+import {Component, inject, OnInit, output} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -19,32 +20,37 @@ import * as fromStore from '../store';
 	styleUrl: './theme-switcher.component.scss',
 })
 export class ThemeSwitcherComponent implements OnInit {
+	private readonly store = inject(Store);
+
 	public switcherToggled = output();
 
 	themeToggled = new FormControl(false);
 
-	constructor(private readonly store: Store) {
-		this.themeToggled.valueChanges.subscribe((checked) => {
-			const darkThemeName = 'dark-theme';
-			const lightThemeName = 'light-theme';
-			const body = document.querySelector('body');
-			// Enable light theme
-			if (!checked) {
-				body?.classList.remove(darkThemeName);
-				body?.classList.add(lightThemeName);
-				this.store.dispatch(new fromStore.SaveTheme('ligth'));
-			} else {
-				body?.classList.remove(lightThemeName);
-				body?.classList.add(darkThemeName);
-				this.store.dispatch(new fromStore.SaveTheme('dark'));
-			}
+	constructor() {
+		this.themeToggled.valueChanges.pipe(takeUntilDestroyed()).subscribe({
+			next: (checked) => {
+				const darkThemeName = 'dark-theme';
+				const lightThemeName = 'light-theme';
+				const body = document.querySelector('body');
+				// Enable light theme
+				if (!checked) {
+					body?.classList.remove(darkThemeName);
+					body?.classList.add(lightThemeName);
+					this.store.dispatch(new fromStore.SaveTheme('ligth'));
+				} else {
+					body?.classList.remove(lightThemeName);
+					body?.classList.add(darkThemeName);
+					this.store.dispatch(new fromStore.SaveTheme('dark'));
+				}
+			},
 		});
 	}
 
 	ngOnInit(): void {
 		this.store.dispatch(new fromStore.LoadTheme());
+
 		this.store.select(fromStore.getTheme).subscribe({
-			next: (ThemeState) => {
+			next: (ThemeState: string) => {
 				this.themeToggled.setValue(ThemeState === 'dark');
 			},
 		});

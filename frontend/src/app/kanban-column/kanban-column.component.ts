@@ -9,13 +9,13 @@ import {StatusCircleComponent} from '../common/status-circle/status-circle.compo
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 import {TaskDetailsComponent} from '../task-details/task-details.component';
-import {KanbanCardComponent} from '../task-overview/task-overview.component';
+import {TaskOverviewComponent} from '../task-overview/task-overview.component';
 
 @Component({
 	selector: 'kanban-column',
 	standalone: true,
 	imports: [
-		KanbanCardComponent,
+		TaskOverviewComponent,
 		StatusCircleComponent,
 		CdkDrag,
 		CdkDropList,

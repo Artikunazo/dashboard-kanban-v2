@@ -17,10 +17,7 @@ import {boardDialogConfig, taskFormConfig} from './common/modal_configs';
 import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
 import {Board} from './models/board_models';
 import * as fromStore from './store';
-import * as fromBoardReducer from './store/reducers/board_reducers';
-import * as fromStatusReducer from './store/reducers/status_reducers';
-import * as fromSubtaskReducer from './store/reducers/subtask_reducers';
-import * as fromThemeReducer from './store/reducers/theme_reducer';
+import {reducers} from './store/reducers';
 import {TaskFormComponent} from './task-form/task-form.component';
 import {ThemeSwitcherComponent} from './theme-switcher/theme-switcher.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
@@ -46,32 +43,9 @@ describe('AppComponent', () => {
 				MatMenuModule,
 				MatProgressSpinner,
 				AsyncPipe,
-				StoreModule.forRoot({}),
-				StoreModule.forFeature('board', fromBoardReducer.reducer),
-				StoreModule.forFeature('tasks', fromBoardReducer.reducer),
-				StoreModule.forFeature({
-					name: 'theme',
-					reducer: fromThemeReducer.reducer,
-				}),
-				StoreModule.forFeature({
-					name: 'status',
-					reducer: fromStatusReducer.reducer,
-				}),
-				StoreModule.forFeature({
-					name: 'subtask',
-					reducer: fromSubtaskReducer.reducer,
-				}),
+				StoreModule.forRoot(reducers),
 				BrowserAnimationsModule,
 				AppComponent,
-			],
-			providers: [
-				// {
-				// 	provide: Store,
-				// 	useValue: {
-				// 		dispatch: jasmine.createSpy('dispatch').and.returnValue(undefined),
-				// 		select: jasmine.createSpy('select').and.returnValue(of([])),
-				// 	},
-				// },
 			],
 		}).compileComponents();
 	});
