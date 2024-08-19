@@ -1,5 +1,5 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
@@ -38,7 +38,7 @@ import * as fromStore from '../store';
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
 })
-export class TaskFormComponent implements OnDestroy {
+export class TaskFormComponent implements OnDestroy, OnInit {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
 	private matDialogRef = inject(

@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {Component, inject, input, OnDestroy, output} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,7 +21,7 @@ import * as fromStore from '../store';
 		MatButtonModule,
 		MatMenuModule,
 		MatIconModule,
-		CommonModule,
+		AsyncPipe,
 	],
 	templateUrl: './task-overview.component.html',
 	styleUrl: './task-overview.component.scss',

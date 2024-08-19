@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -15,6 +14,7 @@ import * as fromStatusReducer from '../store/reducers/status_reducers';
 import * as fromSubtaskReducer from '../store/reducers/subtask_reducers';
 import * as fromThemeReducer from '../store/reducers/theme_reducer';
 
+import {AsyncPipe} from '@angular/common';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 import {TaskOverviewComponent} from './task-overview.component';
 
@@ -32,7 +32,7 @@ describe('Task Overview Component', () => {
 				MatButtonModule,
 				MatMenuModule,
 				MatIconModule,
-				CommonModule,
+				AsyncPipe,
 				StoreModule.forRoot({}),
 				StoreModule.forFeature('board', fromBoardReducer.reducer),
 				StoreModule.forFeature('tasks', fromBoardReducer.reducer),
