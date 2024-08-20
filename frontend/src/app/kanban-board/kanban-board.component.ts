@@ -59,7 +59,7 @@ export class KanbanBoardComponent implements OnDestroy {
 			{},
 		);
 
-		for (let column of Object.entries(this.tasksListIndexed)) {
+		for (const column of Object.entries(this.tasksListIndexed)) {
 			this.tasksListIndexed[column[0]] = column[1].sort((a: Task, b: Task) => {
 				return +b.id - +a.id;
 			});
@@ -67,10 +67,15 @@ export class KanbanBoardComponent implements OnDestroy {
 	}
 
 	drop(event: CdkDragDrop<Task[]>) {
+		const task: Task = event.previousContainer.data[event.previousIndex],
+			status = event.container.element.nativeElement.id;
+
+		if (task.status === status) return;
+
 		this.store.dispatch(
 			new fromStore.UpdateStatusTask({
-				task: event.previousContainer.data[event.previousIndex],
-				status: event.container.element.nativeElement.id,
+				task,
+				status,
 			}),
 		);
 	}

@@ -1,15 +1,11 @@
 <mat-drawer-container class="dashboard-container" autosize>
 	<mat-drawer #drawer mode="over">
 		<mat-nav-list class="sidebar-options">
-			@if (isLoading$ | async) {
-				<div class="row justify-items-center">
-					<mat-spinner class="col" [diameter]="30" />
-				</div>
-			} @else {
+			@defer {
 				@for (board of boards$ | async; track board.id) {
 					<mat-list-item class="add-board-item">
 						<span
-							(keyup)="loadTasksByBoard(board)"
+							(click)="loadTasksByBoard(board)"
 							matListItemTitle
 							aria-hidden="true"
 						>
@@ -24,9 +20,11 @@
 							<mat-icon>more_vert</mat-icon>
 						</button>
 					</mat-list-item>
-				} @empty {
-					<span> There are no boards created.</span>
 				}
+			} @loading {
+				<div class="row justify-items-center">
+					<mat-spinner class="col" [diameter]="30" />
+				</div>
 			}
 
 			<mat-list-item class="add-board-item">
