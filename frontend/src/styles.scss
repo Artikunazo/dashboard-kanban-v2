@@ -43,7 +43,7 @@ $m3-light-theme: mat.define-theme(
 }
 
 .mat-mdc-card {
-	border-radius: var(--mdc-elevated-card-container-shape) !important;
+	border-radius: var(--mat-card-elevated-container-shape) !important;
 	background-color: var(--mdc-elevated-card-container-color) !important;
 	border-width: 0 !important;
 	border-style: solid !important;
