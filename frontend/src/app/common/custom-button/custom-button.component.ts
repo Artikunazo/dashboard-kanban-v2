@@ -4,11 +4,10 @@ import {MatIconModule} from '@angular/material/icon';
 import {CustomIconDirective} from '../custom-icon.directive';
 
 @Component({
-	selector: 'custom-button',
-	standalone: true,
-	imports: [CustomIconDirective, MatButtonModule, MatIconModule],
-	templateUrl: './custom-button.component.html',
-	styleUrl: './custom-button.component.scss',
+    selector: 'custom-button',
+    imports: [CustomIconDirective, MatButtonModule, MatIconModule],
+    templateUrl: './custom-button.component.html',
+    styleUrl: './custom-button.component.scss'
 })
 export class CustomButtonComponent {
 	public text = input<string>('');

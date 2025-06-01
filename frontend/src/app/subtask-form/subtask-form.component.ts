@@ -9,11 +9,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
 @Component({
-	selector: 'subtask-form',
-	standalone: true,
-	imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
-	templateUrl: './subtask-form.component.html',
-	styleUrl: './subtask-form.component.scss',
+    selector: 'subtask-form',
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+    templateUrl: './subtask-form.component.html',
+    styleUrl: './subtask-form.component.scss'
 })
 export class SubtaskFormComponent {
 	protected readonly formBuilder = inject(FormBuilder);

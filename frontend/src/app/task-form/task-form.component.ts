@@ -22,21 +22,20 @@ import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'task-form',
-	standalone: true,
-	imports: [
-		ReactiveFormsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatSelectModule,
-		CustomButtonComponent,
-		MatCheckboxModule,
-		MatIconModule,
-		AsyncPipe,
-		MatProgressSpinnerModule,
-	],
-	templateUrl: './task-form.component.html',
-	styleUrl: './task-form.component.scss',
+    selector: 'task-form',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        CustomButtonComponent,
+        MatCheckboxModule,
+        MatIconModule,
+        AsyncPipe,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './task-form.component.html',
+    styleUrl: './task-form.component.scss'
 })
 export class TaskFormComponent implements OnDestroy, OnInit {
 	private readonly formBuilder = inject(FormBuilder);

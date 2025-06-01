@@ -36,21 +36,20 @@ import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.
 import {TaskFormComponent} from '../task-form/task-form.component';
 
 @Component({
-	selector: 'task-details',
-	standalone: true,
-	imports: [
-		SubtasksOverviewComponent,
-		MatSelectModule,
-		MatFormFieldModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatMenuModule,
-		MatIconModule,
-		AsyncPipe,
-		MatProgressSpinnerModule,
-	],
-	templateUrl: './task-details.component.html',
-	styleUrl: './task-details.component.scss',
+    selector: 'task-details',
+    imports: [
+        SubtasksOverviewComponent,
+        MatSelectModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        AsyncPipe,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './task-details.component.html',
+    styleUrl: './task-details.component.scss'
 })
 export class TaskDetailsComponent implements OnDestroy {
 	protected readonly store = inject(Store);

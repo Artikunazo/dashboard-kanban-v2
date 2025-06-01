@@ -22,24 +22,23 @@ import * as fromStore from './store';
 import {TaskFormComponent} from './task-form/task-form.component';
 
 @Component({
-	selector: 'app-root',
-	standalone: true,
-	imports: [
-		ToolbarComponent,
-		MatListModule,
-		MatSidenavModule,
-		MatSlideToggleModule,
-		KanbanBoardComponent,
-		ThemeSwitcherComponent,
-		MatIconModule,
-		MatButtonModule,
-		BoardFormComponent,
-		MatMenuModule,
-		MatProgressSpinner,
-		AsyncPipe,
-	],
-	templateUrl: './app.component.html',
-	styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [
+        ToolbarComponent,
+        MatListModule,
+        MatSidenavModule,
+        MatSlideToggleModule,
+        KanbanBoardComponent,
+        ThemeSwitcherComponent,
+        MatIconModule,
+        MatButtonModule,
+        BoardFormComponent,
+        MatMenuModule,
+        MatProgressSpinner,
+        AsyncPipe,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnDestroy {
 	@ViewChild('drawer', {static: false}) public drawer!: MatDrawer;

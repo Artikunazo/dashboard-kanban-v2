@@ -9,11 +9,10 @@ import {CustomButtonComponent} from '../common/custom-button/custom-button.compo
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'toolbar',
-	standalone: true,
-	imports: [CustomButtonComponent, MatToolbarModule, AsyncPipe],
-	templateUrl: './toolbar.component.html',
-	styleUrl: './toolbar.component.scss',
+    selector: 'toolbar',
+    imports: [CustomButtonComponent, MatToolbarModule, AsyncPipe],
+    templateUrl: './toolbar.component.html',
+    styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
 	protected readonly dialog = inject(MatDialog);

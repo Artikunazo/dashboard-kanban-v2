@@ -14,17 +14,16 @@ import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'task-overview',
-	standalone: true,
-	imports: [
-		MatCardModule,
-		MatButtonModule,
-		MatMenuModule,
-		MatIconModule,
-		AsyncPipe,
-	],
-	templateUrl: './task-overview.component.html',
-	styleUrl: './task-overview.component.scss',
+    selector: 'task-overview',
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        AsyncPipe,
+    ],
+    templateUrl: './task-overview.component.html',
+    styleUrl: './task-overview.component.scss'
 })
 export class TaskOverviewComponent implements OnDestroy {
 	protected readonly matDialog = inject(MatDialog);

@@ -8,16 +8,15 @@ import {CustomIconDirective} from '../common/custom-icon.directive';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'theme-switcher',
-	standalone: true,
-	imports: [
-		CustomIconDirective,
-		ReactiveFormsModule,
-		MatIconModule,
-		MatSlideToggleModule,
-	],
-	templateUrl: './theme-switcher.component.html',
-	styleUrl: './theme-switcher.component.scss',
+    selector: 'theme-switcher',
+    imports: [
+        CustomIconDirective,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './theme-switcher.component.html',
+    styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent implements OnInit {
 	private readonly store = inject(Store);

@@ -18,19 +18,18 @@ import {Board} from '../models/board_models';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'board-form',
-	standalone: true,
-	imports: [
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatInputModule,
-		MatFormField,
-		CustomButtonComponent,
-		MatProgressSpinnerModule,
-		AsyncPipe,
-	],
-	templateUrl: './board-form.component.html',
-	styleUrl: './board-form.component.scss',
+    selector: 'board-form',
+    imports: [
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormField,
+        CustomButtonComponent,
+        MatProgressSpinnerModule,
+        AsyncPipe,
+    ],
+    templateUrl: './board-form.component.html',
+    styleUrl: './board-form.component.scss'
 })
 export class BoardFormComponent implements OnDestroy {
 	protected readonly formBuilder = inject(FormBuilder);

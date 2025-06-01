@@ -6,16 +6,15 @@ import {SubtaskDoneDirective} from '../common/subtask-done.directive';
 import {Subtask} from '../models/subtask_models';
 
 @Component({
-	selector: 'subtasks-overview',
-	standalone: true,
-	imports: [
-		MatCheckboxModule,
-		SubtaskDoneDirective,
-		FormsModule,
-		CustomButtonComponent,
-	],
-	templateUrl: './subtasks-overview.component.html',
-	styleUrl: './subtasks-overview.component.scss',
+    selector: 'subtasks-overview',
+    imports: [
+        MatCheckboxModule,
+        SubtaskDoneDirective,
+        FormsModule,
+        CustomButtonComponent,
+    ],
+    templateUrl: './subtasks-overview.component.html',
+    styleUrl: './subtasks-overview.component.scss'
 })
 export class SubtasksOverviewComponent {
 	public subtask = input<Subtask>({} as Subtask);

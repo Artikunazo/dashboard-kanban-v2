@@ -12,17 +12,16 @@ import {TaskDetailsComponent} from '../task-details/task-details.component';
 import {TaskOverviewComponent} from '../task-overview/task-overview.component';
 
 @Component({
-	selector: 'kanban-column',
-	standalone: true,
-	imports: [
-		TaskOverviewComponent,
-		StatusCircleComponent,
-		CdkDrag,
-		CdkDropList,
-		DragDropModule,
-	],
-	templateUrl: './kanban-column.component.html',
-	styleUrl: './kanban-column.component.scss',
+    selector: 'kanban-column',
+    imports: [
+        TaskOverviewComponent,
+        StatusCircleComponent,
+        CdkDrag,
+        CdkDropList,
+        DragDropModule,
+    ],
+    templateUrl: './kanban-column.component.html',
+    styleUrl: './kanban-column.component.scss'
 })
 export class KanbanColumnComponent implements OnDestroy {
 	protected readonly store = inject(Store);

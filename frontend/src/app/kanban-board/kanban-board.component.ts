@@ -11,16 +11,15 @@ import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 
 @Component({
-	selector: 'kanban-board',
-	standalone: true,
-	imports: [
-		KanbanColumnComponent,
-		DragDropModule,
-		AsyncPipe,
-		MatProgressSpinnerModule,
-	],
-	templateUrl: './kanban-board.component.html',
-	styleUrl: './kanban-board.component.scss',
+    selector: 'kanban-board',
+    imports: [
+        KanbanColumnComponent,
+        DragDropModule,
+        AsyncPipe,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './kanban-board.component.html',
+    styleUrl: './kanban-board.component.scss'
 })
 export class KanbanBoardComponent implements OnDestroy {
 	private readonly store = inject(Store);
