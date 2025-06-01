@@ -11,21 +11,21 @@ body {
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-$m3-dark-theme: matx.define-theme(
+$m3-dark-theme: mat.define-theme(
 	(
 		color: (
 			theme-type: dark,
-			primary: matx.$m3-magenta-palette,
-			tertiary: matx.$m3-violet-palette,
+			primary: mat.$magenta-palette,
+			tertiary: mat.$violet-palette,
 		),
 	)
 );
 
-$m3-light-theme: matx.define-theme(
+$m3-light-theme: mat.define-theme(
 	(
 		color: (
-			primary: matx.$m3-rose-palette,
-			tertiary: matx.$m3-red-palette,
+			primary: mat.$rose-palette,
+			tertiary: mat.$red-palette,
 		),
 	)
 );
