@@ -1,8 +1,6 @@
 import {AsyncPipe} from '@angular/common';
 import {Component, inject, output} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {MatDialog} from '@angular/material/dialog';
-import {MatToolbarModule} from '@angular/material/toolbar';
 import {Store} from '@ngrx/store';
 import {map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
@@ -10,12 +8,12 @@ import * as fromStore from '../store';
 
 @Component({
     selector: 'toolbar',
-    imports: [CustomButtonComponent, MatToolbarModule, AsyncPipe],
+    imports: [CustomButtonComponent, AsyncPipe],
     templateUrl: './toolbar.component.html',
     styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
-	protected readonly dialog = inject(MatDialog);
+	// protected readonly dialog = inject(MatDialog); @ToDo: Change for Primeng Dialog
 	protected readonly store = inject(Store);
 
 	public openNav = output();

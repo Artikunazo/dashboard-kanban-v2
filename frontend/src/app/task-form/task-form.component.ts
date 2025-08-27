@@ -7,13 +7,6 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
@@ -25,14 +18,14 @@ import * as fromStore from '../store';
     selector: 'task-form',
     imports: [
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
+        // MatFormFieldModule,
+        // MatInputModule,
+        // MatSelectModule,
         CustomButtonComponent,
-        MatCheckboxModule,
-        MatIconModule,
+        // MatCheckboxModule,
+        // MatIconModule,
         AsyncPipe,
-        MatProgressSpinnerModule,
+        // MatProgressSpinnerModule,
     ],
     templateUrl: './task-form.component.html',
     styleUrl: './task-form.component.scss'
@@ -40,10 +33,10 @@ import * as fromStore from '../store';
 export class TaskFormComponent implements OnDestroy, OnInit {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
-	private matDialogRef = inject(
-		MatDialogRef,
-	) as MatDialogRef<TaskFormComponent>;
-	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
+	// private matDialogRef = inject(
+	// 	MatDialogRef,
+	// ) as MatDialogRef<TaskFormComponent>;
+	// protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
 	public taskForm!: FormGroup;
 	public statusOptions$ = new Observable<Status[]>();
@@ -99,15 +92,15 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit() {
-		this.matDialogRef.afterClosed().subscribe(() => {
-			this.taskSelected$.complete();
-			this.taskForm.reset();
-		});
+		// this.matDialogRef.afterClosed().subscribe(() => {
+		// 	this.taskSelected$.complete();
+		// 	this.taskForm.reset();
+		// });
 	}
 
 	closeDialog(): void {
 		this.taskSelected$.complete();
-		this.matDialogRef.close();
+		// this.matDialogRef.close();
 	}
 
 	createTask() {

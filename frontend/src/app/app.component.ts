@@ -1,12 +1,4 @@
 import {Component, inject, OnDestroy, ViewChild} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {MatDrawer, MatSidenavModule} from '@angular/material/sidenav';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Store} from '@ngrx/store';
 import {BoardFormComponent} from './board-form/board-form.component';
 import {boardDialogConfig, taskFormConfig} from './common/modal_configs';
@@ -25,25 +17,17 @@ import {TaskFormComponent} from './task-form/task-form.component';
     selector: 'app-root',
     imports: [
         ToolbarComponent,
-        MatListModule,
-        MatSidenavModule,
-        MatSlideToggleModule,
         KanbanBoardComponent,
         ThemeSwitcherComponent,
-        MatIconModule,
-        MatButtonModule,
-        BoardFormComponent,
-        MatMenuModule,
-        MatProgressSpinner,
         AsyncPipe,
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnDestroy {
-	@ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
+	// @ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
 
-	protected readonly matDialog = inject(MatDialog);
+	// protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
 	boards$ = new BehaviorSubject<Board[]>([] as Board[]);
@@ -73,20 +57,20 @@ export class AppComponent implements OnDestroy {
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.boardSelected$.next(+board.id);
 
-		this.drawer.toggle();
+		// this.drawer.toggle();
 	}
 
 	showNewBoardDialog(): void {
-		this.matDialog.open(BoardFormComponent, boardDialogConfig);
+		// this.matDialog.open(BoardFormComponent, boardDialogConfig);
 	}
 
 	editBoard(boardData: Board) {
 		if (!boardData || !boardData.id || !boardData.title) return;
 
-		this.matDialog.open(BoardFormComponent, {
-			...boardDialogConfig,
-			data: boardData,
-		});
+		// this.matDialog.open(BoardFormComponent, {
+		// 	...boardDialogConfig,
+		// 	data: boardData,
+		// });
 	}
 
 	deleteBoard(idBoard: number | string) {
@@ -100,7 +84,7 @@ export class AppComponent implements OnDestroy {
 
 	openCreateTaskModal(event: boolean) {
 		if (event) {
-			this.matDialog.open(TaskFormComponent, taskFormConfig);
+			// this.matDialog.open(TaskFormComponent, taskFormConfig);
 		}
 	}
 

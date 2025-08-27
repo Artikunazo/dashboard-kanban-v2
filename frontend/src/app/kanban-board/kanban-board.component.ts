@@ -4,7 +4,6 @@ import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {AsyncPipe} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
@@ -16,7 +15,7 @@ import * as fromStore from '../store';
         KanbanColumnComponent,
         DragDropModule,
         AsyncPipe,
-        MatProgressSpinnerModule,
+        // MatProgressSpinnerModule,
     ],
     templateUrl: './kanban-board.component.html',
     styleUrl: './kanban-board.component.scss'

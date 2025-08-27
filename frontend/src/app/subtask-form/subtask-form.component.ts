@@ -5,12 +5,10 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 
 @Component({
     selector: 'subtask-form',
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+    imports: [ReactiveFormsModule],
     templateUrl: './subtask-form.component.html',
     styleUrl: './subtask-form.component.scss'
 })

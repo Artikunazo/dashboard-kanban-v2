@@ -1,8 +1,6 @@
 import {importProvidersFrom} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Store, StoreModule} from '@ngrx/store';
 import {of} from 'rxjs';
 import {CustomIconDirective} from '../common/custom-icon.directive';
@@ -20,8 +18,8 @@ describe('ThemeSwitcherComponent', () => {
 			imports: [
 				CustomIconDirective,
 				ReactiveFormsModule,
-				MatIconModule,
-				MatSlideToggleModule,
+				// MatIconModule,
+				// MatSlideToggleModule,
 				StoreModule.forRoot(reducers),
 				ThemeSwitcherComponent,
 			],

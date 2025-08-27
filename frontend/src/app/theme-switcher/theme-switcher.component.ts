@@ -1,8 +1,6 @@
 import {Component, inject, OnInit, output} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Store} from '@ngrx/store';
 import {CustomIconDirective} from '../common/custom-icon.directive';
 import * as fromStore from '../store';
@@ -12,8 +10,8 @@ import * as fromStore from '../store';
     imports: [
         CustomIconDirective,
         ReactiveFormsModule,
-        MatIconModule,
-        MatSlideToggleModule,
+        // MatIconModule,
+        // MatSlideToggleModule,
     ],
     templateUrl: './theme-switcher.component.html',
     styleUrl: './theme-switcher.component.scss'
