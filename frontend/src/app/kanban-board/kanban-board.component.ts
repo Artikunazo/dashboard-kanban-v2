@@ -24,6 +24,7 @@ import { ProgressSpinner } from "primeng/progressspinner";
 export class KanbanBoardComponent implements OnDestroy {
 	private readonly store = inject(Store);
 
+  // @ToDo: convert to signals
 	public tasksList$ = new BehaviorSubject<Task[]>([]);
 	public tasksListIndexed!: {[key: string]: Task[]};
 	public isLoading$ = new BehaviorSubject<boolean>(false);
