@@ -1,19 +1,15 @@
 <section class="container-liquid">
 	@defer {
 		@if (!(boardSelected$ | async)) {
-			<div class="row justify-items-center">
-				<div class="col">
-					<h2>Board is not selected yet</h2>
-				</div>
+			<div class="flex justify-items-center">
+				<h2 class="font-semibold text-xl">Board is not selected yet</h2>
 			</div>
 		} @else if (!(tasksList$ | async)) {
-			<div class="row justify-items-center">
-				<div class="col">
-					<h2>There are not task added</h2>
-				</div>
+			<div class="flex justify-items-center">
+				<h2 class="font-semibold text-xl">There are not task added</h2>
 			</div>
 		} @else {
-			<div class="row" cdkDropListGroup>
+			<div class="grid grid-cols-3 gap-4" cdkDropListGroup>
 				<div
 					class="col-4 kanban-column"
 					id="ToDo"
@@ -61,10 +57,10 @@
 	} @loading (after 100ms; minimum 1s) {
 		<div class="flex justify-items-center">
 			<p-progress-spinner
-					strokeWidth="6"
-					ariaLabel="loading"
-					[style]="{width: '70px', height: '70px'}"
-				/>
+				strokeWidth="6"
+				ariaLabel="loading"
+				[style]="{width: '70px', height: '70px'}"
+			/>
 		</div>
 	}
 </section>
