@@ -59,8 +59,12 @@
 			</div>
 		}
 	} @loading (after 100ms; minimum 1s) {
-		<div class="row justify-items-center">
-			<mat-spinner class="col" [diameter]="30" />
+		<div class="flex justify-items-center">
+			<p-progress-spinner
+					strokeWidth="6"
+					ariaLabel="loading"
+					[style]="{width: '70px', height: '70px'}"
+				/>
 		</div>
 	}
 </section>

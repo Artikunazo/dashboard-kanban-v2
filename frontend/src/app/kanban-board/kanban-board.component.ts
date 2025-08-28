@@ -8,15 +8,16 @@ import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import { ProgressSpinner } from "primeng/progressspinner";
 
 @Component({
     selector: 'kanban-board',
     imports: [
-        KanbanColumnComponent,
-        DragDropModule,
-        AsyncPipe,
-        // MatProgressSpinnerModule,
-    ],
+    KanbanColumnComponent,
+    DragDropModule,
+    AsyncPipe,
+    ProgressSpinner
+],
     templateUrl: './kanban-board.component.html',
     styleUrl: './kanban-board.component.scss'
 })
