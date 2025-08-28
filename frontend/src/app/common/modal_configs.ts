@@ -1,4 +1,5 @@
 import {MatDialogConfig} from '@angular/material/dialog';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 export const boardDialogConfig: MatDialogConfig = {
 	width: '90%',
@@ -14,7 +15,7 @@ export const deleteConfirmationConfig: MatDialogConfig = {
 	closeOnNavigation: true,
 };
 
-export const taskFormConfig: MatDialogConfig = {
+export const taskFormConfig: DynamicDialogConfig = {
 	width: '65%',
-	maxHeight: '90vh',
+
 };
