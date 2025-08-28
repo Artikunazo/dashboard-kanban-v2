@@ -2,7 +2,7 @@
 	<p-toolbar      >
 		<ng-template #start>
 			<custom-button
-				[colorButton]="'accent'"
+				[severity]="'secondary'"
 				(clickEvent)="openNav.emit()"
 				iconName="menu"
 			/>
@@ -14,7 +14,7 @@
 		<ng-template #end>
 			<custom-button
 				[text]="'Create task'"
-				[colorButton]="'accent'"
+				[severity]="'info'"
 				(clickEvent)="openTaskFormModal()"
 				iconName="add"
 				[disabled]="

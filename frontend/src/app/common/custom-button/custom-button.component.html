@@ -1,13 +1,10 @@
-<button
-	mat-raised-button
-	[color]="colorButton()"
+<p-button
+	[severity]="severity()"
 	(click)="clickEvent.emit()"
 	[disabled]="disabled()"
 >
 	{{ text() }}
 	@if (iconName()) {
-		<mat-icon [customIcon]="'medium'">{{
-			iconName()
-		}}</mat-icon>
+		<i class="pi pi-{{ iconName() }}" [customIcon]="'medium'"></i>
 	}
-</button>
+</p-button>
