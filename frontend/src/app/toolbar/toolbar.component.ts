@@ -5,12 +5,13 @@ import {Store} from '@ngrx/store';
 import {map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import * as fromStore from '../store';
+import {ToolbarModule} from 'primeng/toolbar';
 
 @Component({
-    selector: 'toolbar',
-    imports: [CustomButtonComponent, AsyncPipe],
-    templateUrl: './toolbar.component.html',
-    styleUrl: './toolbar.component.scss'
+	selector: 'toolbar',
+	imports: [CustomButtonComponent, AsyncPipe, ToolbarModule],
+	templateUrl: './toolbar.component.html',
+	styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent {
 	// protected readonly dialog = inject(MatDialog); @ToDo: Change for Primeng Dialog

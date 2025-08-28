@@ -1,16 +1,17 @@
-<section class="container-liquid">
-	<mat-toolbar class="row toolbar-main">
-		<div class="col-1">
+<section class="toolbar container">
+	<p-toolbar>
+		<ng-template #start>
 			<custom-button
 				[colorButton]="'accent'"
 				(clickEvent)="openNav.emit()"
 				iconName="menu"
 			/>
-		</div>
-		<div class="col-7 toolbar-title">
+		</ng-template>
+		<ng-template #center>
 			<h2>{{ subtitle$ | async }}</h2>
-		</div>
-		<div class="col-4 justify-self-end">
+		</ng-template>
+
+		<ng-template #end>
 			<custom-button
 				[text]="'Create task'"
 				[colorButton]="'accent'"
@@ -20,6 +21,6 @@
 					(subtitle$ | async) === 'Dashboard Kanban'
 				"
 			/>
-		</div>
-	</mat-toolbar>
+		</ng-template>
+	</p-toolbar>
 </section>
