@@ -12,6 +12,11 @@ import {BehaviorSubject} from 'rxjs';
 import {Board} from './models/board_models';
 import * as fromStore from './store';
 import {TaskFormComponent} from './task-form/task-form.component';
+import { DrawerModule } from 'primeng/drawer';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
+
 
 @Component({
     selector: 'app-root',
@@ -20,6 +25,9 @@ import {TaskFormComponent} from './task-form/task-form.component';
         KanbanBoardComponent,
         ThemeSwitcherComponent,
         AsyncPipe,
+        DrawerModule,
+        ToolbarModule,
+        ProgressSpinnerModule
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
@@ -30,6 +38,9 @@ export class AppComponent implements OnDestroy {
 	// protected readonly matDialog = inject(MatDialog);
 	protected readonly store = inject(Store);
 
+  drawerVisible = false;
+  drawerClosable = true;
+  drawerHeader = 'Boards';
 	boards$ = new BehaviorSubject<Board[]>([] as Board[]);
 	isLoading$ = new BehaviorSubject<boolean>(true);
 	boardSelected$ = new BehaviorSubject<number>(0);
@@ -48,6 +59,15 @@ export class AppComponent implements OnDestroy {
 				},
 			});
 	}
+
+  toggleDrawer() {
+    this.drawerVisible = !this.drawerVisible;
+  }
+
+
+  closeDrawer() {
+    this.drawerVisible = false;
+  }
 
 	loadTasksByBoard(board: Board) {
 		if (!board || !board.id || !board.title) return;

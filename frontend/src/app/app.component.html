@@ -1,71 +1,57 @@
-<mat-drawer-container class="dashboard-container" autosize>
-	<mat-drawer #drawer mode="over">
-		<mat-nav-list class="sidebar-options">
-			@defer {
-				@for (board of boards$ | async; track board.id) {
-					<mat-list-item class="add-board-item">
-						<span
-							(click)="loadTasksByBoard(board)"
-							matListItemTitle
-							aria-hidden="true"
-						>
-							{{ board.title }}
-						</span>
-						<button
-							mat-button
-							[matMenuTriggerFor]="menu"
-							[matMenuTriggerData]="board"
-							matListItemMeta
-						>
-							<mat-icon>more_vert</mat-icon>
-						</button>
-					</mat-list-item>
-				}
-			} @loading {
-				<div class="row justify-items-center">
-					<mat-spinner class="col" [diameter]="30" />
+<p-drawer
+	[(visible)]="drawerVisible"
+	[closable]="drawerClosable"
+	styleClass="!w-full md:!w-80 lg:!w-[30rem]"
+  header="{{ drawerHeader }}"
+>
+	<div class="sidebar-options">
+		@defer {
+			@for (board of boards$ | async; track board.id) {
+				<div class="add-board-item">
+					<span
+						(click)="loadTasksByBoard(board)"
+						aria-hidden="true"
+					>
+						{{ board.title }}
+					</span>
+          <!-- <button mat-icon-button (click)="editBoard(board)"><i class="pi pi-pencil"></i></button> -->
+					<button>
+						<i class="pi pi-ellipsis-v"></i>
+					</button>
 				</div>
 			}
+		} @loading {
+			<div class="row justify-items-center">
+				<p-progress-spinner
+					strokeWidth="6"
+					ariaLabel="loading"
+					[style]="{width: '70px', height: '70px'}"
+				/>
+			</div>
+		}
 
-			<mat-list-item class="add-board-item">
-				<button
-					mat-raised-button
-					(click)="showNewBoardDialog()"
-				>
-					<mat-icon>add</mat-icon> Add board
-				</button>
-			</mat-list-item>
-		</mat-nav-list>
-
-		<theme-switcher (switcherToggled)="drawer.close()" />
-	</mat-drawer>
-
-	<section class="main-container">
-		<toolbar
-			(openNav)="drawer.toggle()"
-			(createTaskClicked)="openCreateTaskModal($event)"
-		/>
-
-		<div class="main-container">
-			<kanban-board />
-		</div>
-	</section>
-
-	<mat-menu #menu="matMenu">
-		<ng-template
-			matMenuContent
-			let-id="id"
-			let-title="title"
-		>
+		<div class="add-board-item">
 			<button
-				mat-menu-item
-				(click)="editBoard({id, title})"
+				mat-raised-button
+				(click)="showNewBoardDialog()"
 			>
-				Edit
+				<i class="pi pi-plus"></i>
 			</button>
-			<button mat-menu-item (click)="deleteBoard(id)">
-				Delete
-			</button>
-		</ng-template>
-	</mat-menu>
-</mat-drawer-container>
+		</div>
+	</div>
+
+	<ng-template #footer>
+		<theme-switcher (switcherToggled)="closeDrawer()" />
+	</ng-template>
+</p-drawer>
+
+<section class="main-container">
+	<toolbar
+		(openNav)="toggleDrawer()"
+		(createTaskClicked)="openCreateTaskModal($event)"
+	/>
+
+	<div class="main-container">
+		<kanban-board />
+	</div>
+</section>
