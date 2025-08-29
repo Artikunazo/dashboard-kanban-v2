@@ -9,20 +9,16 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSelectModule} from '@angular/material/select';
+// import {MatButtonModule} from '@angular/material/button';
+// import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+// import {MatFormFieldModule} from '@angular/material/form-field';
+// import {MatIconModule} from '@angular/material/icon';
+// import {MatMenuModule} from '@angular/material/menu';
+// import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 
-import {
-	MatProgressSpinner,
-	MatProgressSpinnerModule,
-} from '@angular/material/progress-spinner';
 import {
 	deleteConfirmationConfig,
 	taskFormConfig,
@@ -34,29 +30,29 @@ import * as fromStore from '../store';
 import {SubtaskFormComponent} from '../subtask-form/subtask-form.component';
 import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
 import {TaskFormComponent} from '../task-form/task-form.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
     selector: 'task-details',
     imports: [
         SubtasksOverviewComponent,
-        MatSelectModule,
-        MatFormFieldModule,
         ReactiveFormsModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatIconModule,
+        ButtonModule,
         AsyncPipe,
-        MatProgressSpinnerModule,
+        ProgressSpinnerModule,
     ],
     templateUrl: './task-details.component.html',
     styleUrl: './task-details.component.scss'
 })
 export class TaskDetailsComponent implements OnDestroy {
 	protected readonly store = inject(Store);
-	protected readonly matDialog = inject(MatDialog);
-	protected readonly matDialogRef = inject(
-		MatDialogRef,
-	) as MatDialogRef<TaskDetailsComponent>;
+	// protected readonly matDialog = inject(MatDialog);
+	// protected readonly matDialogRef = inject(
+	// 	MatDialogRef,
+	// ) as MatDialogRef<TaskDetailsComponent>;
+  private readonly dialogService = inject(DialogService);
 	protected readonly destroyRef = inject(DestroyRef);
 
 	@ViewChild('newSubtasks', {read: ViewContainerRef})
@@ -68,6 +64,7 @@ export class TaskDetailsComponent implements OnDestroy {
 	public statusOptions$ = new Observable<Status[]>();
 	public isLoadingSubtasks$ = new BehaviorSubject<boolean>(true);
 	public statusSelected = new FormControl();
+  private dialogRef: DynamicDialogRef | undefined;
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
@@ -127,11 +124,10 @@ export class TaskDetailsComponent implements OnDestroy {
 		const task = this.task$.getValue();
 
 		if (isDeleting) {
-			this.matDialog
-				.open(DeleteConfirmationComponent, deleteConfirmationConfig)
-				.afterClosed()
-				.subscribe({
-					next: (resultDeleting: boolean) => {
+      this.dialogRef = this.dialogService.open(DeleteConfirmationComponent, deleteConfirmationConfig);
+
+			this.dialogRef.onClose.subscribe({
+				next: (resultDeleting: boolean) => {
 						if (!resultDeleting) return;
 
 						if (!task.id) {
@@ -139,7 +135,7 @@ export class TaskDetailsComponent implements OnDestroy {
 						}
 
 						this.store.dispatch(new fromStore.DeleteTask(+task.id));
-						this.matDialogRef.close();
+						// this.dialogRef.close();
 					},
 				});
 		}
@@ -150,19 +146,17 @@ export class TaskDetailsComponent implements OnDestroy {
 			return;
 		}
 
-		this.matDialog
-			.open(TaskFormComponent, {
+		 this.dialogRef = this.dialogService.open(TaskFormComponent, {
 				...taskFormConfig,
 				data: {
 					taskId: this.task$.getValue().id,
 				},
-			})
-			.afterClosed()
-			.subscribe(() => {
+			});
+
+			this.dialogRef.onClose.subscribe(() => {
 				this.store.dispatch(new fromStore.CleanTaskSelected());
 			});
 
-		this.matDialogRef.close();
 	}
 
 	addSubtask() {
@@ -173,7 +167,7 @@ export class TaskDetailsComponent implements OnDestroy {
 		newComponent.instance.subtaskSaved.subscribe((response: string) => {
 			if (response.length < 1) return;
 
-			this.newSubtasksContainer.createComponent(MatProgressSpinner);
+			// this.newSubtasksContainer.createComponent(ProgressSpinner);
 
 			this.store.dispatch(
 				new fromStore.AddSubtask({

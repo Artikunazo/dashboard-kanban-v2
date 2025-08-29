@@ -1,18 +1,21 @@
 import {Component, inject} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialogRef} from '@angular/material/dialog';
+import { ButtonModule } from 'primeng/button';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'delete-confirmation',
-    imports: [MatButtonModule],
+    imports: [ButtonModule],
     templateUrl: './delete-confirmation.component.html',
     styleUrl: './delete-confirmation.component.scss'
 })
 export class DeleteConfirmationComponent {
-	protected readonly matDialogRef: MatDialogRef<DeleteConfirmationComponent> =
-		inject(MatDialogRef);
+	// protected readonly matDialogRef: MatDialogRef<DeleteConfirmationComponent> =
+	// 	inject(MatDialogRef);
+
+  private dialogRef: DynamicDialogRef | undefined;
 
 	deleteConfirmationAction(isDeleting: boolean): void {
-		this.matDialogRef.close(isDeleting);
+		// this.matDialogRef.close(isDeleting);
+    this.dialogRef?.close(isDeleting);
 	}
 }
