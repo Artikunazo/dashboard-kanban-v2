@@ -72,7 +72,7 @@ export class AppComponent implements OnDestroy {
 	loadTasksByBoard(board: Board) {
 		if (!board || !board.id || !board.title) return;
 
-		this.kanbanBoardComponent.isLoading$.next(true);
+		this.kanbanBoardComponent.isLoading.set(true);
 		this.store.dispatch(new fromStore.LoadTasksByBoard(+board.id));
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.boardSelected$.next(+board.id);
