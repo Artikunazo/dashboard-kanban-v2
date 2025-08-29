@@ -21,13 +21,12 @@ import { ProgressSpinner } from "primeng/progressspinner";
     templateUrl: './kanban-board.component.html',
     styleUrl: './kanban-board.component.scss'
 })
-export class KanbanBoardComponent implements OnDestroy {
+export class KanbanBoardComponent {
 	private readonly store = inject(Store);
 
-  // @ToDo: convert to signals
-	public tasksList$ = new BehaviorSubject<Task[]>([]);
+	public tasksList = signal<Task[]>([]);
 	public tasksListIndexed!: {[key: string]: Task[]};
-	public isLoading$ = new BehaviorSubject<boolean>(false);
+	public isLoading = signal<boolean>(false);
 	protected boardSelected = signal<number>(0);
 
 	constructor() {
@@ -43,15 +42,16 @@ export class KanbanBoardComponent implements OnDestroy {
 			.pipe(takeUntilDestroyed())
 			.subscribe({
 				next: (tasks: Task[]) => {
-					this.tasksList$.next(tasks);
+					this.tasksList.set(tasks);
 					this.indexTasks();
-					this.isLoading$.next(false);
+
+					this.isLoading.set(false);
 				},
 			});
 	}
 
 	indexTasks() {
-		this.tasksListIndexed = this.tasksList$.getValue().reduce(
+		this.tasksListIndexed = this.tasksList().reduce(
 			(previous: any, task: Task) => ({
 				...previous,
 				[task.status ?? '']: [...(previous[task.status ?? ''] || []), task],
@@ -78,10 +78,5 @@ export class KanbanBoardComponent implements OnDestroy {
 				status,
 			}),
 		);
-	}
-
-	ngOnDestroy() {
-		this.tasksList$.complete();
-		this.isLoading$.complete();
 	}
 }
