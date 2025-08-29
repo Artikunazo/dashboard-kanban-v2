@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, inject, OnDestroy, signal} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
@@ -28,14 +28,14 @@ export class KanbanBoardComponent implements OnDestroy {
 	public tasksList$ = new BehaviorSubject<Task[]>([]);
 	public tasksListIndexed!: {[key: string]: Task[]};
 	public isLoading$ = new BehaviorSubject<boolean>(false);
-	protected boardSelected$ = new BehaviorSubject<number>(0);
+	protected boardSelected = signal<number>(0);
 
 	constructor() {
 		this.store
 			.select(fromStore.selectBoardSelected)
 			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) =>
-				this.boardSelected$.next(boardSelected),
+				this.boardSelected.set(boardSelected),
 			);
 
 		this.store
@@ -82,7 +82,6 @@ export class KanbanBoardComponent implements OnDestroy {
 
 	ngOnDestroy() {
 		this.tasksList$.complete();
-		this.boardSelected$.complete();
 		this.isLoading$.complete();
 	}
 }

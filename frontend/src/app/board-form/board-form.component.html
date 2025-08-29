@@ -1,29 +1,27 @@
 <section class="container-liquid">
-	<form [formGroup]="boardForm" class="row board-form">
-		<mat-form-field class="col">
-			<mat-label>Board title</mat-label>
-			<input matInput formControlName="title" type="text" />
-		</mat-form-field>
+	<form [formGroup]="boardForm" class="board-form">
+		<p-fieldset class="col">
+			<ng-template #header>
+        <p>Board title</p>
+      </ng-template>
 
-		<div class="col justify-self-end">
+			<input pInputText type="text" formControlName="title" />
+		</p-fieldset>
+
+		<div class="flex justify-self-end">
 			@if (isLoading$ | async) {
-				<mat-spinner class="col" [diameter]="30" />
+				<p-progress-spinner
+				strokeWidth="6"
+				ariaLabel="loading"
+				[style]="{width: '70px', height: '70px'}"
+			/>
 			} @else {
-				@if (isEdit) {
-					<custom-button
-						[text]="'Save'"
-						[colorButton]="'accent'"
-						(clickEvent)="updateBoard()"
-						class="col create-new-board-button"
-					/>
-				} @else {
-					<custom-button
-						[text]="'Save'"
-						[colorButton]="'accent'"
-						(clickEvent)="saveBoard()"
-						class="col create-new-board-button"
-					/>
-				}
+        <custom-button
+          [text]="'Save'"
+          [severity]="'success'"
+          (clickEvent)="isEdit() ? updateBoard() : saveBoard()"
+          class="col create-new-board-button"
+        />
 			}
 		</div>
 	</form>

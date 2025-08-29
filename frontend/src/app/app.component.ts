@@ -15,8 +15,7 @@ import {TaskFormComponent} from './task-form/task-form.component';
 import { DrawerModule } from 'primeng/drawer';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
-
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-root',
@@ -36,7 +35,8 @@ export class AppComponent implements OnDestroy {
 	// @ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
 
 	// protected readonly matDialog = inject(MatDialog);
-	protected readonly store = inject(Store);
+	private readonly dialogService = inject(DialogService);
+	private readonly store = inject(Store);
 
   drawerVisible = false;
   drawerClosable = true;
@@ -81,19 +81,21 @@ export class AppComponent implements OnDestroy {
 	}
 
 	showNewBoardDialog(): void {
-		// this.matDialog.open(BoardFormComponent, boardDialogConfig);
+		this.dialogService.open(BoardFormComponent, {...boardDialogConfig, data: {
+      isEdit: false
+    }});
 	}
 
-	editBoard(boardData: Board) {
+	editBoard(boardData: Board): void {
 		if (!boardData || !boardData.id || !boardData.title) return;
 
-		// this.matDialog.open(BoardFormComponent, {
-		// 	...boardDialogConfig,
-		// 	data: boardData,
-		// });
+		this.dialogService.open(BoardFormComponent, {...boardDialogConfig, data: {
+      isEdit: true,
+      boardData
+    }});
 	}
 
-	deleteBoard(idBoard: number | string) {
+	deleteBoard(idBoard: number | string): void {
 		idBoard = +idBoard;
 		if (!idBoard || isNaN(idBoard)) {
 			return;

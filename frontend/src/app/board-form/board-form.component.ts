@@ -1,8 +1,7 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, inject, OnDestroy, signal} from '@angular/core';
 import {
 	FormBuilder,
-	FormGroup,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
@@ -12,6 +11,11 @@ import {BehaviorSubject} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Board} from '../models/board_models';
 import * as fromStore from '../store';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinner } from "primeng/progressspinner";
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+
 
 @Component({
     selector: 'board-form',
@@ -23,49 +27,52 @@ import * as fromStore from '../store';
         CustomButtonComponent,
         // MatProgressSpinnerModule,
         AsyncPipe,
+        FieldsetModule,
+        InputTextModule,
+        ProgressSpinner
     ],
     templateUrl: './board-form.component.html',
     styleUrl: './board-form.component.scss'
 })
 export class BoardFormComponent implements OnDestroy {
-	protected readonly formBuilder = inject(FormBuilder);
-	protected readonly store = inject(Store<fromStore.AppState>);
-	// protected readonly matDialogRef: MatDialogRef<BoardFormComponent> =
-	// 	inject(MatDialogRef);
-	// protected readonly matDialogData: Board = inject(MAT_DIALOG_DATA);
+	private readonly formBuilder = inject(FormBuilder);
+  private readonly dialogService = inject(DialogService);
+	private readonly store = inject(Store<fromStore.AppState>);
 
-	public boardForm: FormGroup = this.formBuilder.group({
+	public boardForm = this.formBuilder.group({
 		title: this.formBuilder.control('', [Validators.required]),
 	});
 
 	public isLoading$ = new BehaviorSubject<boolean>(true);
-	// public isEdit = !!this.matDialogData;
+  public dialogRef: DynamicDialogRef | undefined;
+	public isEdit = signal<boolean>(false);
 
 	constructor() {
-		// if (
-		// 	this.matDialogData !== null &&
-		// 	Object.hasOwn(this.matDialogData || {}, 'id')
-		// ) {
-		// 	this.boardForm.patchValue({
-		// 		title: this.matDialogData.title,
-		// 	});
-		// }
+    this.dialogRef?.onMaximize.subscribe((data) => {
+      console.log("Child component loaded:", data);
+      this.isEdit.set(data.isEdit);
+
+      this.boardForm.patchValue({
+        title: data.title,
+      });
+    });
 	}
 
 	saveBoard() {
-		this.store.dispatch(new fromStore.SaveBoard(this.boardForm.value));
+		this.store.dispatch(new fromStore.SaveBoard({ title: this.boardForm.value.title ?? '' }));
 		this.isLoading$.next(false);
-		// this.matDialogRef.close();
+		this.dialogRef?.close();
 	}
 
 	updateBoard() {
 		this.store.dispatch(
 			new fromStore.UpdateBoard({
-				...this.boardForm.value,
-				// id: this.matDialogData.id,
+				title: this.boardForm.value.title ?? '',
+				id: 0,
 			}),
 		);
-		// this.matDialogRef.close();
+
+		this.dialogRef?.close();
 	}
 	ngOnDestroy(): void {
 		this.isLoading$.complete();
