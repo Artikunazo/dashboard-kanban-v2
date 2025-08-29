@@ -13,7 +13,7 @@ import {Board} from '../models/board_models';
 import * as fromStore from '../store';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputTextModule } from 'primeng/inputtext';
-import { ProgressSpinner } from "primeng/progressspinner";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 
@@ -26,10 +26,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
         // MatFormField,
         CustomButtonComponent,
         // MatProgressSpinnerModule,
-        AsyncPipe,
         FieldsetModule,
         InputTextModule,
-        ProgressSpinner
+        ProgressSpinnerModule
     ],
     templateUrl: './board-form.component.html',
     styleUrl: './board-form.component.scss'

@@ -1,20 +1,13 @@
 import {AsyncPipe} from '@angular/common';
 import {
 	Component,
-	DestroyRef,
 	inject,
-	OnDestroy,
-	ViewChild,
+	signal,
+	viewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-// import {MatButtonModule} from '@angular/material/button';
-// import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-// import {MatFormFieldModule} from '@angular/material/form-field';
-// import {MatIconModule} from '@angular/material/icon';
-// import {MatMenuModule} from '@angular/material/menu';
-// import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
@@ -32,7 +25,7 @@ import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.
 import {TaskFormComponent} from '../task-form/task-form.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
     selector: 'task-details',
@@ -42,36 +35,26 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         ButtonModule,
         AsyncPipe,
         ProgressSpinnerModule,
+        ButtonModule
     ],
     templateUrl: './task-details.component.html',
     styleUrl: './task-details.component.scss'
 })
-export class TaskDetailsComponent implements OnDestroy {
-	protected readonly store = inject(Store);
-	// protected readonly matDialog = inject(MatDialog);
-	// protected readonly matDialogRef = inject(
-	// 	MatDialogRef,
-	// ) as MatDialogRef<TaskDetailsComponent>;
+export class TaskDetailsComponent {
+	private readonly store = inject(Store);
   private readonly dialogService = inject(DialogService);
-	protected readonly destroyRef = inject(DestroyRef);
 
-	@ViewChild('newSubtasks', {read: ViewContainerRef})
-	public newSubtasksContainer!: ViewContainerRef;
-
-	protected readonly subtaskFormComponentClass = SubtaskFormComponent;
-	public task$ = new BehaviorSubject<Task>({} as Task);
-	public subtasks$ = new BehaviorSubject<Subtask[]>([]);
-	public statusOptions$ = new Observable<Status[]>();
-	public isLoadingSubtasks$ = new BehaviorSubject<boolean>(true);
-	public statusSelected = new FormControl();
+	private readonly subtaskFormComponentClass = SubtaskFormComponent;
   private dialogRef: DynamicDialogRef | undefined;
+	public newSubtasksContainer = viewChild('newSubtasks', {read: ViewContainerRef});
+	public task = signal<Task>({} as Task);
+	public subtasks = signal<Subtask[]>([]);
+	public statusOptions = toSignal(this.store.select(fromStore.selectStatusData));
+	public isLoadingSubtasks = signal<boolean>(true);
+	public statusSelected = new FormControl();
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
-		this.statusOptions$ = this.store.select(fromStore.selectStatusData).pipe(
-			takeUntilDestroyed(),
-			map((status: Status[]) => status),
-		);
 
 		this.store
 			.select(fromStore.selectTask)
@@ -79,25 +62,25 @@ export class TaskDetailsComponent implements OnDestroy {
 			.subscribe({
 				next: (task: Task | null) => {
 					if (task) {
-						this.task$.next(task);
+						this.task.set(task);
 
-						this.statusSelected.setValue(this.task$.getValue().status);
+						this.statusSelected.setValue(this.task().status);
 						this.statusSelected.valueChanges
 							.pipe(takeUntilDestroyed())
 							.subscribe({
 								next: (value: string) => {
 									this.store.dispatch(
 										new fromStore.UpdateStatusTask({
-											task: this.task$.getValue(),
+											task: this.task(),
 											status: value,
 										}),
 									);
 								},
 							});
 
-						if (this.task$.getValue().totalSubtasks > 0) {
+						if (this.task().totalSubtasks > 0) {
 							this.store.dispatch(
-								new fromStore.LoadSubtasks(+this.task$.getValue().id),
+								new fromStore.LoadSubtasks(+this.task().id),
 							);
 
 							this.store
@@ -105,12 +88,12 @@ export class TaskDetailsComponent implements OnDestroy {
 								.pipe(takeUntilDestroyed())
 								.subscribe({
 									next: (subtasks: Subtask[]) => {
-										this.subtasks$.next(subtasks);
+										this.subtasks.set(subtasks);
 									},
 								});
 						}
 
-						this.isLoadingSubtasks$.next(false);
+						this.isLoadingSubtasks.set(false);
 					}
 				},
 			});
@@ -121,7 +104,7 @@ export class TaskDetailsComponent implements OnDestroy {
 	}
 
 	deleteConfirmation(isDeleting: boolean): void {
-		const task = this.task$.getValue();
+		const task = this.task();
 
 		if (isDeleting) {
       this.dialogRef = this.dialogService.open(DeleteConfirmationComponent, deleteConfirmationConfig);
@@ -142,14 +125,14 @@ export class TaskDetailsComponent implements OnDestroy {
 	}
 
 	editTask(): void {
-		if (!this.task$.getValue()) {
+		if (!this.task()) {
 			return;
 		}
 
 		 this.dialogRef = this.dialogService.open(TaskFormComponent, {
 				...taskFormConfig,
 				data: {
-					taskId: this.task$.getValue().id,
+					taskId: this.task().id,
 				},
 			});
 
@@ -160,31 +143,25 @@ export class TaskDetailsComponent implements OnDestroy {
 	}
 
 	addSubtask() {
-		const newComponent = this.newSubtasksContainer.createComponent(
+		const newComponent = this.newSubtasksContainer()?.createComponent(
 			this.subtaskFormComponentClass,
 		);
 
-		newComponent.instance.subtaskSaved.subscribe((response: string) => {
+		newComponent?.instance.subtaskSaved.subscribe((response: string) => {
 			if (response.length < 1) return;
 
-			// this.newSubtasksContainer.createComponent(ProgressSpinner);
+			const progressSpinnerComponent = this.newSubtasksContainer()?.createComponent(ProgressSpinner);
 
 			this.store.dispatch(
 				new fromStore.AddSubtask({
 					title: response.toString(),
 					isDone: false,
-					taskId: +this.task$.getValue().id,
+					taskId: +this.task().id,
 				} as Subtask),
 			);
 
-			// spinnerComponent.destroy();
-			newComponent.destroy(); // Remove current component from template
+			progressSpinnerComponent?.destroy();
+			newComponent?.destroy(); // Remove current component from template
 		});
-	}
-
-	ngOnDestroy() {
-		this.task$.complete();
-		this.isLoadingSubtasks$.complete();
-		this.subtasks$.complete();
 	}
 }
