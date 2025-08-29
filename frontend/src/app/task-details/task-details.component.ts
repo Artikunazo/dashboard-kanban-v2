@@ -9,14 +9,12 @@ import {
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 
 import {
 	deleteConfirmationConfig,
 	taskFormConfig,
 } from '../common/modal_configs';
-import {Status} from '../models/status_models';
 import {Subtask} from '../models/subtask_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
@@ -33,7 +31,6 @@ import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner'
         SubtasksOverviewComponent,
         ReactiveFormsModule,
         ButtonModule,
-        AsyncPipe,
         ProgressSpinnerModule,
         ButtonModule
     ],
@@ -118,7 +115,6 @@ export class TaskDetailsComponent {
 						}
 
 						this.store.dispatch(new fromStore.DeleteTask(+task.id));
-						// this.dialogRef.close();
 					},
 				});
 		}
