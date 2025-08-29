@@ -34,7 +34,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
     templateUrl: './board-form.component.html',
     styleUrl: './board-form.component.scss'
 })
-export class BoardFormComponent implements OnDestroy {
+export class BoardFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
   private readonly dialogService = inject(DialogService);
 	private readonly store = inject(Store<fromStore.AppState>);
@@ -43,7 +43,7 @@ export class BoardFormComponent implements OnDestroy {
 		title: this.formBuilder.control('', [Validators.required]),
 	});
 
-	public isLoading$ = new BehaviorSubject<boolean>(true);
+	public isLoading = signal<boolean>(true);
   public dialogRef: DynamicDialogRef | undefined;
 	public isEdit = signal<boolean>(false);
 
@@ -60,7 +60,7 @@ export class BoardFormComponent implements OnDestroy {
 
 	saveBoard() {
 		this.store.dispatch(new fromStore.SaveBoard({ title: this.boardForm.value.title ?? '' }));
-		this.isLoading$.next(false);
+		this.isLoading.set(false);
 		this.dialogRef?.close();
 	}
 
@@ -73,8 +73,5 @@ export class BoardFormComponent implements OnDestroy {
 		);
 
 		this.dialogRef?.close();
-	}
-	ngOnDestroy(): void {
-		this.isLoading$.complete();
 	}
 }
