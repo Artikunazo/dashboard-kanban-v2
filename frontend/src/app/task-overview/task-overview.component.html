@@ -1,25 +1,24 @@
-<mat-card>
+<p-card>
 	@if (task(); as task) {
-		<mat-card-content (click)="emitShowTaskDialog()">
-			<p>
-				{{ task.title }}
-			</p>
+		<p>
+			{{ task.title }}
+		</p>
 
-			@if (task.countDoneSubtasks) {
-				<p>
-					Subtasks:
-					{{ task.countDoneSubtasks }} completed of
-					{{ task.totalSubtasks }}
-				</p>
-			}
-		</mat-card-content>
-		<mat-card-actions>
-			<button mat-button (click)="emitShowTaskDialog()">
+		@if (task.countDoneSubtasks) {
+			<p>
+				Subtasks:
+				{{ task.countDoneSubtasks }} completed of
+				{{ task.totalSubtasks }}
+			</p>
+		}
+
+		<ng-template #footer>
+			<button pButton (click)="emitShowTaskDialog()">
 				View details
-				<mat-icon>info</mat-icon>
+				<i class="pi pi-info"></i>
 			</button>
-		</mat-card-actions>
+		</ng-template>
 	} @else {
 		<p>Task invalid!</p>
 	}
-</mat-card>
+</p-card>
