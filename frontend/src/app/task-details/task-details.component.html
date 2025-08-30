@@ -5,10 +5,19 @@
 				{{ task().title }}
 			</h2>
 			<div class="flex justify-items-between">
-				<button pButton severity="secondary" (click)="editTask()">
+				<button
+					pButton
+					severity="secondary"
+					(click)="editTask()"
+				>
 					<i class="pi pi-pen-to-square"></i>
 				</button>
-				<button pButton severity="secondary" class="task-menu-button">
+				<button
+					pButton
+					severity="secondary"
+					class="task-menu-button"
+          (click)="menuTask.toggle($event)"
+				>
 					<i class="pi pi-ellipsis-v"></i>
 				</button>
 			</div>
@@ -27,13 +36,14 @@
 			<div class="col-12">
 				@if (isLoadingSubtasks()) {
 					<div class="row justify-items-center">
-						<mat-spinner class="col" [diameter]="30" />
+						<p-progress-spinner
+							strokeWidth="6"
+							ariaLabel="loading"
+							[style]="{width: '70px', height: '70px'}"
+						/>
 					</div>
 				} @else {
-					@for (
-						subtask of subtasks();
-						track subtask
-					) {
+					@for (subtask of subtasks(); track subtask) {
 						<subtasks-overview
 							[subtask]="subtask"
 							(subtaskUpdated)="subtaskUpdated($event)"
@@ -49,35 +59,20 @@
 
 			<div class="col-12">
 				<button mat-button (click)="addSubtask()">
-					<mat-icon>add</mat-icon>
+					<i class="pi pi-plus"></i>
 				</button>
 			</div>
 		</div>
 
 		<div class="col row status-dropdown">
-			<mat-form-field class="col">
-				<mat-select [formControl]="statusSelected">
-					@for (
-						status of statusOptions();
-						track status
-					) {
-						<mat-option [value]="status?.name">{{
-							status?.name
-						}}</mat-option>
-					}
-				</mat-select>
-			</mat-form-field>
+			<p-select
+				[(ngModel)]="statusSelected"
+				[options]="statusOptions()"
+				optionLabel="name"
+				placeholder="Select a Status"
+			></p-select>
 		</div>
 	}
 </section>
 
-<mat-menu #menu="matMenu">
-	<ng-template matMenuContent>
-		<button
-			mat-menu-item
-			(click)="deleteConfirmation(true)"
-		>
-			Delete
-		</button>
-	</ng-template>
-</mat-menu>
+<p-menu #menuTask [model]="menuItems" [popup]="true"></p-menu>

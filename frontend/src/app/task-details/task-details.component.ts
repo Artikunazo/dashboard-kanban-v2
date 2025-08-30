@@ -1,13 +1,14 @@
-import {AsyncPipe} from '@angular/common';
 import {
 	Component,
+	effect,
 	inject,
+	model,
 	signal,
 	viewChild,
 	ViewContainerRef,
 } from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 
@@ -24,6 +25,9 @@ import {TaskFormComponent} from '../task-form/task-form.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SelectModule } from 'primeng/select';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'task-details',
@@ -32,7 +36,10 @@ import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner'
         ReactiveFormsModule,
         ButtonModule,
         ProgressSpinnerModule,
-        ButtonModule
+        ButtonModule,
+        SelectModule,
+        FormsModule,
+        MenuModule
     ],
     templateUrl: './task-details.component.html',
     styleUrl: './task-details.component.scss'
@@ -41,6 +48,13 @@ export class TaskDetailsComponent {
 	private readonly store = inject(Store);
   private readonly dialogService = inject(DialogService);
 
+  public menuItems: MenuItem[] = [
+	{
+		label: 'Delete',
+		icon: 'pi pi-trash',
+		command: () => this.deleteConfirmation(true),
+	},
+  ];
 	private readonly subtaskFormComponentClass = SubtaskFormComponent;
   private dialogRef: DynamicDialogRef | undefined;
 	public newSubtasksContainer = viewChild('newSubtasks', {read: ViewContainerRef});
@@ -48,7 +62,7 @@ export class TaskDetailsComponent {
 	public subtasks = signal<Subtask[]>([]);
 	public statusOptions = toSignal(this.store.select(fromStore.selectStatusData));
 	public isLoadingSubtasks = signal<boolean>(true);
-	public statusSelected = new FormControl();
+	public statusSelected = model<string>('');
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadStatuses());
@@ -60,20 +74,6 @@ export class TaskDetailsComponent {
 				next: (task: Task | null) => {
 					if (task) {
 						this.task.set(task);
-
-						this.statusSelected.setValue(this.task().status);
-						this.statusSelected.valueChanges
-							.pipe(takeUntilDestroyed())
-							.subscribe({
-								next: (value: string) => {
-									this.store.dispatch(
-										new fromStore.UpdateStatusTask({
-											task: this.task(),
-											status: value,
-										}),
-									);
-								},
-							});
 
 						if (this.task().totalSubtasks > 0) {
 							this.store.dispatch(
@@ -94,6 +94,18 @@ export class TaskDetailsComponent {
 					}
 				},
 			});
+
+      effect(()=> {
+        if(!this.statusSelected()) return;
+
+        console.log("Status changed:", this.statusSelected());
+        this.store.dispatch(
+          new fromStore.UpdateStatusTask({
+            task: this.task(),
+            status: this.statusSelected(),
+          }),
+        );
+      })
 	}
 
 	subtaskUpdated(event: Subtask) {
