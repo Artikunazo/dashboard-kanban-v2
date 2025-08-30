@@ -5,10 +5,12 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'subtask-form',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, FieldsetModule, InputTextModule],
     templateUrl: './subtask-form.component.html',
     styleUrl: './subtask-form.component.scss'
 })
@@ -16,7 +18,6 @@ export class SubtaskFormComponent {
 	protected readonly formBuilder = inject(FormBuilder);
 
 	public subtaskSaved = output<string>();
-
 	public subtaskForm!: FormGroup;
 
 	constructor() {
