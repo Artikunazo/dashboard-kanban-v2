@@ -1,17 +1,15 @@
 import {Component, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {SubtaskDoneDirective} from '../common/subtask-done.directive';
 import {Subtask} from '../models/subtask_models';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
     selector: 'subtasks-overview',
     imports: [
-        MatCheckboxModule,
         SubtaskDoneDirective,
         FormsModule,
-        CustomButtonComponent,
+        CheckboxModule
     ],
     templateUrl: './subtasks-overview.component.html',
     styleUrl: './subtasks-overview.component.scss'
