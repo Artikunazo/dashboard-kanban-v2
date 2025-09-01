@@ -3,10 +3,23 @@ import {ButtonModule, ButtonSeverity} from 'primeng/button';
 import {CustomIconDirective} from '../custom-icon.directive';
 
 @Component({
-    selector: 'custom-button',
-    imports: [CustomIconDirective, ButtonModule],
-    templateUrl: './custom-button.component.html',
-    styleUrl: './custom-button.component.scss'
+	selector: 'custom-button',
+  standalone: true,
+	imports: [CustomIconDirective, ButtonModule],
+	template: `
+		<p-button
+			[severity]="severity()"
+			(click)="clickEvent.emit()"
+			[disabled]="disabled()"
+		>
+			{{ text() }}
+			@if (iconName()) {
+				<ng-container>
+					<i class="pi pi-{{ iconName() }}" [customIcon]="'medium'"></i>
+				</ng-container>
+			}
+		</p-button>
+	`,
 })
 export class CustomButtonComponent {
 	public text = input<string>('');

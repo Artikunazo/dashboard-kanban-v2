@@ -4,6 +4,7 @@ import {CustomIconDirective} from '../custom-icon.directive';
 
 @Component({
     selector: 'status-circle',
+    standalone: true,
     imports: [CustomIconDirective],
     templateUrl: './status-circle.component.html',
     styleUrl: './status-circle.component.scss'
