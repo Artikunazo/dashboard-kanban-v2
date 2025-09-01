@@ -15,13 +15,13 @@
 					id="ToDo"
 					cdkDropList
 					#todoList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['ToDo']"
+					[cdkDropListData]="getTasks('ToDo')"
 					[cdkDropListConnectedTo]="[doingList, doneList]"
 					(cdkDropListDropped)="drop($event)"
 				>
 					<kanban-column
 						[columnType]="'ToDo'"
-						[tasks]="tasksListIndexed['ToDo']"
+						[tasks]="getTasks('ToDo')"
 					/>
 				</div>
 				<div
@@ -29,13 +29,13 @@
 					id="Doing"
 					cdkDropList
 					#doingList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['Doing']"
+					[cdkDropListData]="getTasks('Doing')"
 					[cdkDropListConnectedTo]="[todoList, doneList]"
 					(cdkDropListDropped)="drop($event)"
 				>
 					<kanban-column
 						[columnType]="'Doing'"
-						[tasks]="tasksListIndexed['Doing']"
+						[tasks]="getTasks('Doing')"
 					/>
 				</div>
 				<div
@@ -43,13 +43,13 @@
 					id="Done"
 					cdkDropList
 					#doneList="cdkDropList"
-					[cdkDropListData]="tasksListIndexed['Done']"
+					[cdkDropListData]="getTasks('Done')"
 					[cdkDropListConnectedTo]="[todoList, doingList]"
 					(cdkDropListDropped)="drop($event)"
 				>
 					<kanban-column
 						[columnType]="'Done'"
-						[tasks]="tasksListIndexed['Done']"
+						[tasks]="getTasks('Done')"
 					/>
 				</div>
 			</div>

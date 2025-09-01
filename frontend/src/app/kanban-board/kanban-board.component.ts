@@ -1,70 +1,64 @@
-import {Component, inject, OnDestroy, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import {AsyncPipe} from '@angular/common';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import { ProgressSpinner } from "primeng/progressspinner";
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
-    selector: 'kanban-board',
-    imports: [
-    KanbanColumnComponent,
-    DragDropModule,
-    AsyncPipe,
-    ProgressSpinner
-],
-    templateUrl: './kanban-board.component.html',
-    styleUrl: './kanban-board.component.scss'
+	selector: 'kanban-board',
+	standalone: true,
+	imports: [KanbanColumnComponent, DragDropModule, ProgressSpinner],
+	templateUrl: './kanban-board.component.html',
+	styleUrl: './kanban-board.component.scss',
 })
 export class KanbanBoardComponent {
 	private readonly store = inject(Store);
 
-	public tasksList = signal<Task[]>([]);
-	public tasksListIndexed!: {[key: string]: Task[]};
 	public isLoading = signal<boolean>(false);
-	protected boardSelected = signal<number>(0);
+	public tasksList = toSignal(this.store.select(fromStore.getAllTasks));
+	public tasksListIndexed = new Map<string, Task[]>();
+	protected boardSelected = toSignal(
+		this.store.select(fromStore.selectBoardSelected),
+	);
 
 	constructor() {
-		this.store
-			.select(fromStore.selectBoardSelected)
-			.pipe(takeUntilDestroyed())
-			.subscribe((boardSelected: number) =>
-				this.boardSelected.set(boardSelected),
-			);
-
-		this.store
-			.select(fromStore.getAllTasks)
-			.pipe(takeUntilDestroyed())
-			.subscribe({
-				next: (tasks: Task[]) => {
-					this.tasksList.set(tasks);
-					this.indexTasks();
-
-					this.isLoading.set(false);
-				},
-			});
+		// effect(() => {
+		// 	this.indexTasks();
+		// 	this.isLoading.set(false);
+		// });
 	}
 
-	indexTasks() {
-		this.tasksListIndexed = this.tasksList().reduce(
-			(previous: any, task: Task) => ({
-				...previous,
-				[task.status ?? '']: [...(previous[task.status ?? ''] || []), task],
-			}),
-			{},
-		);
+	indexTasks(withSort = true) {
+		this.tasksListIndexed.clear();
 
-		for (const column of Object.entries(this.tasksListIndexed)) {
-			this.tasksListIndexed[column[0]] = column[1].sort((a: Task, b: Task) => {
-				return +b.id - +a.id;
-			});
+		this.tasksList()?.forEach((task: Task) => {
+			const status = task.status ?? '';
+			if (!this.tasksListIndexed.has(status)) {
+				this.tasksListIndexed.set(status, []);
+			}
+
+			this.tasksListIndexed.get(status)?.push(task);
+		});
+
+		if (withSort) {
+			for (const column of this.tasksListIndexed.entries()) {
+				this.tasksListIndexed.set(
+					column[0],
+					column[1].sort((a: Task, b: Task) => {
+						return +b.id - +a.id;
+					}),
+				);
+			}
 		}
 	}
+
+  getTasks(status: string) {
+    return Array.from(this.tasksListIndexed.get(status) ?? []);
+  }
 
 	drop(event: CdkDragDrop<Task[]>) {
 		const task: Task = event.previousContainer.data[event.previousIndex],

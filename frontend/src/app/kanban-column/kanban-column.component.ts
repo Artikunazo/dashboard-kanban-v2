@@ -28,7 +28,7 @@ export class KanbanColumnComponent {
 	protected readonly dialogService = inject(DialogService);
 
 	public columnType = input<string>('ToDo');
-	public tasks = input<Task[]>([]);
+	public tasks = input<Task[] | undefined>([]);
 
   public ref: DynamicDialogRef | undefined;
 	protected boardSelected = signal<number>(0);
