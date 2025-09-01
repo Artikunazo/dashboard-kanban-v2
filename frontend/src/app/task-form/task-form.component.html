@@ -33,7 +33,7 @@
 				[severity]="'primary'"
 				[disabled]="!taskForm.valid"
 				[text]="
-					!taskSelected()?.id
+					!taskSelected().id
 						? 'Create task'
 						: 'Update Task'
 				"
