@@ -1,6 +1,6 @@
 <p class="status-dot">
 	<status-circle [columnStatus]="columnType()" />
-	{{ columnType() }} ({{ tasks()?.length ?? 0 }})
+	{{ columnType() }} ({{ tasks().length }})
 </p>
 @for (task of tasks(); track task) {
 	<task-overview
