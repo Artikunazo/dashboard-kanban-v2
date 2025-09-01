@@ -1,6 +1,6 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
 	FormGroup,
@@ -13,6 +13,8 @@ import {CustomButtonComponent} from '../common/custom-button/custom-button.compo
 import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 
 @Component({
     selector: 'task-form',
@@ -25,6 +27,8 @@ import * as fromStore from '../store';
         // MatCheckboxModule,
         // MatIconModule,
         AsyncPipe,
+				InputTextModule,
+        SelectModule
         // MatProgressSpinnerModule,
     ],
     templateUrl: './task-form.component.html',
@@ -39,9 +43,9 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 	// protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
 	public taskForm!: FormGroup;
-	public statusOptions$ = new Observable<Status[]>();
+	public statusOptions = toSignal(this.store.select(fromStore.selectStatusData));
 	protected boardSelected$ = new BehaviorSubject<number>(0);
-	public taskSelected$ = new BehaviorSubject<Task>({} as Task);
+	public taskSelected = signal<Task>({} as Task);
 	public isLoading$ = new BehaviorSubject<boolean>(false);
 
 	constructor() {
@@ -55,10 +59,6 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
-		this.statusOptions$ = this.store.select(fromStore.selectStatusData).pipe(
-			map((status: Status[]) => status),
-			takeUntilDestroyed(),
-		);
 
 		this.store
 			.select(fromStore.selectTask)
@@ -66,17 +66,17 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			.subscribe({
 				next: (task: Task | null) => {
 					if (task) {
-						this.taskSelected$.next(task);
+						this.taskSelected.set(task);
 
 						this.taskForm
 							.get('title')
-							?.setValue(this.taskSelected$.getValue().title);
+							?.setValue(this.taskSelected().title);
 						this.taskForm
 							.get('description')
-							?.setValue(this.taskSelected$.getValue().description);
+							?.setValue(this.taskSelected().description);
 						this.taskForm.get('status')?.setValue({
-							id: this.taskSelected$.getValue().statusId,
-							name: this.taskSelected$.getValue().status,
+							id: this.taskSelected().statusId,
+							name: this.taskSelected().status,
 						});
 					}
 				},
@@ -99,7 +99,7 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 	}
 
 	closeDialog(): void {
-		this.taskSelected$.complete();
+		this.taskSelected.set({} as Task);
 		// this.matDialogRef.close();
 	}
 
@@ -118,8 +118,8 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			status: this.taskForm.value.status.name,
 		};
 
-		if (this.taskSelected$.getValue().id) {
-			newTaskData['id'] = this.taskSelected$.getValue().id;
+		if (this.taskSelected().id) {
+			newTaskData['id'] = this.taskSelected().id;
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
@@ -130,7 +130,6 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 
 	ngOnDestroy() {
 		this.boardSelected$.complete();
-		this.taskSelected$.complete();
 		this.isLoading$.complete();
 	}
 }

@@ -1,59 +1,45 @@
 <section class="task-form-container">
 	<h3 class="task-form-title">Task information</h3>
 
-	@if (taskSelected$ | async) {
+	@if (taskSelected()) {
 		<form [formGroup]="taskForm" class="row">
-			<mat-form-field class="col">
-				<mat-label>Title</mat-label>
-				<input
-					matInput
-					formControlName="title"
-					type="text"
-				/>
-			</mat-form-field>
+			<label for="title">Title</label>
+			<input
+				pInputText
+				formControlName="title"
+				type="text"
+				name="title"
+			/>
 
-			<mat-form-field class="col">
-				<mat-label>Description</mat-label>
-				<textarea
-					matInput
-					formControlName="description"
-					type="text"
-				></textarea>
-			</mat-form-field>
+			<label for="description">Description</label>
+			<textarea
+				pInputText
+				formControlName="description"
+				type="text"
+        name="description"
+			></textarea>
 
 			<!-- Subtask is managemented In Task Details Component -->
 
-			<mat-form-field class="col">
-				<mat-label>Status</mat-label>
-				<mat-select formControlName="status">
-					@for (
-						status of statusOptions$ | async;
-						track status.id
-					) {
-						<mat-option [value]="status">{{
-							status.name
-						}}</mat-option>
-					}
-				</mat-select>
-			</mat-form-field>
+			<label for="status">Status</label>
+			<p-select name="status" formControlName="status" [options]="statusOptions()" optionLabel="status">
+			</p-select>
 		</form>
 
 		@if (isLoading$ | async) {
-			<div class="row justify-items-center">
-				<mat-spinner class="col" [diameter]="30" />
-			</div>
+			<div class="row justify-items-center"></div>
 		} @else {
 			<custom-button
-				[colorButton]="'accent'"
+				[severity]="'primary'"
 				[disabled]="!taskForm.valid"
 				[text]="
-					!(taskSelected$ | async)?.id
+					!taskSelected()?.id
 						? 'Create task'
 						: 'Update Task'
 				"
 				class="col create-task-button"
 				(clickEvent)="createTask()"
-			/>
+			></custom-button>
 		}
 	}
 </section>
