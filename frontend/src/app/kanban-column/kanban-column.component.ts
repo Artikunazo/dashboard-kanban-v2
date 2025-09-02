@@ -1,5 +1,5 @@
 import {CdkDrag, DragDropModule} from '@angular/cdk/drag-drop';
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, DestroyRef, inject, input, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
 import {taskFormConfig} from '../common/modal_configs';
@@ -13,6 +13,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'kanban-column',
+    standalone: true,
     imports: [
         TaskOverviewComponent,
         StatusCircleComponent,
@@ -26,6 +27,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class KanbanColumnComponent {
 	protected readonly store = inject(Store);
 	protected readonly dialogService = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
 	public columnType = input<string>('ToDo');
 	public tasks = input<Task[] | undefined>([]);
@@ -47,7 +49,7 @@ export class KanbanColumnComponent {
       ...taskFormConfig,
     });
 
-    this.ref.onClose.subscribe(() => {
+    this.ref.onClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
 				//@ToDo: It needs improve
 				// When edit button is clicked, this part is called (not should)
 				// Maybe with a edit event evaluation could be fixed

@@ -2,7 +2,7 @@ import {Component, computed, effect, inject, signal} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
