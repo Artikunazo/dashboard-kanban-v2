@@ -32,7 +32,7 @@ export class KanbanBoardComponent {
 		// });
 	}
 
-	indexTasks(withSort = true) {
+	indexTasks() {
 		this.tasksListIndexed.clear();
 
 		this.tasksList()?.forEach((task: Task) => {
@@ -43,17 +43,6 @@ export class KanbanBoardComponent {
 
 			this.tasksListIndexed.get(status)?.push(task);
 		});
-
-		if (withSort) {
-			for (const column of this.tasksListIndexed.entries()) {
-				this.tasksListIndexed.set(
-					column[0],
-					column[1].sort((a: Task, b: Task) => {
-						return +b.id - +a.id;
-					}),
-				);
-			}
-		}
 	}
 
   getTasks(status: string) {
