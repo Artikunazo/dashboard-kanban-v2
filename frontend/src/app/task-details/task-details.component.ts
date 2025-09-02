@@ -22,45 +22,50 @@ import * as fromStore from '../store';
 import {SubtaskFormComponent} from '../subtask-form/subtask-form.component';
 import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
 import {TaskFormComponent} from '../task-form/task-form.component';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ButtonModule } from 'primeng/button';
-import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SelectModule } from 'primeng/select';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ButtonModule} from 'primeng/button';
+import {ProgressSpinner, ProgressSpinnerModule} from 'primeng/progressspinner';
+import {SelectModule} from 'primeng/select';
+import {MenuModule} from 'primeng/menu';
+import {MenuItem} from 'primeng/api';
 
 @Component({
-    selector: 'task-details',
-    imports: [
-        SubtasksOverviewComponent,
-        ReactiveFormsModule,
-        ButtonModule,
-        ProgressSpinnerModule,
-        ButtonModule,
-        SelectModule,
-        FormsModule,
-        MenuModule
-    ],
-    templateUrl: './task-details.component.html',
-    styleUrl: './task-details.component.scss'
+	selector: 'task-details',
+	standalone: true,
+	imports: [
+		SubtasksOverviewComponent,
+		ReactiveFormsModule,
+		ButtonModule,
+		ProgressSpinnerModule,
+		ButtonModule,
+		SelectModule,
+		FormsModule,
+		MenuModule,
+	],
+	templateUrl: './task-details.component.html',
+	styleUrl: './task-details.component.scss',
 })
 export class TaskDetailsComponent {
 	private readonly store = inject(Store);
-  private readonly dialogService = inject(DialogService);
+	private readonly dialogService = inject(DialogService);
 
-  public menuItems: MenuItem[] = [
-	{
-		label: 'Delete',
-		icon: 'pi pi-trash',
-		command: () => this.deleteConfirmation(true),
-	},
-  ];
+	public menuItems: MenuItem[] = [
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			command: () => this.deleteConfirmation(true),
+		},
+	];
 	private readonly subtaskFormComponentClass = SubtaskFormComponent;
-  private dialogRef: DynamicDialogRef | undefined;
-	public newSubtasksContainer = viewChild('newSubtasks', {read: ViewContainerRef});
+	private dialogRef: DynamicDialogRef | undefined;
+	public newSubtasksContainer = viewChild('newSubtasks', {
+		read: ViewContainerRef,
+	});
 	public task = signal<Task>({} as Task);
 	public subtasks = signal<Subtask[]>([]);
-	public statusOptions = toSignal(this.store.select(fromStore.selectStatusData));
+	public statusOptions = toSignal(
+		this.store.select(fromStore.selectStatusData),
+	);
 	public isLoadingSubtasks = signal<boolean>(true);
 	public statusSelected = model<string>('');
 
@@ -76,9 +81,7 @@ export class TaskDetailsComponent {
 						this.task.set(task);
 
 						if (this.task().totalSubtasks > 0) {
-							this.store.dispatch(
-								new fromStore.LoadSubtasks(+this.task().id),
-							);
+							this.store.dispatch(new fromStore.LoadSubtasks(+this.task().id));
 
 							this.store
 								.select(fromStore.selectSubtasks)
@@ -95,17 +98,17 @@ export class TaskDetailsComponent {
 				},
 			});
 
-      effect(()=> {
-        if(!this.statusSelected()) return;
+		effect(() => {
+			if (!this.statusSelected()) return;
 
-        console.log("Status changed:", this.statusSelected());
-        this.store.dispatch(
-          new fromStore.UpdateStatusTask({
-            task: this.task(),
-            status: this.statusSelected(),
-          }),
-        );
-      })
+			console.log('Status changed:', this.statusSelected());
+			this.store.dispatch(
+				new fromStore.UpdateStatusTask({
+					task: this.task(),
+					status: this.statusSelected(),
+				}),
+			);
+		});
 	}
 
 	subtaskUpdated(event: Subtask) {
@@ -116,19 +119,22 @@ export class TaskDetailsComponent {
 		const task = this.task();
 
 		if (isDeleting) {
-      this.dialogRef = this.dialogService.open(DeleteConfirmationComponent, deleteConfirmationConfig);
+			this.dialogRef = this.dialogService.open(
+				DeleteConfirmationComponent,
+				deleteConfirmationConfig,
+			);
 
 			this.dialogRef.onClose.subscribe({
 				next: (resultDeleting: boolean) => {
-						if (!resultDeleting) return;
+					if (!resultDeleting) return;
 
-						if (!task.id) {
-							return;
-						}
+					if (!task.id) {
+						return;
+					}
 
-						this.store.dispatch(new fromStore.DeleteTask(+task.id));
-					},
-				});
+					this.store.dispatch(new fromStore.DeleteTask(+task.id));
+				},
+			});
 		}
 	}
 
@@ -137,17 +143,16 @@ export class TaskDetailsComponent {
 			return;
 		}
 
-		 this.dialogRef = this.dialogService.open(TaskFormComponent, {
-				...taskFormConfig,
-				data: {
-					taskId: this.task().id,
-				},
-			});
+		this.dialogRef = this.dialogService.open(TaskFormComponent, {
+			...taskFormConfig,
+			data: {
+				taskId: this.task().id,
+			},
+		});
 
-			this.dialogRef.onClose.subscribe(() => {
-				this.store.dispatch(new fromStore.CleanTaskSelected());
-			});
-
+		this.dialogRef.onClose.subscribe(() => {
+			this.store.dispatch(new fromStore.CleanTaskSelected());
+		});
 	}
 
 	addSubtask() {
@@ -158,7 +163,8 @@ export class TaskDetailsComponent {
 		newComponent?.instance.subtaskSaved.subscribe((response: string) => {
 			if (response.length < 1) return;
 
-			const progressSpinnerComponent = this.newSubtasksContainer()?.createComponent(ProgressSpinner);
+			const progressSpinnerComponent =
+				this.newSubtasksContainer()?.createComponent(ProgressSpinner);
 
 			this.store.dispatch(
 				new fromStore.AddSubtask({

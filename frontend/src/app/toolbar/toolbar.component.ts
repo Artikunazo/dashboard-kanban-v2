@@ -14,8 +14,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 	styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent {
-	// protected readonly dialog = inject(MatDialog); @ToDo: Change for Primeng Dialog
-	protected readonly store = inject(Store);
+	private readonly store = inject(Store);
 
 	public openNav = output();
 	public createTaskClicked = output<boolean>();

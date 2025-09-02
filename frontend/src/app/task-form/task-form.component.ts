@@ -13,38 +13,31 @@ import {CustomButtonComponent} from '../common/custom-button/custom-button.compo
 import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import {InputTextModule} from 'primeng/inputtext';
+import {SelectModule} from 'primeng/select';
 
 @Component({
-    selector: 'task-form',
-    imports: [
-        ReactiveFormsModule,
-        // MatFormFieldModule,
-        // MatInputModule,
-        // MatSelectModule,
-        CustomButtonComponent,
-        // MatCheckboxModule,
-        // MatIconModule,
-        AsyncPipe,
-				InputTextModule,
-        SelectModule
-        // MatProgressSpinnerModule,
-    ],
-    templateUrl: './task-form.component.html',
-    styleUrl: './task-form.component.scss'
+	selector: 'task-form',
+	standalone: true,
+	imports: [
+		ReactiveFormsModule,
+		CustomButtonComponent,
+		AsyncPipe,
+		InputTextModule,
+		SelectModule,
+	],
+	templateUrl: './task-form.component.html',
+	styleUrl: './task-form.component.scss',
 })
-export class TaskFormComponent implements OnDestroy, OnInit {
+export class TaskFormComponent implements OnDestroy {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
-	// private matDialogRef = inject(
-	// 	MatDialogRef,
-	// ) as MatDialogRef<TaskFormComponent>;
-	// protected readonly matDialogData = inject(MAT_DIALOG_DATA);
 
-	public taskForm!: FormGroup;
-	public statusOptions = toSignal(this.store.select(fromStore.selectStatusData));
 	protected boardSelected$ = new BehaviorSubject<number>(0);
+	public taskForm!: FormGroup;
+	public statusOptions = toSignal(
+		this.store.select(fromStore.selectStatusData),
+	);
 	public taskSelected = signal<Task>({} as Task);
 	public isLoading$ = new BehaviorSubject<boolean>(false);
 
@@ -68,9 +61,7 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 					if (task) {
 						this.taskSelected.set(task);
 
-						this.taskForm
-							.get('title')
-							?.setValue(this.taskSelected().title);
+						this.taskForm.get('title')?.setValue(this.taskSelected().title);
 						this.taskForm
 							.get('description')
 							?.setValue(this.taskSelected().description);
@@ -89,13 +80,6 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			description: this.formBuilder.control('', [Validators.required]),
 			status: this.formBuilder.control('', [Validators.required]),
 		});
-	}
-
-	ngOnInit() {
-		// this.matDialogRef.afterClosed().subscribe(() => {
-		// 	this.taskSelected$.complete();
-		// 	this.taskForm.reset();
-		// });
 	}
 
 	closeDialog(): void {

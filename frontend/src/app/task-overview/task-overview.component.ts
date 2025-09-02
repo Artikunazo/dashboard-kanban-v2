@@ -7,26 +7,25 @@ import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-
 import {deleteConfirmationConfig} from '../common/modal_configs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
-import { CardModule } from 'primeng/card';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ButtonModule } from 'primeng/button';
+import {CardModule} from 'primeng/card';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ButtonModule} from 'primeng/button';
 
 @Component({
-    selector: 'task-overview',
-    imports: [
-        CardModule, ButtonModule
-    ],
-    templateUrl: './task-overview.component.html',
-    styleUrl: './task-overview.component.scss'
+	selector: 'task-overview',
+	standalone: true,
+	imports: [CardModule, ButtonModule],
+	templateUrl: './task-overview.component.html',
+	styleUrl: './task-overview.component.scss',
 })
 export class TaskOverviewComponent implements OnDestroy {
-	protected readonly dialogService = inject(DialogService);
-	protected readonly store = inject(Store);
+	private readonly dialogService = inject(DialogService);
+	private readonly store = inject(Store);
 
 	public task = input.required<Task>();
 	public taskSelected = output<boolean>();
 	protected boardSelected$ = new BehaviorSubject<number>(0);
-  private dialogRef: DynamicDialogRef | undefined;
+	private dialogRef: DynamicDialogRef | undefined;
 
 	constructor() {
 		this.store
@@ -38,16 +37,18 @@ export class TaskOverviewComponent implements OnDestroy {
 	}
 
 	showDeleteConfirmationDialog(): void {
-		this.dialogRef = this.dialogService
-			.open(DeleteConfirmationComponent, deleteConfirmationConfig);
+		this.dialogRef = this.dialogService.open(
+			DeleteConfirmationComponent,
+			deleteConfirmationConfig,
+		);
 
 		this.dialogRef.onClose.pipe(takeUntilDestroyed()).subscribe({
 			next: (resultDeleting: boolean) => {
 				if (!resultDeleting) return;
 
-					this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
-				},
-			});
+				this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
+			},
+		});
 	}
 
 	emitShowTaskDialog() {

@@ -8,31 +8,31 @@ import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
 import {TaskDetailsComponent} from '../task-details/task-details.component';
 import {TaskOverviewComponent} from '../task-overview/task-overview.component';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 
 @Component({
-    selector: 'kanban-column',
-    standalone: true,
-    imports: [
-        TaskOverviewComponent,
-        StatusCircleComponent,
-        CdkDrag,
-        DragDropModule,
-        DynamicDialogModule
-    ],
-    templateUrl: './kanban-column.component.html',
-    styleUrl: './kanban-column.component.scss'
+	selector: 'kanban-column',
+	standalone: true,
+	imports: [
+		TaskOverviewComponent,
+		StatusCircleComponent,
+		CdkDrag,
+		DragDropModule,
+		DynamicDialogModule,
+	],
+	templateUrl: './kanban-column.component.html',
+	styleUrl: './kanban-column.component.scss',
 })
 export class KanbanColumnComponent {
-	protected readonly store = inject(Store);
-	protected readonly dialogService = inject(DialogService);
-  private readonly destroyRef = inject(DestroyRef);
+	private readonly store = inject(Store);
+	private readonly dialogService = inject(DialogService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	public columnType = input<string>('ToDo');
 	public tasks = input<Task[] | undefined>([]);
 
-  public ref: DynamicDialogRef | undefined;
+	public ref: DynamicDialogRef | undefined;
 	protected boardSelected = signal<number>(0);
 
 	constructor() {
@@ -45,19 +45,17 @@ export class KanbanColumnComponent {
 	}
 
 	showTaskSelected(): void {
-    this.ref = this.dialogService.open(TaskDetailsComponent, {
-      ...taskFormConfig,
-    });
+		this.ref = this.dialogService.open(TaskDetailsComponent, {
+			...taskFormConfig,
+		});
 
-    this.ref.onClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-				//@ToDo: It needs improve
-				// When edit button is clicked, this part is called (not should)
-				// Maybe with a edit event evaluation could be fixed
-				this.store.dispatch(new fromStore.CleanTaskSelected());
-				this.store.dispatch(new fromStore.ClearSubtasks());
-				this.store.dispatch(
-					new fromStore.LoadTasksByBoard(this.boardSelected()),
-				);
-			});
+		this.ref.onClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+			//@ToDo: It needs improve
+			// When edit button is clicked, this part is called (not should)
+			// Maybe with a edit event evaluation could be fixed
+			this.store.dispatch(new fromStore.CleanTaskSelected());
+			this.store.dispatch(new fromStore.ClearSubtasks());
+			this.store.dispatch(new fromStore.LoadTasksByBoard(this.boardSelected()));
+		});
 	}
 }

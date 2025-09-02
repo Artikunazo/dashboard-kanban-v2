@@ -2,17 +2,14 @@ import {Component, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {SubtaskDoneDirective} from '../common/subtask-done.directive';
 import {Subtask} from '../models/subtask_models';
-import { CheckboxModule } from 'primeng/checkbox';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @Component({
-    selector: 'subtasks-overview',
-    imports: [
-        SubtaskDoneDirective,
-        FormsModule,
-        CheckboxModule
-    ],
-    templateUrl: './subtasks-overview.component.html',
-    styleUrl: './subtasks-overview.component.scss'
+	selector: 'subtasks-overview',
+	standalone: true,
+	imports: [SubtaskDoneDirective, FormsModule, CheckboxModule],
+	templateUrl: './subtasks-overview.component.html',
+	styleUrl: './subtasks-overview.component.scss',
 })
 export class SubtasksOverviewComponent {
 	public subtask = input<Subtask>({} as Subtask);
