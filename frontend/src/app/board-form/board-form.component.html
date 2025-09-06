@@ -1,27 +1,19 @@
-<section class="container-liquid">
+<section>
 	<form [formGroup]="boardForm" class="board-form">
-		<p-fieldset class="col">
+		<p-fieldset>
 			<ng-template #header>
-        <p>Board title</p>
-      </ng-template>
+				<p>Board title</p>
+			</ng-template>
 
-			<input pInputText type="text" formControlName="title" />
+			<input pInputText type="text" formControlName="title" class="w-full" />
 		</p-fieldset>
 
 		<div class="flex justify-self-end">
 			@if (isLoading()) {
-				<p-progress-spinner
-				strokeWidth="6"
-				ariaLabel="loading"
-				[style]="{width: '70px', height: '70px'}"
-			/>
+				<p-progress-spinner strokeWidth="6" ariaLabel="loading" [style]="{width: '70px', height: '70px'}" />
 			} @else {
-        <custom-button
-          [text]="'Save'"
-          [severity]="'success'"
-          (clickEvent)="isEdit() ? updateBoard() : saveBoard()"
-          class="col create-new-board-button"
-        />
+				<custom-button [disabled]="boardForm.invalid" [text]="isEdit() ? 'Update' : 'Save'" [severity]="'success'" (clickEvent)="isEdit() ? updateBoard() : saveBoard()"
+					class="create-new-board-button mt-4" />
 			}
 		</div>
 	</form>

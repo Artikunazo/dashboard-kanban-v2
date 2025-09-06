@@ -1,8 +1,10 @@
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 export const boardDialogConfig: DynamicDialogConfig = {
-	width: '90dvw',
+	width: '60dvw',
 	height: 'fit-content',
+	modal: true,
+	closable: true,
 	// delayFocusTrap: true,
 	// closeOnNavigation: true,
 };

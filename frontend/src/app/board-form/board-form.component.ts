@@ -1,5 +1,5 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy, signal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, signal} from '@angular/core';
 import {
 	FormBuilder,
 	ReactiveFormsModule,
@@ -14,7 +14,7 @@ import * as fromStore from '../store';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from "primeng/progressspinner";
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 
 @Component({
@@ -35,42 +35,44 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class BoardFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
-  private readonly dialogService = inject(DialogService);
+	private readonly dialogRef = inject(DynamicDialogRef);
+	private readonly dialogConfig = inject(DynamicDialogConfig);
 	private readonly store = inject(Store<fromStore.AppState>);
 
 	public boardForm = this.formBuilder.group({
-		title: this.formBuilder.control('', [Validators.required]),
+		title: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
 	});
 
-	public isLoading = signal<boolean>(true);
-  public dialogRef: DynamicDialogRef | undefined;
+	public isLoading = signal<boolean>(false);
 	public isEdit = signal<boolean>(false);
+	public dialogData = signal(this.dialogConfig.data);
 
 	constructor() {
-    this.dialogRef?.onMaximize.subscribe((data) => {
-      console.log("Child component loaded:", data);
-      this.isEdit.set(data.isEdit);
+		effect(() => {
+			this.isEdit.set(this.dialogData().isEdit);
 
-      this.boardForm.patchValue({
-        title: data.title,
-      });
-    });
+			if(this.isEdit()) {
+				this.boardForm.patchValue({
+					title: this.dialogData().boardData.title,
+				});
+			}
+		});
 	}
 
 	saveBoard() {
 		this.store.dispatch(new fromStore.SaveBoard({ title: this.boardForm.value.title ?? '' }));
 		this.isLoading.set(false);
-		this.dialogRef?.close();
+		this.dialogRef.close();
 	}
 
 	updateBoard() {
 		this.store.dispatch(
 			new fromStore.UpdateBoard({
 				title: this.boardForm.value.title ?? '',
-				id: 0,
+				id: this.dialogData().boardData.id,
 			}),
 		);
 
-		this.dialogRef?.close();
+		this.dialogRef.close();
 	}
 }

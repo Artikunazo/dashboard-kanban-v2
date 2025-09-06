@@ -6,22 +6,19 @@
 >
 	<div class="sidebar-options">
 		@defer {
-			@for (board of boards$ | async; track board.id) {
-				<div class="add-board-item">
-					<span
-						(click)="loadTasksByBoard(board)"
+			@for (board of boards(); track board.id) {
+				<div class="add-board-item flex justify-between cursor-pointer hover:bg-gray-100 my-3" (click)="loadTasksByBoard(board)">
+					<span						
 						aria-hidden="true"
 					>
 						{{ board.title }}
 					</span>
-          <!-- <button mat-icon-button (click)="editBoard(board)"><i class="pi pi-pencil"></i></button> -->
-					<button>
-						<i class="pi pi-ellipsis-v"></i>
-					</button>
+					<p-menu #menu [model]="menuItems" [popup]="true" />
+					<p-button severity="secondary" size="small" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
 				</div>
 			}
 		} @loading {
-			<div class="row justify-items-center">
+			<div class="flex justify-items-center">
 				<p-progress-spinner
 					strokeWidth="6"
 					ariaLabel="loading"
@@ -30,7 +27,7 @@
 			</div>
 		}
 
-		<div class="add-board-item">
+		<div class="add-new-board">
 			<button
 				pTooltip="Create new board"
 				(click)="showNewBoardDialog()"
