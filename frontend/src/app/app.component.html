@@ -32,7 +32,7 @@
 
 		<div class="add-board-item">
 			<button
-				mat-raised-button
+				pTooltip="Create new board"
 				(click)="showNewBoardDialog()"
 			>
 				<i class="pi pi-plus"></i>
@@ -45,13 +45,13 @@
 	</ng-template>
 </p-drawer>
 
-<section class="main-container">
+<section>
 	<toolbar
 		(openNav)="toggleDrawer()"
 		(createTaskClicked)="openCreateTaskModal($event)"
 	/>
 
-	<div class="main-container">
+	<div class="px-4 pt-1">
 		<kanban-board />
 	</div>
 </section>

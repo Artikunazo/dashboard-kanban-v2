@@ -14,9 +14,7 @@ import {CustomIconDirective} from '../custom-icon.directive';
 		>
 			{{ text() }}
 			@if (iconName()) {
-				<ng-container>
-					<i class="pi pi-{{ iconName() }}" [customIcon]="'medium'"></i>
-				</ng-container>
+				<i class="pi pi-{{ iconName() }}"></i>
 			}
 		</p-button>
 	`,

@@ -16,6 +16,8 @@ import { DrawerModule } from 'primeng/drawer';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogService } from 'primeng/dynamicdialog';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 @Component({
 	selector: 'app-root',
@@ -26,7 +28,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 		AsyncPipe,
 		DrawerModule,
 		ToolbarModule,
-		ProgressSpinnerModule
+		ProgressSpinnerModule,
+		TooltipModule
 	],
 	providers: [DialogService],
 	templateUrl: './app.component.html',

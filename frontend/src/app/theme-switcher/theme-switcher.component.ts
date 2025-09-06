@@ -1,9 +1,11 @@
-import {Component, inject, OnInit, output} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {CustomIconDirective} from '../common/custom-icon.directive';
+import { Component, effect, inject, OnInit, output, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { CustomIconDirective } from '../common/custom-icon.directive';
 import * as fromStore from '../store';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+
 
 @Component({
 	selector: 'theme-switcher',
@@ -11,6 +13,8 @@ import * as fromStore from '../store';
 	imports: [
 		CustomIconDirective,
 		ReactiveFormsModule,
+		ToggleSwitchModule,
+		FormsModule
 	],
 	templateUrl: './theme-switcher.component.html',
 	styleUrl: './theme-switcher.component.scss',
@@ -20,26 +24,41 @@ export class ThemeSwitcherComponent implements OnInit {
 
 	public switcherToggled = output();
 
-	themeToggled = new FormControl(false);
+	themeToggled = signal<boolean>(false);
 
 	constructor() {
-		this.themeToggled.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-			next: (checked) => {
-				const darkThemeName = 'dark-theme';
-				const lightThemeName = 'light-theme';
-				const body = document.querySelector('body');
-				// Enable light theme
-				if (!checked) {
-					body?.classList.remove(darkThemeName);
-					body?.classList.add(lightThemeName);
-					this.store.dispatch(new fromStore.SaveTheme('ligth'));
-				} else {
-					body?.classList.remove(lightThemeName);
-					body?.classList.add(darkThemeName);
-					this.store.dispatch(new fromStore.SaveTheme('dark'));
-				}
-			},
-		});
+		effect(() => {
+			const darkThemeName = 'dark-theme';
+			const lightThemeName = 'light-theme';
+			const body = document.querySelector('body');
+			// Enable light theme
+			if (!this.themeToggled()) {
+				body?.classList.remove(darkThemeName);
+				body?.classList.add(lightThemeName);
+				this.store.dispatch(new fromStore.SaveTheme('ligth'));
+			} else {
+				body?.classList.remove(lightThemeName);
+				body?.classList.add(darkThemeName);
+				this.store.dispatch(new fromStore.SaveTheme('dark'));
+			}
+		})
+		// this.themeToggled.valueChanges.pipe(takeUntilDestroyed()).subscribe({
+		// 	next: (checked) => {
+		// 		const darkThemeName = 'dark-theme';
+		// 		const lightThemeName = 'light-theme';
+		// 		const body = document.querySelector('body');
+		// 		// Enable light theme
+		// 		if (!checked) {
+		// 			body?.classList.remove(darkThemeName);
+		// 			body?.classList.add(lightThemeName);
+		// 			this.store.dispatch(new fromStore.SaveTheme('ligth'));
+		// 		} else {
+		// 			body?.classList.remove(lightThemeName);
+		// 			body?.classList.add(darkThemeName);
+		// 			this.store.dispatch(new fromStore.SaveTheme('dark'));
+		// 		}
+		// 	},
+		// });
 	}
 
 	ngOnInit(): void {
@@ -47,7 +66,7 @@ export class ThemeSwitcherComponent implements OnInit {
 
 		this.store.select(fromStore.getTheme).subscribe({
 			next: (ThemeState: string) => {
-				this.themeToggled.setValue(ThemeState === 'dark');
+				this.themeToggled.set(ThemeState === 'dark');
 			},
 		});
 	}
