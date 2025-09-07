@@ -141,7 +141,7 @@ export class AppComponent {
 
 	openCreateTaskModal(event: boolean) {
 		if (event) {
-			// this.matDialog.open(TaskFormComponent, taskFormConfig);
+			this.dialogService.open(TaskFormComponent, taskFormConfig);
 		}
 	}
 }
