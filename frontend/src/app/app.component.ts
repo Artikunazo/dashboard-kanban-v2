@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BoardFormComponent } from './board-form/board-form.component';
 import { boardDialogConfig, taskFormConfig } from './common/modal_configs';
@@ -43,7 +43,7 @@ export class AppComponent {
 	private readonly dialogService = inject(DialogService);
 	private readonly dialogRef = inject(DynamicDialogRef);
 	private readonly store = inject(Store);
-
+	
 	drawerVisible = false;
 	drawerClosable = true;
 	drawerHeader = 'Boards';
@@ -96,7 +96,7 @@ export class AppComponent {
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.idBoardSelected.set(+board.id);
 
-		// this.drawer.toggle();
+		this.toggleDrawer();
 	}
 
 	showNewBoardDialog(): void {
