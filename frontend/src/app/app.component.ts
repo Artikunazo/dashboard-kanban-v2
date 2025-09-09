@@ -142,7 +142,10 @@ export class AppComponent {
 
 	openCreateTaskModal(event: boolean) {
 		if (event) {
-			this.dialogService.open(TaskFormComponent, taskFormConfig);
+			this.dialogService.open(TaskFormComponent, {
+				...taskFormConfig,
+				header: 'Task information',
+			});
 		}
 	}
 }

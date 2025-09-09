@@ -7,8 +7,9 @@
 				iconName="bars"
 			/>
 		</ng-template>
+
 		<ng-template #center>
-			<h2>{{ subtitle$ | async }}</h2>
+			<h2>{{ subtitle() }}</h2>
 		</ng-template>
 
 		<ng-template #end>
@@ -16,10 +17,8 @@
 				[text]="'Create task'"
 				[severity]="'info'"
 				(clickEvent)="openTaskFormModal()"
-				iconName="add"
-				[disabled]="
-					(subtitle$ | async) === 'Dashboard Kanban'
-				"
+				iconName="plus"
+				[disabled]="subtitle() === 'Dashboard Kanban'"
 			/>
 		</ng-template>
 	</p-toolbar>

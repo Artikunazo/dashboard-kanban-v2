@@ -4,12 +4,10 @@
 		<input pInputText type="text" formControlName="title" id="title" class="w-full" />
 
 		<div class="flex justify-self-end">
-			@if (isLoading()) {
-			<p-progress-spinner strokeWidth="6" ariaLabel="loading" [style]="{width: '70px', height: '70px'}" />
-			} @else {
+
 			<custom-button [disabled]="boardForm.invalid" [text]="isEdit() ? 'Update' : 'Save'" [severity]="'success'"
-				(clickEvent)="isEdit() ? updateBoard() : saveBoard()" class="create-new-board-button mt-4" />
-			}
+				(clickEvent)="isEdit() ? updateBoard() : saveBoard()" class="create-new-board-button mt-4"
+				[loading]="isLoading()" />
 		</div>
 	</form>
 </section>

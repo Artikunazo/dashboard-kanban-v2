@@ -12,9 +12,10 @@ import {BehaviorSubject, map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
-import * as fromStore from '../store';
 import {InputTextModule} from 'primeng/inputtext';
 import {SelectModule} from 'primeng/select';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import * as fromStore from '../store';
 
 @Component({
 	selector: 'task-form',
@@ -25,21 +26,22 @@ import {SelectModule} from 'primeng/select';
 		AsyncPipe,
 		InputTextModule,
 		SelectModule,
+		ProgressSpinnerModule,
 	],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
 })
-export class TaskFormComponent implements OnDestroy {
+export class TaskFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
 
-	protected boardSelected$ = new BehaviorSubject<number>(0);
+	protected boardSelected = signal<number>(0);
 	public taskForm!: FormGroup;
 	public statusOptions = toSignal(
 		this.store.select(fromStore.selectStatusData),
 	);
 	public taskSelected = signal<Task>({} as Task);
-	public isLoading$ = new BehaviorSubject<boolean>(false);
+	public isLoading = signal<boolean>(false);
 
 	constructor() {
 		this.initTaskForm();
@@ -48,7 +50,7 @@ export class TaskFormComponent implements OnDestroy {
 			.select(fromStore.selectBoardSelected)
 			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) => {
-				this.boardSelected$.next(boardSelected);
+				this.boardSelected.set(boardSelected);
 			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
@@ -88,7 +90,7 @@ export class TaskFormComponent implements OnDestroy {
 	}
 
 	createTask() {
-		this.isLoading$.next(true);
+		this.isLoading.set(true);
 		if (this.taskForm.invalid) return;
 
 		const newTaskData: Task = {
@@ -96,7 +98,7 @@ export class TaskFormComponent implements OnDestroy {
 			title: this.taskForm.value.title,
 			description: this.taskForm.value.description,
 			statusId: this.taskForm.value.status.id,
-			boardId: this.boardSelected$.getValue(),
+			boardId: this.boardSelected(),
 			countDoneSubtasks: 0,
 			totalSubtasks: 0,
 			status: this.taskForm.value.status.name,
@@ -110,10 +112,5 @@ export class TaskFormComponent implements OnDestroy {
 		}
 
 		this.closeDialog();
-	}
-
-	ngOnDestroy() {
-		this.boardSelected$.complete();
-		this.isLoading$.complete();
 	}
 }

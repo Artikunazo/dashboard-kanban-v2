@@ -1,45 +1,42 @@
 <section class="task-form-container">
-	<h3 class="task-form-title">Task information</h3>
+	<form
+		class="grid grid-cols-2 gap-4"
+		[formGroup]="taskForm"
+	>
+		<label for="title">Title</label>
+		<input
+			pInputText
+			formControlName="title"
+			type="text"
+			name="title"
+		/>
 
-	@if (taskSelected()) {
-		<form [formGroup]="taskForm" class="row">
-			<label for="title">Title</label>
-			<input
-				pInputText
-				formControlName="title"
-				type="text"
-				name="title"
-			/>
+		<label for="description">Description</label>
+		<textarea
+			pInputText
+			formControlName="description"
+			type="text"
+			name="description"
+		></textarea>
 
-			<label for="description">Description</label>
-			<textarea
-				pInputText
-				formControlName="description"
-				type="text"
-        name="description"
-			></textarea>
+		<label for="status">Status</label>
+		<p-select
+			name="status"
+			formControlName="status"
+			[options]="statusOptions()"
+			optionLabel="status"
+		>
+		</p-select>
+	</form>
 
-			<!-- Subtask is managemented In Task Details Component -->
-
-			<label for="status">Status</label>
-			<p-select name="status" formControlName="status" [options]="statusOptions()" optionLabel="status">
-			</p-select>
-		</form>
-
-		@if (isLoading$ | async) {
-			<div class="row justify-items-center"></div>
-		} @else {
-			<custom-button
-				[severity]="'primary'"
-				[disabled]="!taskForm.valid"
-				[text]="
-					!taskSelected().id
-						? 'Create task'
-						: 'Update Task'
-				"
-				class="col create-task-button"
-				(clickEvent)="createTask()"
-			></custom-button>
-		}
-	}
+	<custom-button
+		class="create-task-button"
+		[severity]="'primary'"
+		[disabled]="!taskForm.valid"
+		[text]="
+			!taskSelected().id ? 'Create task' : 'Update Task'
+		"
+		(clickEvent)="createTask()"
+		[loading]="isLoading()"
+	></custom-button>
 </section>

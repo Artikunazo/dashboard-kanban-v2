@@ -17,6 +17,7 @@ export const deleteConfirmationConfig: Partial<DynamicDialogConfig> = {
 };
 
 export const taskFormConfig: Partial<DynamicDialogConfig> = {
-	width: '65dvw',
-	modal: true
+	width: '35dvw',
+	modal: true,
+	closable: true,
 };

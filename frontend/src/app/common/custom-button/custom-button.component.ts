@@ -11,6 +11,7 @@ import {CustomIconDirective} from '../custom-icon.directive';
 			[severity]="severity()"
 			(click)="clickEvent.emit()"
 			[disabled]="disabled()"
+			[loading]="loading()"
 		>
 			{{ text() }}
 			@if (iconName()) {
@@ -24,6 +25,7 @@ export class CustomButtonComponent {
 	public severity = input<ButtonSeverity>();
 	public iconName = input<string>('');
 	public disabled = input<boolean>(false);
+	public loading = input<boolean>(false);
 
 	public clickEvent = output();
 }
