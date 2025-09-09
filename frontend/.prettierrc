@@ -12,7 +12,9 @@
 		{
 			"files": ["**/*.html"],
 			"options": {
-				"printWidth": 60
+				"printWidth": 60,
+				"alignAttributesVertically": true,
+				"singleAttributePerLine": true
 			}
 		}
 	]
