@@ -1,7 +1,7 @@
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
-export const boardDialogConfig: DynamicDialogConfig = {
-	width: '60dvw',
+export const boardDialogConfig: Partial<DynamicDialogConfig> = {
+	width: '40dvw',
 	height: 'fit-content',
 	modal: true,
 	closable: true,
@@ -9,14 +9,14 @@ export const boardDialogConfig: DynamicDialogConfig = {
 	// closeOnNavigation: true,
 };
 
-export const deleteConfirmationConfig: DynamicDialogConfig = {
+export const deleteConfirmationConfig: Partial<DynamicDialogConfig> = {
 	width: '30dvw',
 	height: 'fit-content',
 	// delayFocusTrap: true,
 	// closeOnNavigation: true,
 };
 
-export const taskFormConfig: DynamicDialogConfig = {
+export const taskFormConfig: Partial<DynamicDialogConfig> = {
 	width: '65dvw',
 	modal: true
 };

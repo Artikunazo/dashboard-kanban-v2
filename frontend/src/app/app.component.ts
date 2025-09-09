@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BoardFormComponent } from './board-form/board-form.component';
 import { boardDialogConfig, taskFormConfig } from './common/modal_configs';
@@ -8,9 +8,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import { AsyncPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject } from 'rxjs';
 import { Board } from './models/board_models';
-import * as fromStore from './store';
 import { TaskFormComponent } from './task-form/task-form.component';
 import { DrawerModule } from 'primeng/drawer';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -20,10 +18,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
-
+import * as fromStore from './store';
 
 @Component({
 	selector: 'app-root',
+	standalone: true,
 	imports: [
 		ToolbarComponent,
 		KanbanBoardComponent,
@@ -103,6 +102,7 @@ export class AppComponent {
 	showNewBoardDialog(): void {
 		this.dialogService.open(BoardFormComponent, {
 			...boardDialogConfig,
+			header: 'New Board',
 			data: {
 				isEdit: false,
 			}
@@ -114,6 +114,7 @@ export class AppComponent {
 
 		this.dialogService.open(BoardFormComponent, {
 			...boardDialogConfig,
+			header: 'Edit Board',
 			data: {
 				isEdit: true,
 				boardData: this.boardSelected()

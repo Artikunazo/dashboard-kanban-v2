@@ -1,19 +1,14 @@
 <section>
 	<form [formGroup]="boardForm" class="board-form">
-		<p-fieldset>
-			<ng-template #header>
-				<p>Board title</p>
-			</ng-template>
-
-			<input pInputText type="text" formControlName="title" class="w-full" />
-		</p-fieldset>
+		<label for="title">Board title</label>
+		<input pInputText type="text" formControlName="title" id="title" class="w-full" />
 
 		<div class="flex justify-self-end">
 			@if (isLoading()) {
-				<p-progress-spinner strokeWidth="6" ariaLabel="loading" [style]="{width: '70px', height: '70px'}" />
+			<p-progress-spinner strokeWidth="6" ariaLabel="loading" [style]="{width: '70px', height: '70px'}" />
 			} @else {
-				<custom-button [disabled]="boardForm.invalid" [text]="isEdit() ? 'Update' : 'Save'" [severity]="'success'" (clickEvent)="isEdit() ? updateBoard() : saveBoard()"
-					class="create-new-board-button mt-4" />
+			<custom-button [disabled]="boardForm.invalid" [text]="isEdit() ? 'Update' : 'Save'" [severity]="'success'"
+				(clickEvent)="isEdit() ? updateBoard() : saveBoard()" class="create-new-board-button mt-4" />
 			}
 		</div>
 	</form>
