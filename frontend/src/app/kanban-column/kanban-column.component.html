@@ -1,11 +1,17 @@
-<p class="status-dot">
-	<status-circle [columnStatus]="columnType()" />
-	{{ columnType() }} ({{ tasks()?.length }})
-</p>
-@for (task of tasks(); track task) {
-	<task-overview
-		[task]="task"
-		cdkDrag
-		(taskSelected)="showTaskSelected()"
-	/>
-}
+<section>
+	<p class="status-dot font-semibold text-lg">
+		<status-circle [columnStatus]="columnType()" />
+		{{ columnType() }} ({{ tasks()?.length }})
+	</p>
+	<div class="kanban-column-content">
+		@for (task of tasks(); track task) {
+			<task-overview
+				[task]="task"
+				cdkDrag
+				(taskSelected)="showTaskSelected()"
+				class="m-3"
+			/>
+		}
+	</div>
+	
+</section>

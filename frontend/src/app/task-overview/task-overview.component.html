@@ -1,8 +1,8 @@
 <p-card>
 	@if (task(); as task) {
-		<p>
+		<ng-template #title>
 			{{ task.title }}
-		</p>
+		</ng-template>
 
 		@if (task.countDoneSubtasks) {
 			<p>
@@ -12,11 +12,17 @@
 			</p>
 		}
 
+		<p>{{ task.description }}</p>
+
 		<ng-template #footer>
-			<button pButton (click)="emitShowTaskDialog()">
-				View details
-				<i class="pi pi-info"></i>
-			</button>
+			<div class="flex justify-end">
+				<button pButton variant="text" severity="info" outlined="true" size="small" (click)="emitShowTaskDialog()">
+					<i class="pi pi-info"></i>
+				</button>
+				<!-- <button pButton severity="danger" size="small" (click)="showDeleteConfirmationDialog()">
+					<i class="pi pi-trash"></i>
+				</button> -->
+			</div>
 		</ng-template>
 	} @else {
 		<p>Task invalid!</p>

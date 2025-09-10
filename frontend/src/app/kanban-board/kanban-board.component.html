@@ -11,7 +11,7 @@
 		} @else {
 			<div class="grid grid-cols-3 gap-4" cdkDropListGroup>
 				<div
-					class="col-4 kanban-column"
+					class="kanban-column col-span-1"
 					id="ToDo"
 					cdkDropList
 					#todoList="cdkDropList"
@@ -25,7 +25,7 @@
 					/>
 				</div>
 				<div
-					class="col-4 kanban-column"
+					class="kanban-column col-span-1"
 					id="Doing"
 					cdkDropList
 					#doingList="cdkDropList"
@@ -39,7 +39,7 @@
 					/>
 				</div>
 				<div
-					class="col-4 kanban-column"
+					class="kanban-column col-span-1"
 					id="Done"
 					cdkDropList
 					#doneList="cdkDropList"
