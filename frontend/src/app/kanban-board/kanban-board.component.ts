@@ -26,10 +26,10 @@ export class KanbanBoardComponent {
 	);
 
 	constructor() {
-		// effect(() => {
-		// 	this.indexTasks();
-		// 	this.isLoading.set(false);
-		// });
+		effect(() => {
+			this.indexTasks();
+			this.isLoading.set(false);
+		});
 	}
 
 	indexTasks() {
@@ -46,7 +46,8 @@ export class KanbanBoardComponent {
 	}
 
   getTasks(status: string) {
-    return Array.from(this.tasksListIndexed.get(status) ?? []);
+		
+    return Array.from(this.tasksListIndexed.get(status)?.values() ?? []);
   }
 
 	drop(event: CdkDragDrop<Task[]>) {

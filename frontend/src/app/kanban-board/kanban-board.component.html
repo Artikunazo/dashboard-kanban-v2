@@ -1,10 +1,10 @@
 <section class="board-container">
 	@defer {
-		@if (!(boardSelected())) {
+		@if (!boardSelected()) {
 			<div class="flex justify-items-center">
 				<h2 class="font-semibold text-xl">Board is not selected yet</h2>
 			</div>
-		} @else if (!(tasksList())) {
+		} @else if (!tasksList()?.length) {
 			<div class="flex justify-items-center">
 				<h2 class="font-semibold text-xl">There are not task added</h2>
 			</div>
