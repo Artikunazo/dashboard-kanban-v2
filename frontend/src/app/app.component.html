@@ -2,19 +2,29 @@
 	[(visible)]="drawerVisible"
 	[closable]="drawerClosable"
 	styleClass="!w-full md:!w-80 lg:!w-[30rem]"
-  header="{{ drawerHeader }}"
+	header="{{ drawerHeader }}"
 >
 	<div class="sidebar-options">
 		@defer {
 			@for (board of boards(); track board.id) {
-				<div class="add-board-item flex justify-between cursor-pointer hover:bg-gray-100 my-3" (click)="loadTasksByBoard(board)">
-					<span						
-						aria-hidden="true"
-					>
+				<div
+					class="add-board-item flex justify-between cursor-pointer hover:bg-gray-100 my-3"
+					(click)="loadTasksByBoard(board)"
+				>
+					<h2 aria-hidden="true">
 						{{ board.title }}
-					</span>
-					<p-menu #menu [model]="menuItems" [popup]="true" />
-					<p-button severity="secondary" size="small" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+					</h2>
+					<p-menu
+						#menu
+						[model]="menuItems"
+						[popup]="true"
+					/>
+					<p-button
+						severity="secondary"
+						size="small"
+						(click)="menu.toggle($event)"
+						icon="pi pi-ellipsis-v"
+					/>
 				</div>
 			}
 		} @loading {

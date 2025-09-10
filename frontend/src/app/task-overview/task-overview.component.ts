@@ -1,8 +1,6 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, inject, input, OnDestroy, output} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject} from 'rxjs';
 import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
 import {deleteConfirmationConfig} from '../common/modal_configs';
 import {Task} from '../models/tasks_models';
@@ -10,45 +8,51 @@ import * as fromStore from '../store';
 import {CardModule} from 'primeng/card';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ButtonModule} from 'primeng/button';
+import {MenuItem} from 'primeng/api';
+import {MenuModule} from 'primeng/menu';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 
 @Component({
 	selector: 'task-overview',
 	standalone: true,
-	imports: [CardModule, ButtonModule],
+	imports: [CardModule, ButtonModule, MenuModule, ConfirmDialog],
+	providers: [ConfirmationService, MessageService],
 	templateUrl: './task-overview.component.html',
 	styleUrl: './task-overview.component.scss',
 })
-export class TaskOverviewComponent implements OnDestroy {
+export class TaskOverviewComponent {
 	private readonly dialogService = inject(DialogService);
 	private readonly store = inject(Store);
+	private readonly confirmationService = inject(ConfirmationService);
+	private readonly messageService = inject(MessageService);
 
+	private dialogRef: DynamicDialogRef | undefined;
+	protected boardSelected = signal<number>(0);
 	public task = input.required<Task>();
 	public taskSelected = output<boolean>();
-	protected boardSelected$ = new BehaviorSubject<number>(0);
-	private dialogRef: DynamicDialogRef | undefined;
+	public menuItems: MenuItem[] = [
+		{
+			label: 'View/Eit',
+			icon: 'pi pi-pencil',
+			styleClass: 'font-normal text-sm',
+			command: () => {},
+		},
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			styleClass: 'font-normal text-sm',
+			command: () => this.deletTask(),
+		},
+	];
 
 	constructor() {
 		this.store
 			.select(fromStore.selectBoardSelected)
 			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) =>
-				this.boardSelected$.next(boardSelected),
+				this.boardSelected.set(boardSelected),
 			);
-	}
-
-	showDeleteConfirmationDialog(): void {
-		this.dialogRef = this.dialogService.open(
-			DeleteConfirmationComponent,
-			deleteConfirmationConfig,
-		);
-
-		this.dialogRef.onClose.pipe(takeUntilDestroyed()).subscribe({
-			next: (resultDeleting: boolean) => {
-				if (!resultDeleting) return;
-
-				this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
-			},
-		});
 	}
 
 	emitShowTaskDialog() {
@@ -58,7 +62,40 @@ export class TaskOverviewComponent implements OnDestroy {
 		this.taskSelected.emit(true);
 	}
 
-	ngOnDestroy() {
-		this.boardSelected$.complete();
+	deletTask() {
+		this.confirmationService.confirm({
+			target: event?.target as EventTarget,
+			message: 'Are you sure that you want to proceed?',
+			header: 'Confirmation',
+			closable: true,
+			closeOnEscape: true,
+			icon: 'pi pi-exclamation-triangle',
+			rejectButtonProps: {
+				label: 'No',
+				severity: 'secondary',
+				outlined: true,
+			},
+			acceptButtonProps: {
+				label: 'Yes',
+				severity: 'danger'
+			},
+			accept: () => {
+				this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
+
+				this.messageService.add({
+					severity: 'info',
+					summary: 'Confirmed',
+					detail: 'You have accepted',
+				});
+			},
+			reject: () => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Rejected',
+					detail: 'You have rejected',
+					life: 3000,
+				});
+			},
+		});
 	}
 }
