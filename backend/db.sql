@@ -91,3 +91,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT INTO `dashboard_kanban`.`status` (`status`) VALUES ('To Do');
+INSERT INTO `dashboard_kanban`.`status` (`status`) VALUES ('In Progress');
+INSERT INTO `dashboard_kanban`.`status` (`status`) VALUES ('Done');
