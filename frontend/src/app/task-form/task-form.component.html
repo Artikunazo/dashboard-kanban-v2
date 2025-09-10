@@ -1,42 +1,64 @@
-<section class="task-form-container">
+<section class="p-4 w-full flex flex-col gap-4">
 	<form
-		class="grid grid-cols-2 gap-4"
+		class="flex flex-col gap-4 w-full"
 		[formGroup]="taskForm"
 	>
-		<label for="title">Title</label>
-		<input
-			pInputText
-			formControlName="title"
-			type="text"
-			name="title"
-		/>
+		<p-float-label variant="on">
+			<label
+				for="title"
+				style="font-weight: normal"
+				>Title</label
+			>
+			<input
+				pInputText
+				formControlName="title"
+				type="text"
+				id="title"
+				autocomplete="off"
+				class="w-full"
+			/>
+		</p-float-label>
 
-		<label for="description">Description</label>
-		<textarea
-			pInputText
-			formControlName="description"
-			type="text"
-			name="description"
-		></textarea>
+		<p-float-label
+			class="w-full"
+			variant="on"
+		>
+			<label
+				for="description"
+				style="font-weight: normal"
+				>Description</label
+			>
+			<textarea
+				pInputText
+				formControlName="description"
+				type="text"
+				id="description"
+				autocomplete="off"
+				class="w-full"
+			></textarea>
+		</p-float-label>
 
-		<label for="status">Status</label>
 		<p-select
-			name="status"
+			class="w-full"
 			formControlName="status"
+			optionLabel="name"
+			placeholder="Select status"
 			[options]="statusOptions()"
-			optionLabel="status"
+			[virtualScroll]="true" [virtualScrollItemSize]="3"
 		>
 		</p-select>
 	</form>
 
-	<custom-button
-		class="create-task-button"
-		[severity]="'primary'"
-		[disabled]="!taskForm.valid"
-		[text]="
-			!taskSelected().id ? 'Create task' : 'Update Task'
-		"
-		(clickEvent)="createTask()"
-		[loading]="isLoading()"
-	></custom-button>
+	<div class="flex justify-end">
+		<custom-button
+			class="create-task-button"
+			[severity]="'primary'"
+			[disabled]="!taskForm.valid"
+			[text]="
+				!taskSelected().id ? 'Create task' : 'Update Task'
+			"
+			(clickEvent)="createTask()"
+			[loading]="isLoading()"
+		></custom-button>
+	</div>
 </section>

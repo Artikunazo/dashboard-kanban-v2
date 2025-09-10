@@ -1,5 +1,5 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
@@ -8,14 +8,14 @@ import {
 	Validators,
 } from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
 import {InputTextModule} from 'primeng/inputtext';
-import {SelectModule} from 'primeng/select';
+import {Select, SelectModule} from 'primeng/select';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {FloatLabel} from 'primeng/floatlabel';
 import * as fromStore from '../store';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
 	selector: 'task-form',
@@ -25,8 +25,9 @@ import * as fromStore from '../store';
 		CustomButtonComponent,
 		AsyncPipe,
 		InputTextModule,
-		SelectModule,
+		Select,
 		ProgressSpinnerModule,
+		FloatLabel,
 	],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
@@ -34,6 +35,7 @@ import * as fromStore from '../store';
 export class TaskFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
+	private readonly dialogRef = inject(DynamicDialogRef);
 
 	protected boardSelected = signal<number>(0);
 	public taskForm!: FormGroup;
@@ -42,6 +44,7 @@ export class TaskFormComponent {
 	);
 	public taskSelected = signal<Task>({} as Task);
 	public isLoading = signal<boolean>(false);
+	public virtualScroll = signal<boolean>(true);
 
 	constructor() {
 		this.initTaskForm();
@@ -74,6 +77,10 @@ export class TaskFormComponent {
 					}
 				},
 			});
+
+		effect(() => {
+			console.log('Status', this.statusOptions());
+		})
 	}
 
 	initTaskForm() {
@@ -86,7 +93,7 @@ export class TaskFormComponent {
 
 	closeDialog(): void {
 		this.taskSelected.set({} as Task);
-		// this.matDialogRef.close();
+		this.dialogRef.close();
 	}
 
 	createTask() {
