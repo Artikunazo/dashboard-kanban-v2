@@ -1,20 +1,21 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { httpResource, HttpResourceRef } from '@angular/common/http';
+import { inject, Injectable, Signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeDataService {
-  private readonly http = inject(HttpClient);
 
-  getTheme(): Observable<string> {
-    return of('light');
-    //return this.http.get<string>('/api/theme');
+  getTheme(): HttpResourceRef<unknown> {
+    return httpResource(() => '/api/theme');
   }
 
-  saveTheme(theme: string): Observable<void> {
-    return of();
-    //return this.http.post<void>('/api/theme', theme);
+  saveTheme(theme: string): HttpResourceRef<unknown> {
+    return httpResource(() => ({
+      url: '/api/theme',
+      method: 'POST',
+      body: theme
+    }));
   }
 }
