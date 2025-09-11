@@ -1,8 +1,8 @@
 import {Component, effect, inject, OnInit, output, signal} from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {CustomIconDirective} from '../common/custom-icon.directive';
-import * as fromStore from '../store';
+import {CustomIconDirective} from '../../common/custom-icon.directive';
+import * as fromStore from '../../store';
 import {ToggleSwitchModule} from 'primeng/toggleswitch';
 
 @Component({

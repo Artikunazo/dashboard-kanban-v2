@@ -1,24 +1,18 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { BoardFormComponent } from './board-form/board-form.component';
-import { boardDialogConfig, taskFormConfig } from './common/modal_configs';
-import { KanbanBoardComponent } from './kanban-board/kanban-board.component';
-import { ThemeSwitcherComponent } from './theme-switcher/theme-switcher.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import {Component, computed, inject, signal} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {taskFormConfig} from './config/modal_configs';
+import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
+import {ThemeSwitcherComponent} from './components/theme-switcher/theme-switcher.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
 
-import { AsyncPipe } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Board } from './models/board_models';
-import { TaskFormComponent } from './task-form/task-form.component';
-import { DrawerModule } from 'primeng/drawer';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TooltipModule } from 'primeng/tooltip';
-import { MenuModule } from 'primeng/menu';
-import { ButtonModule } from 'primeng/button';
-import { MenuItem } from 'primeng/api';
+import {AsyncPipe} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {Board} from './models/board_models';
+import {ToolbarModule} from 'primeng/toolbar';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import * as fromStore from './store';
+import {TaskFormComponent} from './components/task-form/task-form.component';
+import { DrawerSidebarComponent } from './components/drawer-sidebar/drawer-sidebar.component';
 
 @Component({
 	selector: 'app-root',
@@ -28,42 +22,25 @@ import * as fromStore from './store';
 		KanbanBoardComponent,
 		ThemeSwitcherComponent,
 		AsyncPipe,
-		DrawerModule,
 		ToolbarModule,
-		ProgressSpinnerModule,
-		TooltipModule,
-		MenuModule,
-		ButtonModule
+		DrawerSidebarComponent
 	],
 	providers: [DialogService, DynamicDialogRef],
 	templateUrl: './app.component.html',
-	styleUrl: './app.component.scss'
+	styleUrl: './app.component.scss',
 })
 export class AppComponent {
-	private readonly dialogService = inject(DialogService);
-	private readonly dialogRef = inject(DynamicDialogRef);
 	private readonly store = inject(Store);
-	
-	drawerVisible = false;
-	drawerClosable = true;
-	drawerHeader = 'Boards';
+	private readonly dialogService = inject(DialogService);
+
 	boards = signal<Board[]>([]);
 	isLoading = signal<boolean>(true);
 	idBoardSelected = signal<number>(0);
-	boardSelected = computed(() => this.boards().find((board) => board.id === this.idBoardSelected()));
+	boardSelected = computed(() =>
+		this.boards().find((board) => board.id === this.idBoardSelected()),
+	);
 	kanbanBoardComponent = new KanbanBoardComponent();
-	menuItems: MenuItem[] = [
-		{
-			label: 'Edit',
-			icon: 'pi pi-pencil',
-			command: () => this.editBoard()
-		},
-		{
-			label: 'Delete',
-			icon: 'pi pi-trash',
-			command: () => this.deleteBoard()
-		}
-	];
+	drawerVisible = signal<boolean>(false);
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadBoards());
@@ -79,15 +56,6 @@ export class AppComponent {
 			});
 	}
 
-	toggleDrawer() {
-		this.drawerVisible = !this.drawerVisible;
-	}
-
-
-	closeDrawer() {
-		this.drawerVisible = false;
-	}
-
 	loadTasksByBoard(board: Board) {
 		if (!board || !board.id || !board.title) return;
 
@@ -96,48 +64,7 @@ export class AppComponent {
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
 		this.idBoardSelected.set(+board.id);
 
-		this.toggleDrawer();
-	}
-
-	showNewBoardDialog(): void {
-		this.dialogService.open(BoardFormComponent, {
-			...boardDialogConfig,
-			header: 'New Board',
-			data: {
-				isEdit: false,
-			}
-		});
-	}
-
-	editBoard(): void {
-		if (!this.boardSelected()) return;
-
-		this.dialogService.open(BoardFormComponent, {
-			...boardDialogConfig,
-			header: 'Edit Board',
-			data: {
-				isEdit: true,
-				boardData: this.boardSelected()
-			}
-		});
-
-		this.dialogRef.onClose.subscribe({
-			next: () => {
-				const selectedBoard = this.boardSelected();
-				if (selectedBoard) {
-					this.loadTasksByBoard(selectedBoard);
-				}
-			}
-		});
-	}
-
-	deleteBoard(): void {
-		const idBoard = this.idBoardSelected();
-		if (!idBoard || isNaN(idBoard)) {
-			return;
-		}
-
-		this.store.dispatch(new fromStore.DeleteBoard(idBoard));
+		// this.toggleDrawer(); @ToDo: Fix this one with a viewchild
 	}
 
 	openCreateTaskModal(event: boolean) {
@@ -148,4 +75,9 @@ export class AppComponent {
 			});
 		}
 	}
+
+	toggleDrawer() {
+		this.drawerVisible.set(!this.drawerVisible());
+	}
 }
+

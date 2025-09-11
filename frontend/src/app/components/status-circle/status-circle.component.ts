@@ -1,6 +1,6 @@
 import {Component, input} from '@angular/core';
 import {TaskStatus} from 'src/app/models/tasks_models';
-import {CustomIconDirective} from '../custom-icon.directive';
+import {CustomIconDirective} from '../../common/custom-icon.directive';
 
 @Component({
     selector: 'status-circle',

@@ -4,10 +4,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Store, StoreModule} from '@ngrx/store';
 import {of} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import * as fromBoardReducer from '../store/reducers/board_reducers';
-import * as fromStatusReducer from '../store/reducers/status_reducers';
-import * as fromSubtaskReducer from '../store/reducers/subtask_reducers';
-import * as fromThemeReducer from '../store/reducers/theme_reducer';
+import * as fromBoardReducer from '../../store/reducers/board_reducers';
+import * as fromStatusReducer from '../../store/reducers/status_reducers';
+import * as fromSubtaskReducer from '../../store/reducers/subtask_reducers';
+import * as fromThemeReducer from '../../store/reducers/theme_reducer';
 import {ToolbarComponent} from './toolbar.component';
 
 describe('ToolbarComponent', () => {

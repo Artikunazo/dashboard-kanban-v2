@@ -7,15 +7,15 @@ import {Store, StoreModule} from '@ngrx/store';
 
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {BehaviorSubject, of} from 'rxjs';
-import {taskFake} from '../mocks/task_mocks';
-import * as fromStore from '../store';
-import * as fromBoardReducer from '../store/reducers/board_reducers';
-import * as fromStatusReducer from '../store/reducers/status_reducers';
-import * as fromSubtaskReducer from '../store/reducers/subtask_reducers';
-import * as fromThemeReducer from '../store/reducers/theme_reducer';
+import {taskFake} from '../../mocks/task_mocks';
+import * as fromStore from '../../store';
+import * as fromBoardReducer from '../../store/reducers/board_reducers';
+import * as fromStatusReducer from '../../store/reducers/status_reducers';
+import * as fromSubtaskReducer from '../../store/reducers/subtask_reducers';
+import * as fromThemeReducer from '../../store/reducers/theme_reducer';
 
 import {AsyncPipe} from '@angular/common';
-import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
+import {DeleteConfirmationComponent} from '../delete-confirmation/delete-confirmation.component';
 import {TaskOverviewComponent} from './task-overview.component';
 
 describe('Task Overview Component', () => {

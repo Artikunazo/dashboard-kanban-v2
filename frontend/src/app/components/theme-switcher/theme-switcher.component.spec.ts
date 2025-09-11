@@ -3,9 +3,9 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {Store, StoreModule} from '@ngrx/store';
 import {of} from 'rxjs';
-import {CustomIconDirective} from '../common/custom-icon.directive';
-import * as fromStore from '../store';
-import {reducers} from '../store/reducers';
+import {CustomIconDirective} from '../../common/custom-icon.directive';
+import * as fromStore from '../../store';
+import {reducers} from '../../store/reducers';
 import {ThemeSwitcherComponent} from './theme-switcher.component';
 
 describe('ThemeSwitcherComponent', () => {

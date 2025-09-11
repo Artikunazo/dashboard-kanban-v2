@@ -1,7 +1,7 @@
 import {Component, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {SubtaskDoneDirective} from '../common/subtask-done.directive';
-import {Subtask} from '../models/subtask_models';
+import {SubtaskDoneDirective} from '../../common/subtask-done.directive';
+import {Subtask} from '../../models/subtask_models';
 import {CheckboxModule} from 'primeng/checkbox';
 
 @Component({

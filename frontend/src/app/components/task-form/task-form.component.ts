@@ -15,13 +15,13 @@ import {
 	Validators,
 } from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {Task} from '../models/tasks_models';
+import {CustomButtonComponent} from '../custom-button/custom-button.component';
+import {Task} from '../../models/tasks_models';
 import {InputTextModule} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FloatLabel} from 'primeng/floatlabel';
-import * as fromStore from '../store';
+import * as fromStore from '../../store';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
