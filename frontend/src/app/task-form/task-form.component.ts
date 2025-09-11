@@ -1,5 +1,12 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, effect, inject, signal} from '@angular/core';
+import {AsyncPipe, NgClass, NgTemplateOutlet} from '@angular/common';
+import {
+	Component,
+	computed,
+	inject,
+	signal,
+	TemplateRef,
+	viewChild,
+} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
@@ -11,11 +18,16 @@ import {Store} from '@ngrx/store';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Task} from '../models/tasks_models';
 import {InputTextModule} from 'primeng/inputtext';
-import {Select, SelectModule} from 'primeng/select';
+import {Select} from 'primeng/select';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FloatLabel} from 'primeng/floatlabel';
 import * as fromStore from '../store';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {MenuCustomComponent} from '../components/menu-custom/menu-custom.component';
+import {MessageService} from 'primeng/api';
+import {ButtonModule} from 'primeng/button';
+import { ButtonGroupModule } from 'primeng/buttongroup';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({
 	selector: 'task-form',
@@ -28,7 +40,14 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 		Select,
 		ProgressSpinnerModule,
 		FloatLabel,
+		MenuCustomComponent,
+		ButtonModule,
+		NgTemplateOutlet,
+		ButtonGroupModule,
+		NgClass,
+		FieldsetModule
 	],
+	providers: [MessageService],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
 })
@@ -36,6 +55,10 @@ export class TaskFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
 	private readonly dialogRef = inject(DynamicDialogRef);
+	private readonly messageService = inject(MessageService);
+
+	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
+	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
 
 	protected boardSelected = signal<number>(0);
 	public taskForm!: FormGroup;
@@ -45,6 +68,10 @@ export class TaskFormComponent {
 	public taskSelected = signal<Task>({} as Task);
 	public isLoading = signal<boolean>(false);
 	public virtualScroll = signal<boolean>(true);
+	public isEdit = signal<boolean>(false);
+	public templateSelected = computed(() =>
+		this.isEdit() ? this.taskFormTemplate() : this.taskInfoTemplate(),
+	);
 
 	constructor() {
 		this.initTaskForm();
@@ -74,13 +101,11 @@ export class TaskFormComponent {
 							id: this.taskSelected().statusId,
 							name: this.taskSelected().status,
 						});
+
+						this.taskForm.disable();
 					}
 				},
 			});
-
-		effect(() => {
-			console.log('Status', this.statusOptions());
-		})
 	}
 
 	initTaskForm() {
@@ -119,5 +144,44 @@ export class TaskFormComponent {
 		}
 
 		this.closeDialog();
+	}
+
+	acceptConfirmation(event: boolean) {
+		if (!event) return;
+
+		this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+
+		this.messageService.add({
+			severity: 'info',
+			summary: 'Confirmed',
+			detail: 'You have accepted',
+		});
+	}
+
+	rejectConfirmation(event: boolean) {
+		if (!event) return;
+
+		this.messageService.add({
+			severity: 'error',
+			summary: 'Rejected',
+			detail: 'You have rejected',
+			life: 3000,
+		});
+	}
+
+	enableControl() {
+		this.taskForm.get('title')?.enable();
+		this.taskForm.get('description')?.enable();
+		this.taskForm.get('status')?.enable();
+
+		this.isEdit.set(true);
+	}
+
+	disableControl() {
+		this.taskForm.get('title')?.disable();
+		this.taskForm.get('description')?.disable();
+		this.taskForm.get('status')?.disable();
+
+		this.isEdit.set(false);
 	}
 }

@@ -1,4 +1,4 @@
-<p-card>
+<p-card class="cursor-pointer" (click)="emitShowTaskDialog()">
 	@if (task(); as task) {
 		<ng-template #title>
 			<div class="flex justify-between">
@@ -6,7 +6,6 @@
 				<p-button
 					severity="secondary"
 					size="small"
-					(click)="menu.toggle($event)"
 					icon="pi pi-ellipsis-v"
 					variant="text"
 				/>
@@ -38,9 +37,8 @@
 	}
 </p-card>
 
-<p-confirmdialog />
-<p-menu
+<menu-custom
 	#menu
-	[model]="menuItems"
-	[popup]="true"
-/>
+	(acceptConfirmation)="acceptConfirmation($event)"
+	(rejectConfirmation)="rejectConfirmation($event)"
+></menu-custom>

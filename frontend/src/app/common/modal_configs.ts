@@ -21,4 +21,5 @@ export const taskFormConfig: Partial<DynamicDialogConfig> = {
 	height: 'fit-content',
 	modal: true,
 	closable: true,
+	showHeader: false
 };
