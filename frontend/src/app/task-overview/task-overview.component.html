@@ -1,26 +1,27 @@
-<p-card class="cursor-pointer" (click)="emitShowTaskDialog()">
+<p-card class="cursor-pointer">
 	@if (task(); as task) {
 		<ng-template #title>
 			<div class="flex justify-between">
-				<p>{{ task.title }}</p>
+				<p (click)="emitShowTaskDialog()">{{ task.title }}</p>
 				<p-button
 					severity="secondary"
 					size="small"
 					icon="pi pi-ellipsis-v"
 					variant="text"
+					(click)="menuOptions.toggle($event)"
 				/>
 			</div>
 		</ng-template>
 
 		@if (task.countDoneSubtasks) {
-			<p>
+			<p (click)="emitShowTaskDialog()">
 				Subtasks:
 				{{ task.countDoneSubtasks }} completed of
 				{{ task.totalSubtasks }}
 			</p>
 		}
 
-		<p>{{ task.description }}</p>
+		<p (click)="emitShowTaskDialog()">{{ task.description }}</p>
 
 		<ng-template #footer>
 			<!-- <div class="flex justify-end">
@@ -37,8 +38,11 @@
 	}
 </p-card>
 
-<menu-custom
-	#menu
-	(acceptConfirmation)="acceptConfirmation($event)"
-	(rejectConfirmation)="rejectConfirmation($event)"
-></menu-custom>
+<p-toast />
+<p-confirmdialog />
+<p-menu
+	#menuOptions
+	[model]="menuItems"
+	[popup]="true"
+/>
+

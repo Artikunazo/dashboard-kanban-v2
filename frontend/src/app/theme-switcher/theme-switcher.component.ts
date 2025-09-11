@@ -1,11 +1,9 @@
-import { Component, effect, inject, OnInit, output, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { CustomIconDirective } from '../common/custom-icon.directive';
+import {Component, effect, inject, OnInit, output, signal} from '@angular/core';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {CustomIconDirective} from '../common/custom-icon.directive';
 import * as fromStore from '../store';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
-
+import {ToggleSwitchModule} from 'primeng/toggleswitch';
 
 @Component({
 	selector: 'theme-switcher',
@@ -14,7 +12,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 		CustomIconDirective,
 		ReactiveFormsModule,
 		ToggleSwitchModule,
-		FormsModule
+		FormsModule,
 	],
 	templateUrl: './theme-switcher.component.html',
 	styleUrl: './theme-switcher.component.scss',
@@ -41,7 +39,7 @@ export class ThemeSwitcherComponent implements OnInit {
 				body?.classList.add(darkThemeName);
 				this.store.dispatch(new fromStore.SaveTheme('dark'));
 			}
-		})
+		});
 		// this.themeToggled.valueChanges.pipe(takeUntilDestroyed()).subscribe({
 		// 	next: (checked) => {
 		// 		const darkThemeName = 'dark-theme';

@@ -23,11 +23,13 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FloatLabel} from 'primeng/floatlabel';
 import * as fromStore from '../store';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
-import {MenuCustomComponent} from '../components/menu-custom/menu-custom.component';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
-import { ButtonGroupModule } from 'primeng/buttongroup';
-import { FieldsetModule } from 'primeng/fieldset';
+import {ButtonGroupModule} from 'primeng/buttongroup';
+import {FieldsetModule} from 'primeng/fieldset';
+import {Menu} from 'primeng/menu';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 
 @Component({
 	selector: 'task-form',
@@ -40,14 +42,16 @@ import { FieldsetModule } from 'primeng/fieldset';
 		Select,
 		ProgressSpinnerModule,
 		FloatLabel,
-		MenuCustomComponent,
 		ButtonModule,
 		NgTemplateOutlet,
 		ButtonGroupModule,
 		NgClass,
-		FieldsetModule
+		FieldsetModule,
+		Menu,
+		ConfirmDialog,
+		ToastModule,
 	],
-	providers: [MessageService],
+	providers: [MessageService, ConfirmationService],
 	templateUrl: './task-form.component.html',
 	styleUrl: './task-form.component.scss',
 })
@@ -56,6 +60,7 @@ export class TaskFormComponent {
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
 	private readonly dialogRef = inject(DynamicDialogRef);
 	private readonly messageService = inject(MessageService);
+	private readonly confirmationService = inject(ConfirmationService);
 
 	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
 	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
@@ -72,6 +77,20 @@ export class TaskFormComponent {
 	public templateSelected = computed(() =>
 		this.isEdit() ? this.taskFormTemplate() : this.taskInfoTemplate(),
 	);
+
+	public menuItems: MenuItem[] = [
+		{
+			label: 'View/Edit',
+			icon: 'pi pi-pencil',
+			styleClass: 'font-normal text-sm',
+		},
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			styleClass: 'font-normal text-sm',
+			command: () => this.deletTask(),
+		},
+	];
 
 	constructor() {
 		this.initTaskForm();
@@ -143,6 +162,7 @@ export class TaskFormComponent {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
 		}
 
+		this.isLoading.set(false);
 		this.closeDialog();
 	}
 
@@ -183,5 +203,37 @@ export class TaskFormComponent {
 		this.taskForm.get('status')?.disable();
 
 		this.isEdit.set(false);
+	}
+
+	deletTask() {
+		this.confirmationService.confirm({
+			target: event?.target as EventTarget,
+			message: 'Are you sure that you want to proceed?',
+			header: 'Confirmation',
+			closable: true,
+			closeOnEscape: true,
+			icon: 'pi pi-exclamation-triangle',
+			rejectButtonProps: {
+				label: 'No',
+				severity: 'secondary',
+				outlined: true,
+			},
+			acceptButtonProps: {
+				label: 'Yes',
+				severity: 'danger',
+			},
+
+			accept: () => {
+				this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+
+				this.messageService.add({
+					severity: 'info',
+					summary: 'Confirmed',
+					detail: 'The task has been deleted',
+				});
+
+				this.closeDialog();
+			},
+		});
 	}
 }

@@ -17,6 +17,7 @@
 				[outlined]="true"
 				(click)="enableControl()"
 				label="Edit"
+				[disabled]="isEdit()"
 			/>
 		</p-button-group>
 		<p-button
@@ -42,6 +43,7 @@
 			size="small"
 			icon="pi pi-ellipsis-v"
 			variant="text"
+			(click)="menuOptions.toggle($event)"
 		/>
 		<custom-button
 			class="create-task-button"
@@ -129,8 +131,11 @@
 	</form>
 </ng-template>
 
-<menu-custom
-	#menu
-	(acceptConfirmation)="acceptConfirmation($event)"
-	(rejectConfirmation)="rejectConfirmation($event)"
-></menu-custom>
+<p-toast />
+<p-confirmdialog />
+<p-menu
+	#menuOptions
+	[model]="menuItems"
+	[popup]="true"
+/>
+
