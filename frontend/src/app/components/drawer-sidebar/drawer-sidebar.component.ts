@@ -102,5 +102,11 @@ export class DrawerSidebarComponent {
 			},
 		});
 	}
+
+	loadTasks(board: Board) {
+		this.loadTasksByBoard.emit(board);
+
+		this.drawerVisible.set(false);
+	}
 }
 

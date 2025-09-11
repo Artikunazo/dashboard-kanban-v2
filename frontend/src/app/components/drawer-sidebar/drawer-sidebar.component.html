@@ -9,7 +9,7 @@
 			@for (board of boards(); track board.id) {
 				<div
 					class="add-board-item flex justify-between cursor-pointer hover:bg-gray-100 my-3"
-					(click)="loadTasksByBoard.emit(board)"
+					(click)="loadTasks(board)"
 				>
 					<h2 aria-hidden="true">
 						{{ board.title }}
