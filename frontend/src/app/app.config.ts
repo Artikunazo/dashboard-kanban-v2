@@ -1,6 +1,8 @@
-import { provideHttpClient } from '@angular/common/http';
+import {provideHttpClient} from '@angular/common/http';
 import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {providePrimeNG} from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 import {provideRouter} from '@angular/router';
 import {provideEffects} from '@ngrx/effects';
 import {provideState, provideStore} from '@ngrx/store';
@@ -30,6 +32,11 @@ export const appConfig: ApplicationConfig = {
 		provideHttpClient(),
 		provideZoneChangeDetection({
 			eventCoalescing: true,
+		}),
+		providePrimeNG({
+			theme: {
+				preset: Aura,
+			},
 		}),
 	],
 };

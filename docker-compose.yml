@@ -1,15 +1,15 @@
 services:
-  frontend:
-    image: frontend
+  dashboardKanbanFE:
+    image: dashboard-kanban-fe
     ports:
       - "4200:80"
     build:
       context: ./frontend
       dockerfile: Dockerfile
     depends_on:
-      - dashboard-kanban
-  dashboard-kanban:
-    image: dashboard-kanban
+      - dashboardKanbanBE
+  dashboardKanbanBE:
+    image: dashboard-kanban-be
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -31,9 +31,12 @@ services:
       MYSQL_PASSWORD: 1234
       MYSQL_DATABASE: dashboard_kanban
     restart: always
+    volumes:
+      - ./backend/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       retries: 5
-      
-  
+volumes:
+  mysql_data:

@@ -1,59 +1,141 @@
-<section class="task-form-container">
-	<h3 class="task-form-title">Task information</h3>
-
-	@if (taskSelected$ | async) {
-		<form [formGroup]="taskForm" class="row">
-			<mat-form-field class="col">
-				<mat-label>Title</mat-label>
-				<input
-					matInput
-					formControlName="title"
-					type="text"
-				/>
-			</mat-form-field>
-
-			<mat-form-field class="col">
-				<mat-label>Description</mat-label>
-				<textarea
-					matInput
-					formControlName="description"
-					type="text"
-				></textarea>
-			</mat-form-field>
-
-			<!-- Subtask is managemented In Task Details Component -->
-
-			<mat-form-field class="col">
-				<mat-label>Status</mat-label>
-				<mat-select formControlName="status">
-					@for (
-						status of statusOptions$ | async;
-						track status.id
-					) {
-						<mat-option [value]="status">{{
-							status.name
-						}}</mat-option>
-					}
-				</mat-select>
-			</mat-form-field>
-		</form>
-
-		@if (isLoading$ | async) {
-			<div class="row justify-items-center">
-				<mat-spinner class="col" [diameter]="30" />
-			</div>
-		} @else {
-			<custom-button
-				[colorButton]="'accent'"
-				[disabled]="!taskForm.valid"
-				[text]="
-					!(taskSelected$ | async)?.id
-						? 'Create task'
-						: 'Update Task'
-				"
-				class="col create-task-button"
-				(clickEvent)="createTask()"
+<section class="p-2 w-full flex flex-col gap-4">
+	<div class="p-dialog-header">
+		<h2 class="p-dialog-title">Task information</h2>
+		<p-button-group>
+			<p-button
+				severity="secondary"
+				size="small"
+				icon="pi pi-eye"
+				[outlined]="true"
+				(click)="disableControl()"
+				label="View"
 			/>
-		}
-	}
+			<p-button
+				severity="secondary"
+				size="small"
+				icon="pi pi-pencil"
+				[outlined]="true"
+				(click)="enableControl()"
+				label="Edit"
+				[disabled]="isEdit()"
+			/>
+		</p-button-group>
+		<p-button
+			severity="secondary"
+			size="small"
+			icon="pi pi-times"
+			variant="text"
+			(outlined)="(true)"
+			(click)="closeDialog()"
+		/>
+	</div>
+
+	<div class="p-dialog-content">
+		<ng-container
+			[ngTemplateOutlet]="templateSelected()"
+		></ng-container>
+	</div>
+
+	<div class="p-dialog-footer">
+		<p-button
+			class="btn-more-options"
+			severity="secondary"
+			size="small"
+			icon="pi pi-ellipsis-v"
+			variant="text"
+			(click)="menuOptions.toggle($event)"
+		/>
+		<custom-button
+			class="create-task-button"
+			[severity]="'secondary'"
+			[text]="'Cancel'"
+			(clickEvent)="disableControl()"
+			[ngClass]="!isEdit() ? 'hidden' : ''"
+		></custom-button>
+		<custom-button
+			class="create-task-button"
+			[severity]="'primary'"
+			[disabled]="!taskForm.valid"
+			[text]="'Save changes'"
+			(clickEvent)="createTask()"
+			[loading]="isLoading()"
+			[ngClass]="!isEdit() ? 'hidden' : ''"
+		></custom-button>
+	</div>
 </section>
+
+<ng-template #taskInfoTemplate>
+	<div class="flex flex-col gap-4 w-full">
+		<p-fieldset legend="Title">
+			{{ taskSelected().title }}
+		</p-fieldset>
+		<p-fieldset legend="Description">
+			{{ taskSelected().description }}
+		</p-fieldset>
+		<p-fieldset legend="Status">
+			{{ taskSelected().status }}
+		</p-fieldset>
+	</div>
+</ng-template>
+
+<ng-template #taskFormTemplate>
+	<form
+		class="flex flex-col gap-4 w-full"
+		[formGroup]="taskForm"
+	>
+		<p-float-label variant="on">
+			<label
+				for="title"
+				style="font-weight: normal"
+				>Title</label
+			>
+			<input
+				pInputText
+				formControlName="title"
+				type="text"
+				id="title"
+				autocomplete="off"
+				class="w-full"
+			/>
+		</p-float-label>
+
+		<p-float-label
+			class="w-full"
+			variant="on"
+		>
+			<label
+				for="description"
+				style="font-weight: normal"
+				>Description</label
+			>
+			<textarea
+				pInputText
+				formControlName="description"
+				type="text"
+				id="description"
+				autocomplete="off"
+				class="w-full"
+			></textarea>
+		</p-float-label>
+
+		<p-select
+			class="w-full"
+			formControlName="status"
+			optionLabel="name"
+			placeholder="Select status"
+			[options]="statusOptions()"
+			[virtualScroll]="true"
+			[virtualScrollItemSize]="3"
+		>
+		</p-select>
+	</form>
+</ng-template>
+
+<p-toast />
+<p-confirmdialog />
+<p-menu
+	#menuOptions
+	[model]="menuItems"
+	[popup]="true"
+/>
+

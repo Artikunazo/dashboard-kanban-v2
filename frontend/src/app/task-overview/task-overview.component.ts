@@ -1,58 +1,68 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, inject, input, OnDestroy, output} from '@angular/core';
+import {
+	Component,
+	inject,
+	input,
+	output,
+	signal,
+	viewChild,
+} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatDialog} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject} from 'rxjs';
-import {DeleteConfirmationComponent} from '../common/delete-confirmation/delete-confirmation.component';
-import {deleteConfirmationConfig} from '../common/modal_configs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import {CardModule} from 'primeng/card';
+import {ButtonModule} from 'primeng/button';
+import {Menu, MenuModule} from 'primeng/menu';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 
 @Component({
-    selector: 'task-overview',
-    imports: [
-        MatCardModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatIconModule,
-        AsyncPipe,
-    ],
-    templateUrl: './task-overview.component.html',
-    styleUrl: './task-overview.component.scss'
+	selector: 'task-overview',
+	standalone: true,
+	imports: [
+		CardModule,
+		ButtonModule,
+		MenuModule,
+		ConfirmDialog,
+		Menu,
+		ConfirmDialog,
+		ToastModule,
+	],
+	providers: [ConfirmationService, MessageService],
+	templateUrl: './task-overview.component.html',
+	styleUrl: './task-overview.component.scss',
 })
-export class TaskOverviewComponent implements OnDestroy {
-	protected readonly matDialog = inject(MatDialog);
-	protected readonly store = inject(Store);
+export class TaskOverviewComponent {
+	private readonly store = inject(Store);
+	private readonly messageService = inject(MessageService);
+	private readonly confirmationService = inject(ConfirmationService);
 
+	protected boardSelected = signal<number>(0);
 	public task = input.required<Task>();
 	public taskSelected = output<boolean>();
-	protected boardSelected$ = new BehaviorSubject<number>(0);
+
+	public menuItems: MenuItem[] = [
+		{
+			label: 'View/Edit',
+			icon: 'pi pi-pencil',
+			styleClass: 'font-normal text-sm',
+		},
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			styleClass: 'font-normal text-sm',
+			command: () => this.deletTask(),
+		},
+	];
 
 	constructor() {
 		this.store
 			.select(fromStore.selectBoardSelected)
 			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) =>
-				this.boardSelected$.next(boardSelected),
+				this.boardSelected.set(boardSelected),
 			);
-	}
-
-	showDeleteConfirmationDialog(): void {
-		this.matDialog
-			.open(DeleteConfirmationComponent, deleteConfirmationConfig)
-			.afterClosed()
-			.subscribe({
-				next: (resultDeleting: boolean) => {
-					if (!resultDeleting) return;
-
-					this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
-				},
-			});
 	}
 
 	emitShowTaskDialog() {
@@ -62,7 +72,59 @@ export class TaskOverviewComponent implements OnDestroy {
 		this.taskSelected.emit(true);
 	}
 
-	ngOnDestroy() {
-		this.boardSelected$.complete();
+	deletTask() {
+		this.confirmationService.confirm({
+			target: event?.target as EventTarget,
+			message: 'Are you sure that you want to proceed?',
+			header: 'Confirmation',
+			closable: true,
+			closeOnEscape: true,
+			icon: 'pi pi-exclamation-triangle',
+			rejectButtonProps: {
+				label: 'No',
+				severity: 'secondary',
+				outlined: true,
+			},
+			acceptButtonProps: {
+				label: 'Yes',
+				severity: 'danger',
+			},
+
+			accept: () => {
+				this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
+
+				this.messageService.add({
+					severity: 'info',
+					summary: 'Confirmed',
+					detail: 'The task has been deleted',
+				});
+
+			},
+		});
+	}
+
+	acceptConfirmation(event: boolean) {
+		console.log(event);
+		if (!event) return;
+
+		this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
+
+		this.messageService.add({
+			severity: 'info',
+			summary: 'Confirmed',
+			detail: 'You have accepted',
+		});
+	}
+
+	rejectConfirmation(event: boolean) {
+		console.log(event);
+		if (!event) return;
+
+		this.messageService.add({
+			severity: 'error',
+			summary: 'Rejected',
+			detail: 'You have rejected',
+			life: 3000,
+		});
 	}
 }

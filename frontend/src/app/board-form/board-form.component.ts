@@ -1,77 +1,78 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, effect, inject, OnDestroy, signal} from '@angular/core';
 import {
 	FormBuilder,
-	FormGroup,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormField} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import {Store} from '@ngrx/store';
 import {BehaviorSubject} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
 import {Board} from '../models/board_models';
 import * as fromStore from '../store';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
 
 @Component({
     selector: 'board-form',
     imports: [
         ReactiveFormsModule,
-        MatButtonModule,
-        MatInputModule,
-        MatFormField,
+        // MatButtonModule,
+        // MatInputModule,
+        // MatFormField,
         CustomButtonComponent,
-        MatProgressSpinnerModule,
-        AsyncPipe,
+        // MatProgressSpinnerModule,
+        FieldsetModule,
+        InputTextModule,
+        ProgressSpinnerModule
     ],
     templateUrl: './board-form.component.html',
     styleUrl: './board-form.component.scss'
 })
-export class BoardFormComponent implements OnDestroy {
-	protected readonly formBuilder = inject(FormBuilder);
-	protected readonly store = inject(Store<fromStore.AppState>);
-	protected readonly matDialogRef: MatDialogRef<BoardFormComponent> =
-		inject(MatDialogRef);
-	protected readonly matDialogData: Board = inject(MAT_DIALOG_DATA);
+export class BoardFormComponent {
+	private readonly formBuilder = inject(FormBuilder);
+	private readonly dialogRef = inject(DynamicDialogRef);
+	private readonly dialogConfig = inject(DynamicDialogConfig);
+	private readonly store = inject(Store<fromStore.AppState>);
 
-	public boardForm: FormGroup = this.formBuilder.group({
-		title: this.formBuilder.control('', [Validators.required]),
+	public boardForm = this.formBuilder.group({
+		title: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
 	});
 
-	public isLoading$ = new BehaviorSubject<boolean>(true);
-	public isEdit = !!this.matDialogData;
+	public isLoading = signal<boolean>(false);
+	public isEdit = signal<boolean>(false);
+	public dialogData = signal(this.dialogConfig.data);
 
 	constructor() {
-		if (
-			this.matDialogData !== null &&
-			Object.hasOwn(this.matDialogData || {}, 'id')
-		) {
-			this.boardForm.patchValue({
-				title: this.matDialogData.title,
-			});
-		}
+		effect(() => {
+			this.isEdit.set(this.dialogData().isEdit);
+
+			if(this.isEdit()) {
+				this.boardForm.patchValue({
+					title: this.dialogData().boardData.title,
+				});
+			}
+		});
 	}
 
 	saveBoard() {
-		this.store.dispatch(new fromStore.SaveBoard(this.boardForm.value));
-		this.isLoading$.next(false);
-		this.matDialogRef.close();
+		this.store.dispatch(new fromStore.SaveBoard({ title: this.boardForm.value.title ?? '' }));
+		this.isLoading.set(false);
+		this.dialogRef.close();
 	}
 
 	updateBoard() {
 		this.store.dispatch(
 			new fromStore.UpdateBoard({
-				...this.boardForm.value,
-				id: this.matDialogData.id,
+				title: this.boardForm.value.title ?? '',
+				id: this.dialogData().boardData.id,
 			}),
 		);
-		this.matDialogRef.close();
-	}
-	ngOnDestroy(): void {
-		this.isLoading$.complete();
+
+		this.dialogRef.close();
 	}
 }

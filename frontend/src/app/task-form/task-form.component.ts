@@ -1,55 +1,96 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {AsyncPipe, NgClass, NgTemplateOutlet} from '@angular/common';
+import {
+	Component,
+	computed,
+	inject,
+	signal,
+	TemplateRef,
+	viewChild,
+} from '@angular/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
 	FormGroup,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, map, Observable} from 'rxjs';
 import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import {Status} from '../models/status_models';
 import {Task} from '../models/tasks_models';
+import {InputTextModule} from 'primeng/inputtext';
+import {Select} from 'primeng/select';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {FloatLabel} from 'primeng/floatlabel';
 import * as fromStore from '../store';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
+import {ButtonModule} from 'primeng/button';
+import {ButtonGroupModule} from 'primeng/buttongroup';
+import {FieldsetModule} from 'primeng/fieldset';
+import {Menu} from 'primeng/menu';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 
 @Component({
-    selector: 'task-form',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        CustomButtonComponent,
-        MatCheckboxModule,
-        MatIconModule,
-        AsyncPipe,
-        MatProgressSpinnerModule,
-    ],
-    templateUrl: './task-form.component.html',
-    styleUrl: './task-form.component.scss'
+	selector: 'task-form',
+	standalone: true,
+	imports: [
+		ReactiveFormsModule,
+		CustomButtonComponent,
+		AsyncPipe,
+		InputTextModule,
+		Select,
+		ProgressSpinnerModule,
+		FloatLabel,
+		ButtonModule,
+		NgTemplateOutlet,
+		ButtonGroupModule,
+		NgClass,
+		FieldsetModule,
+		Menu,
+		ConfirmDialog,
+		ToastModule,
+	],
+	providers: [MessageService, ConfirmationService],
+	templateUrl: './task-form.component.html',
+	styleUrl: './task-form.component.scss',
 })
-export class TaskFormComponent implements OnDestroy, OnInit {
+export class TaskFormComponent {
 	private readonly formBuilder = inject(FormBuilder);
 	private readonly store = inject(Store) as Store<fromStore.AppState>;
-	private matDialogRef = inject(
-		MatDialogRef,
-	) as MatDialogRef<TaskFormComponent>;
-	protected readonly matDialogData = inject(MAT_DIALOG_DATA);
+	private readonly dialogRef = inject(DynamicDialogRef);
+	private readonly messageService = inject(MessageService);
+	private readonly confirmationService = inject(ConfirmationService);
 
+	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
+	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
+
+	protected boardSelected = signal<number>(0);
 	public taskForm!: FormGroup;
-	public statusOptions$ = new Observable<Status[]>();
-	protected boardSelected$ = new BehaviorSubject<number>(0);
-	public taskSelected$ = new BehaviorSubject<Task>({} as Task);
-	public isLoading$ = new BehaviorSubject<boolean>(false);
+	public statusOptions = toSignal(
+		this.store.select(fromStore.selectStatusData),
+	);
+	public taskSelected = signal<Task>({} as Task);
+	public isLoading = signal<boolean>(false);
+	public virtualScroll = signal<boolean>(true);
+	public isEdit = signal<boolean>(false);
+	public templateSelected = computed(() =>
+		this.isEdit() ? this.taskFormTemplate() : this.taskInfoTemplate(),
+	);
+
+	public menuItems: MenuItem[] = [
+		{
+			label: 'View/Edit',
+			icon: 'pi pi-pencil',
+			styleClass: 'font-normal text-sm',
+		},
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			styleClass: 'font-normal text-sm',
+			command: () => this.deletTask(),
+		},
+	];
 
 	constructor() {
 		this.initTaskForm();
@@ -58,14 +99,10 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			.select(fromStore.selectBoardSelected)
 			.pipe(takeUntilDestroyed())
 			.subscribe((boardSelected: number) => {
-				this.boardSelected$.next(boardSelected);
+				this.boardSelected.set(boardSelected);
 			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
-		this.statusOptions$ = this.store.select(fromStore.selectStatusData).pipe(
-			map((status: Status[]) => status),
-			takeUntilDestroyed(),
-		);
 
 		this.store
 			.select(fromStore.selectTask)
@@ -73,18 +110,18 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			.subscribe({
 				next: (task: Task | null) => {
 					if (task) {
-						this.taskSelected$.next(task);
+						this.taskSelected.set(task);
 
-						this.taskForm
-							.get('title')
-							?.setValue(this.taskSelected$.getValue().title);
+						this.taskForm.get('title')?.setValue(this.taskSelected().title);
 						this.taskForm
 							.get('description')
-							?.setValue(this.taskSelected$.getValue().description);
+							?.setValue(this.taskSelected().description);
 						this.taskForm.get('status')?.setValue({
-							id: this.taskSelected$.getValue().statusId,
-							name: this.taskSelected$.getValue().status,
+							id: this.taskSelected().statusId,
+							name: this.taskSelected().status,
 						});
+
+						this.taskForm.disable();
 					}
 				},
 			});
@@ -98,20 +135,13 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 		});
 	}
 
-	ngOnInit() {
-		this.matDialogRef.afterClosed().subscribe(() => {
-			this.taskSelected$.complete();
-			this.taskForm.reset();
-		});
-	}
-
 	closeDialog(): void {
-		this.taskSelected$.complete();
-		this.matDialogRef.close();
+		this.taskSelected.set({} as Task);
+		this.dialogRef.close();
 	}
 
 	createTask() {
-		this.isLoading$.next(true);
+		this.isLoading.set(true);
 		if (this.taskForm.invalid) return;
 
 		const newTaskData: Task = {
@@ -119,25 +149,91 @@ export class TaskFormComponent implements OnDestroy, OnInit {
 			title: this.taskForm.value.title,
 			description: this.taskForm.value.description,
 			statusId: this.taskForm.value.status.id,
-			boardId: this.boardSelected$.getValue(),
+			boardId: this.boardSelected(),
 			countDoneSubtasks: 0,
 			totalSubtasks: 0,
 			status: this.taskForm.value.status.name,
 		};
 
-		if (this.taskSelected$.getValue().id) {
-			newTaskData['id'] = this.taskSelected$.getValue().id;
+		if (this.taskSelected().id) {
+			newTaskData['id'] = this.taskSelected().id;
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
 		}
 
+		this.isLoading.set(false);
 		this.closeDialog();
 	}
 
-	ngOnDestroy() {
-		this.boardSelected$.complete();
-		this.taskSelected$.complete();
-		this.isLoading$.complete();
+	acceptConfirmation(event: boolean) {
+		if (!event) return;
+
+		this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+
+		this.messageService.add({
+			severity: 'info',
+			summary: 'Confirmed',
+			detail: 'You have accepted',
+		});
+	}
+
+	rejectConfirmation(event: boolean) {
+		if (!event) return;
+
+		this.messageService.add({
+			severity: 'error',
+			summary: 'Rejected',
+			detail: 'You have rejected',
+			life: 3000,
+		});
+	}
+
+	enableControl() {
+		this.taskForm.get('title')?.enable();
+		this.taskForm.get('description')?.enable();
+		this.taskForm.get('status')?.enable();
+
+		this.isEdit.set(true);
+	}
+
+	disableControl() {
+		this.taskForm.get('title')?.disable();
+		this.taskForm.get('description')?.disable();
+		this.taskForm.get('status')?.disable();
+
+		this.isEdit.set(false);
+	}
+
+	deletTask() {
+		this.confirmationService.confirm({
+			target: event?.target as EventTarget,
+			message: 'Are you sure that you want to proceed?',
+			header: 'Confirmation',
+			closable: true,
+			closeOnEscape: true,
+			icon: 'pi pi-exclamation-triangle',
+			rejectButtonProps: {
+				label: 'No',
+				severity: 'secondary',
+				outlined: true,
+			},
+			acceptButtonProps: {
+				label: 'Yes',
+				severity: 'danger',
+			},
+
+			accept: () => {
+				this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+
+				this.messageService.add({
+					severity: 'info',
+					summary: 'Confirmed',
+					detail: 'The task has been deleted',
+				});
+
+				this.closeDialog();
+			},
+		});
 	}
 }

@@ -1,55 +1,69 @@
-import {Component, inject, OnDestroy, ViewChild} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {MatDrawer, MatSidenavModule} from '@angular/material/sidenav';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {Store} from '@ngrx/store';
-import {BoardFormComponent} from './board-form/board-form.component';
-import {boardDialogConfig, taskFormConfig} from './common/modal_configs';
-import {KanbanBoardComponent} from './kanban-board/kanban-board.component';
-import {ThemeSwitcherComponent} from './theme-switcher/theme-switcher.component';
-import {ToolbarComponent} from './toolbar/toolbar.component';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { BoardFormComponent } from './board-form/board-form.component';
+import { boardDialogConfig, taskFormConfig } from './common/modal_configs';
+import { KanbanBoardComponent } from './kanban-board/kanban-board.component';
+import { ThemeSwitcherComponent } from './theme-switcher/theme-switcher.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
-import {AsyncPipe} from '@angular/common';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {BehaviorSubject} from 'rxjs';
-import {Board} from './models/board_models';
+import { AsyncPipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Board } from './models/board_models';
+import { TaskFormComponent } from './task-form/task-form.component';
+import { DrawerModule } from 'primeng/drawer';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
+import { MenuItem } from 'primeng/api';
 import * as fromStore from './store';
-import {TaskFormComponent} from './task-form/task-form.component';
 
 @Component({
-    selector: 'app-root',
-    imports: [
-        ToolbarComponent,
-        MatListModule,
-        MatSidenavModule,
-        MatSlideToggleModule,
-        KanbanBoardComponent,
-        ThemeSwitcherComponent,
-        MatIconModule,
-        MatButtonModule,
-        BoardFormComponent,
-        MatMenuModule,
-        MatProgressSpinner,
-        AsyncPipe,
-    ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+	selector: 'app-root',
+	standalone: true,
+	imports: [
+		ToolbarComponent,
+		KanbanBoardComponent,
+		ThemeSwitcherComponent,
+		AsyncPipe,
+		DrawerModule,
+		ToolbarModule,
+		ProgressSpinnerModule,
+		TooltipModule,
+		MenuModule,
+		ButtonModule
+	],
+	providers: [DialogService, DynamicDialogRef],
+	templateUrl: './app.component.html',
+	styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnDestroy {
-	@ViewChild('drawer', {static: false}) public drawer!: MatDrawer;
-
-	protected readonly matDialog = inject(MatDialog);
-	protected readonly store = inject(Store);
-
-	boards$ = new BehaviorSubject<Board[]>([] as Board[]);
-	isLoading$ = new BehaviorSubject<boolean>(true);
-	boardSelected$ = new BehaviorSubject<number>(0);
+export class AppComponent {
+	private readonly dialogService = inject(DialogService);
+	private readonly dialogRef = inject(DynamicDialogRef);
+	private readonly store = inject(Store);
+	
+	drawerVisible = false;
+	drawerClosable = true;
+	drawerHeader = 'Boards';
+	boards = signal<Board[]>([]);
+	isLoading = signal<boolean>(true);
+	idBoardSelected = signal<number>(0);
+	boardSelected = computed(() => this.boards().find((board) => board.id === this.idBoardSelected()));
 	kanbanBoardComponent = new KanbanBoardComponent();
+	menuItems: MenuItem[] = [
+		{
+			label: 'Edit',
+			icon: 'pi pi-pencil',
+			command: () => this.editBoard()
+		},
+		{
+			label: 'Delete',
+			icon: 'pi pi-trash',
+			command: () => this.deleteBoard()
+		}
+	];
 
 	constructor() {
 		this.store.dispatch(new fromStore.LoadBoards());
@@ -59,54 +73,79 @@ export class AppComponent implements OnDestroy {
 			.pipe(takeUntilDestroyed())
 			.subscribe({
 				next: (data: Board[]) => {
-					this.boards$.next(data);
-					this.isLoading$.next(false);
+					this.boards.set(data);
+					this.isLoading.set(false);
 				},
 			});
+	}
+
+	toggleDrawer() {
+		this.drawerVisible = !this.drawerVisible;
+	}
+
+
+	closeDrawer() {
+		this.drawerVisible = false;
 	}
 
 	loadTasksByBoard(board: Board) {
 		if (!board || !board.id || !board.title) return;
 
-		this.kanbanBoardComponent.isLoading$.next(true);
+		this.kanbanBoardComponent.isLoading.set(true);
 		this.store.dispatch(new fromStore.LoadTasksByBoard(+board.id));
 		this.store.dispatch(new fromStore.SaveTitleBoard(board.title));
-		this.boardSelected$.next(+board.id);
+		this.idBoardSelected.set(+board.id);
 
-		this.drawer.toggle();
+		this.toggleDrawer();
 	}
 
 	showNewBoardDialog(): void {
-		this.matDialog.open(BoardFormComponent, boardDialogConfig);
-	}
-
-	editBoard(boardData: Board) {
-		if (!boardData || !boardData.id || !boardData.title) return;
-
-		this.matDialog.open(BoardFormComponent, {
+		this.dialogService.open(BoardFormComponent, {
 			...boardDialogConfig,
-			data: boardData,
+			header: 'New Board',
+			data: {
+				isEdit: false,
+			}
 		});
 	}
 
-	deleteBoard(idBoard: number | string) {
-		idBoard = +idBoard;
+	editBoard(): void {
+		if (!this.boardSelected()) return;
+
+		this.dialogService.open(BoardFormComponent, {
+			...boardDialogConfig,
+			header: 'Edit Board',
+			data: {
+				isEdit: true,
+				boardData: this.boardSelected()
+			}
+		});
+
+		this.dialogRef.onClose.subscribe({
+			next: () => {
+				const selectedBoard = this.boardSelected();
+				if (selectedBoard) {
+					this.loadTasksByBoard(selectedBoard);
+				}
+			}
+		});
+	}
+
+	deleteBoard(): void {
+		const idBoard = this.idBoardSelected();
 		if (!idBoard || isNaN(idBoard)) {
 			return;
 		}
 
-		this.store.dispatch(new fromStore.DeleteBoard(+idBoard));
+		this.store.dispatch(new fromStore.DeleteBoard(idBoard));
 	}
 
 	openCreateTaskModal(event: boolean) {
 		if (event) {
-			this.matDialog.open(TaskFormComponent, taskFormConfig);
+			this.dialogService.open(TaskFormComponent, {
+				...taskFormConfig,
+				header: 'Task information',
+			});
 		}
-	}
-
-	ngOnDestroy() {
-		this.boardSelected$.complete();
-		this.isLoading$.complete();
-		this.boards$.complete();
 	}
 }

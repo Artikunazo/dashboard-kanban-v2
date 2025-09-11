@@ -1,25 +1,25 @@
-<section class="container-liquid">
-	<mat-toolbar class="row toolbar-main">
-		<div class="col-1">
+<section class="toolbar">
+	<p-toolbar>
+		<ng-template #start>
 			<custom-button
-				[colorButton]="'accent'"
+				[severity]="'secondary'"
 				(clickEvent)="openNav.emit()"
-				iconName="menu"
+				iconName="bars"
 			/>
-		</div>
-		<div class="col-7 toolbar-title">
-			<h2>{{ subtitle$ | async }}</h2>
-		</div>
-		<div class="col-4 justify-self-end">
+		</ng-template>
+
+		<ng-template #center>
+			<h2 class="font-bold text-xl">{{ subtitle() }}</h2>
+		</ng-template>
+
+		<ng-template #end>
 			<custom-button
 				[text]="'Create task'"
-				[colorButton]="'accent'"
+				[severity]="'info'"
 				(clickEvent)="openTaskFormModal()"
-				iconName="add"
-				[disabled]="
-					(subtitle$ | async) === 'Dashboard Kanban'
-				"
+				iconName="plus"
+				[disabled]="subtitle() === 'Dashboard Kanban'"
 			/>
-		</div>
-	</mat-toolbar>
+		</ng-template>
+	</p-toolbar>
 </section>

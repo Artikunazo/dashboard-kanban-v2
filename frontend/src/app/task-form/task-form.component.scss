@@ -1,16 +1,13 @@
-.task-form-container {
-	padding: 15px;
+.p-dialog-header {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0.15rem;
 }
 
-.task-form-title {
-	font-weight: bolder;
+.p-dialog-content {
+	padding-top: 0.3rem;
 }
 
-.create-task-button {
-	display: flex;
-	justify-self: end;
-}
-
-.subtasks-container {
-	margin-bottom: 15px;
+.p-dialog-footer .btn-more-options {
+	margin-right: auto;
 }

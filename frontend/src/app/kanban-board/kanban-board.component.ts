@@ -1,69 +1,54 @@
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import {AsyncPipe} from '@angular/common';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject} from 'rxjs';
 import {Task} from '../models/tasks_models';
 import * as fromStore from '../store';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
-    selector: 'kanban-board',
-    imports: [
-        KanbanColumnComponent,
-        DragDropModule,
-        AsyncPipe,
-        MatProgressSpinnerModule,
-    ],
-    templateUrl: './kanban-board.component.html',
-    styleUrl: './kanban-board.component.scss'
+	selector: 'kanban-board',
+	standalone: true,
+	imports: [KanbanColumnComponent, DragDropModule, ProgressSpinner],
+	templateUrl: './kanban-board.component.html',
+	styleUrl: './kanban-board.component.scss',
 })
-export class KanbanBoardComponent implements OnDestroy {
+export class KanbanBoardComponent {
 	private readonly store = inject(Store);
 
-	public tasksList$ = new BehaviorSubject<Task[]>([]);
-	public tasksListIndexed!: {[key: string]: Task[]};
-	public isLoading$ = new BehaviorSubject<boolean>(false);
-	protected boardSelected$ = new BehaviorSubject<number>(0);
+	public isLoading = signal<boolean>(false);
+	public tasksList = toSignal(this.store.select(fromStore.getAllTasks));
+	public tasksListIndexed = new Map<string, Task[]>();
+	protected boardSelected = toSignal(
+		this.store.select(fromStore.selectBoardSelected),
+	);
 
 	constructor() {
-		this.store
-			.select(fromStore.selectBoardSelected)
-			.pipe(takeUntilDestroyed())
-			.subscribe((boardSelected: number) =>
-				this.boardSelected$.next(boardSelected),
-			);
-
-		this.store
-			.select(fromStore.getAllTasks)
-			.pipe(takeUntilDestroyed())
-			.subscribe({
-				next: (tasks: Task[]) => {
-					this.tasksList$.next(tasks);
-					this.indexTasks();
-					this.isLoading$.next(false);
-				},
-			});
+		effect(() => {
+			this.indexTasks();
+			this.isLoading.set(false);
+		});
 	}
 
 	indexTasks() {
-		this.tasksListIndexed = this.tasksList$.getValue().reduce(
-			(previous: any, task: Task) => ({
-				...previous,
-				[task.status ?? '']: [...(previous[task.status ?? ''] || []), task],
-			}),
-			{},
-		);
+		this.tasksListIndexed.clear();
 
-		for (const column of Object.entries(this.tasksListIndexed)) {
-			this.tasksListIndexed[column[0]] = column[1].sort((a: Task, b: Task) => {
-				return +b.id - +a.id;
-			});
-		}
+		this.tasksList()?.forEach((task: Task) => {
+			const status = task.status ?? '';
+			if (!this.tasksListIndexed.has(status)) {
+				this.tasksListIndexed.set(status, []);
+			}
+
+			this.tasksListIndexed.get(status)?.push(task);
+		});
 	}
+
+  getTasks(status: string) {
+		
+    return Array.from(this.tasksListIndexed.get(status)?.values() ?? []);
+  }
 
 	drop(event: CdkDragDrop<Task[]>) {
 		const task: Task = event.previousContainer.data[event.previousIndex],
@@ -77,11 +62,5 @@ export class KanbanBoardComponent implements OnDestroy {
 				status,
 			}),
 		);
-	}
-
-	ngOnDestroy() {
-		this.tasksList$.complete();
-		this.boardSelected$.complete();
-		this.isLoading$.complete();
 	}
 }

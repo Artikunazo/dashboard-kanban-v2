@@ -1,13 +1,13 @@
 <section class="subtask-form-container">
 	<form [formGroup]="subtaskForm" class="row">
-		<mat-form-field class="col">
+		<p-fieldset>
 			<input
-				matInput
+				pInputText
 				type="text"
 				formControlName="title"
 				placeholder="Write Subtask title here"
 				(keyup)="addSubtask($event)"
 			/>
-		</mat-form-field>
+		</p-fieldset>
 	</form>
 </section>

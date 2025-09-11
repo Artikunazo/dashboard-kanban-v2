@@ -1,6 +1,5 @@
 import {AsyncPipe} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Store, StoreModule} from '@ngrx/store';
 import {of} from 'rxjs';
@@ -37,7 +36,6 @@ describe('ToolbarComponent', () => {
 				ToolbarComponent,
 				CustomButtonComponent,
 				BrowserAnimationsModule,
-				MatToolbarModule,
 				AsyncPipe,
 			],
 			providers: [

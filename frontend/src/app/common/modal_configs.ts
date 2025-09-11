@@ -1,20 +1,25 @@
-import {MatDialogConfig} from '@angular/material/dialog';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
-export const boardDialogConfig: MatDialogConfig = {
-	width: '90%',
+export const boardDialogConfig: Partial<DynamicDialogConfig> = {
+	width: '40dvw',
 	height: 'fit-content',
-	delayFocusTrap: true,
-	closeOnNavigation: true,
+	modal: true,
+	closable: true,
+	// delayFocusTrap: true,
+	// closeOnNavigation: true,
 };
 
-export const deleteConfirmationConfig: MatDialogConfig = {
-	width: '30%',
+export const deleteConfirmationConfig: Partial<DynamicDialogConfig> = {
+	width: '30dvw',
 	height: 'fit-content',
-	delayFocusTrap: true,
-	closeOnNavigation: true,
+	// delayFocusTrap: true,
+	// closeOnNavigation: true,
 };
 
-export const taskFormConfig: MatDialogConfig = {
-	width: '65%',
-	maxHeight: '90vh',
+export const taskFormConfig: Partial<DynamicDialogConfig> = {
+	width: '35dvw',
+	height: 'fit-content',
+	modal: true,
+	closable: true,
+	showHeader: false
 };

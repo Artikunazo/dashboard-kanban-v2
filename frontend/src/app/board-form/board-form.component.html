@@ -1,30 +1,13 @@
-<section class="container-liquid">
-	<form [formGroup]="boardForm" class="row board-form">
-		<mat-form-field class="col">
-			<mat-label>Board title</mat-label>
-			<input matInput formControlName="title" type="text" />
-		</mat-form-field>
+<section>
+	<form [formGroup]="boardForm" class="board-form">
+		<label for="title">Board title</label>
+		<input pInputText type="text" formControlName="title" id="title" class="w-full" />
 
-		<div class="col justify-self-end">
-			@if (isLoading$ | async) {
-				<mat-spinner class="col" [diameter]="30" />
-			} @else {
-				@if (isEdit) {
-					<custom-button
-						[text]="'Save'"
-						[colorButton]="'accent'"
-						(clickEvent)="updateBoard()"
-						class="col create-new-board-button"
-					/>
-				} @else {
-					<custom-button
-						[text]="'Save'"
-						[colorButton]="'accent'"
-						(clickEvent)="saveBoard()"
-						class="col create-new-board-button"
-					/>
-				}
-			}
+		<div class="flex justify-self-end">
+
+			<custom-button [disabled]="boardForm.invalid" [text]="isEdit() ? 'Update' : 'Save'" [severity]="'success'"
+				(clickEvent)="isEdit() ? updateBoard() : saveBoard()" class="create-new-board-button mt-4"
+				[loading]="isLoading()" />
 		</div>
 	</form>
 </section>
