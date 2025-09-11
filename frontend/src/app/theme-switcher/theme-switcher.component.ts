@@ -25,21 +25,6 @@ export class ThemeSwitcherComponent implements OnInit {
 	themeToggled = signal<boolean>(false);
 
 	constructor() {
-		effect(() => {
-			const darkThemeName = 'dark-theme';
-			const lightThemeName = 'light-theme';
-			const body = document.querySelector('body');
-			// Enable light theme
-			if (!this.themeToggled()) {
-				body?.classList.remove(darkThemeName);
-				body?.classList.add(lightThemeName);
-				this.store.dispatch(new fromStore.SaveTheme('ligth'));
-			} else {
-				body?.classList.remove(lightThemeName);
-				body?.classList.add(darkThemeName);
-				this.store.dispatch(new fromStore.SaveTheme('dark'));
-			}
-		});
 		// this.themeToggled.valueChanges.pipe(takeUntilDestroyed()).subscribe({
 		// 	next: (checked) => {
 		// 		const darkThemeName = 'dark-theme';
@@ -64,8 +49,23 @@ export class ThemeSwitcherComponent implements OnInit {
 
 		this.store.select(fromStore.getTheme).subscribe({
 			next: (ThemeState: string) => {
+				console.log(ThemeState);
 				this.themeToggled.set(ThemeState === 'dark');
 			},
 		});
+	}
+
+	toogleTheme() {
+		const darkThemeName = 'dark';
+		const body = document.querySelector('body');
+
+		// Enable light theme
+		if (!this.themeToggled()) {
+			body?.classList.remove(darkThemeName);
+			this.store.dispatch(new fromStore.SaveTheme('light'));
+		} else {
+			body?.classList.add(darkThemeName);
+			this.store.dispatch(new fromStore.SaveTheme('dark'));
+		}
 	}
 }
