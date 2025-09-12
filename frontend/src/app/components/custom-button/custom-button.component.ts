@@ -1,6 +1,6 @@
 import {Component, input, output} from '@angular/core';
 import {ButtonModule, ButtonSeverity} from 'primeng/button';
-import {CustomIconDirective} from '../custom-icon.directive';
+import {CustomIconDirective} from '../../common/custom-icon.directive';
 
 @Component({
 	selector: 'custom-button',

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {StatusService} from 'src/app/api/status.service';
+import {StatusService} from 'src/app/data-services/status.service';
 import {Status} from 'src/app/models/status_models';
 import * as fromStatusActions from '../actions/status_actions';
 

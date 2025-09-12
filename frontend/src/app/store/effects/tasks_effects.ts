@@ -2,7 +2,7 @@ import {Injectable, inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable, catchError, map, mergeMap, of} from 'rxjs';
-import {TaskService} from 'src/app/api/task.service';
+import {TaskService} from 'src/app/data-services/task.service';
 import {
 	ApiTaskToTask,
 	apiTasksToTasks,

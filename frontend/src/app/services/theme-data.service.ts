@@ -7,15 +7,12 @@ import { Observable, of } from 'rxjs';
 })
 export class ThemeDataService {
 
-  getTheme(): HttpResourceRef<unknown> {
-    return httpResource(() => '/api/theme');
+  getTheme(): Observable<string> {
+    return of('light');
+    //return httpResource(() => '/api/theme');
   }
 
-  saveTheme(theme: string): HttpResourceRef<unknown> {
-    return httpResource(() => ({
-      url: '/api/theme',
-      method: 'POST',
-      body: theme
-    }));
+  saveTheme(theme: string): Observable<void> {
+    return of();
   }
 }

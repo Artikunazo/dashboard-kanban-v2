@@ -1,8 +1,8 @@
 import {Component, inject, output} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {CustomButtonComponent} from '../common/custom-button/custom-button.component';
-import * as fromStore from '../store';
+import {CustomButtonComponent} from '../custom-button/custom-button.component';
+import * as fromStore from '../../store';
 import {ToolbarModule} from 'primeng/toolbar';
 
 @Component({

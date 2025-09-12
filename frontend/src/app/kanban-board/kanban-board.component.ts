@@ -1,5 +1,5 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
-import {KanbanColumnComponent} from '../kanban-column/kanban-column.component';
+import {Component, effect, inject, signal} from '@angular/core';
+import {KanbanColumnComponent} from '../components/kanban-column/kanban-column.component';
 
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {toSignal} from '@angular/core/rxjs-interop';

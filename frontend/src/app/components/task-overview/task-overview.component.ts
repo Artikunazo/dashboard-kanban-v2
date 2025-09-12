@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {Task} from '../models/tasks_models';
-import * as fromStore from '../store';
+import {Task} from '../../models/tasks_models';
+import * as fromStore from '../../store';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
 import {Menu, MenuModule} from 'primeng/menu';
