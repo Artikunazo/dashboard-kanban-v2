@@ -65,7 +65,8 @@ export class TaskFormComponent {
 	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
 	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
 
-	protected boardSelected = signal<number>(0);
+	protected boardSelected = toSignal(this.store
+			.select(fromStore.selectBoardSelected));
 	public taskForm!: FormGroup;
 	public statusOptions = toSignal(
 		this.store.select(fromStore.selectStatusData),
@@ -96,13 +97,6 @@ export class TaskFormComponent {
 
 	constructor() {
 		this.initTaskForm();
-
-		this.store
-			.select(fromStore.selectBoardSelected)
-			.pipe(takeUntilDestroyed())
-			.subscribe((boardSelected: number) => {
-				this.boardSelected.set(boardSelected);
-			});
 
 		this.store.dispatch(new fromStore.LoadStatuses());
 
@@ -144,14 +138,17 @@ export class TaskFormComponent {
 
 	createTask() {
 		this.isLoading.set(true);
+
 		if (this.taskForm.invalid) return;
+
+		if(!this.boardSelected()) return;
 
 		const newTaskData: Task = {
 			id: '',
 			title: this.taskForm.value.title,
 			description: this.taskForm.value.description,
 			statusId: this.taskForm.value.status.id,
-			boardId: this.boardSelected(),
+			boardId: this.boardSelected() as number,
 			countDoneSubtasks: 0,
 			totalSubtasks: 0,
 			status: this.taskForm.value.status.name,
