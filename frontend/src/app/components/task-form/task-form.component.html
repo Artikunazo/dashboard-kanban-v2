@@ -1,25 +1,29 @@
 <section class="p-2 w-full flex flex-col gap-4">
 	<div class="p-dialog-header">
 		<h2 class="p-dialog-title">Task information</h2>
-		<p-button-group>
-			<p-button
-				severity="secondary"
-				size="small"
-				icon="pi pi-eye"
-				[outlined]="true"
-				(click)="disableControl()"
-				label="View"
-			/>
-			<p-button
-				severity="secondary"
-				size="small"
-				icon="pi pi-pencil"
-				[outlined]="true"
-				(click)="enableControl()"
-				label="Edit"
-				[disabled]="isEdit()"
-			/>
-		</p-button-group>
+	
+		@if (taskSelected()) {
+			<p-button-group>
+				<p-button
+					severity="secondary"
+					size="small"
+					icon="pi pi-eye"
+					[outlined]="true"
+					(click)="disableControl()"
+					label="View"
+				/>
+				<p-button
+					severity="secondary"
+					size="small"
+					icon="pi pi-pencil"
+					[outlined]="true"
+					(click)="enableControl()"
+					label="Edit"
+					[disabled]="isEdit()"
+				/>
+			</p-button-group>
+		}
+		
 		<p-button
 			severity="secondary"
 			size="small"
@@ -37,20 +41,21 @@
 	</div>
 
 	<div class="p-dialog-footer">
-		<p-button
-			class="btn-more-options"
-			severity="secondary"
-			size="small"
-			icon="pi pi-ellipsis-v"
-			variant="text"
-			(click)="menuOptions.toggle($event)"
-		/>
+		@if (taskSelected()) {
+			<p-button
+				class="btn-more-options"
+				severity="secondary"
+				size="small"
+				icon="pi pi-ellipsis-v"
+				variant="text"
+				(click)="menuOptions.toggle($event)"
+			/>
+		}
 		<custom-button
 			class="create-task-button"
 			[severity]="'secondary'"
 			[text]="'Cancel'"
-			(clickEvent)="disableControl()"
-			[ngClass]="!isEdit() ? 'hidden' : ''"
+			(clickEvent)="taskSelected() ? disableControl() : closeDialog()"
 		></custom-button>
 		<custom-button
 			class="create-task-button"
@@ -67,13 +72,13 @@
 <ng-template #taskInfoTemplate>
 	<div class="flex flex-col gap-4 w-full">
 		<p-fieldset legend="Title">
-			{{ taskSelected().title }}
+			{{ taskSelected()?.title }}
 		</p-fieldset>
 		<p-fieldset legend="Description">
-			{{ taskSelected().description }}
+			{{ taskSelected()?.description }}
 		</p-fieldset>
 		<p-fieldset legend="Status">
-			{{ taskSelected().status }}
+			{{ taskSelected()?.status }}
 		</p-fieldset>
 	</div>
 </ng-template>

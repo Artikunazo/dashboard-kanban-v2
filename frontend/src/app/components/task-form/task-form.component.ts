@@ -22,7 +22,7 @@ import {Select} from 'primeng/select';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FloatLabel} from 'primeng/floatlabel';
 import * as fromStore from '../../store';
-import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
 import {ButtonGroupModule} from 'primeng/buttongroup';
@@ -70,7 +70,7 @@ export class TaskFormComponent {
 	public statusOptions = toSignal(
 		this.store.select(fromStore.selectStatusData),
 	);
-	public taskSelected = signal<Task>({} as Task);
+	public taskSelected = signal<Task | null>(null);
 	public isLoading = signal<boolean>(false);
 	public virtualScroll = signal<boolean>(true);
 	public isEdit = signal<boolean>(false);
@@ -112,17 +112,20 @@ export class TaskFormComponent {
 					if (task) {
 						this.taskSelected.set(task);
 
-						this.taskForm.get('title')?.setValue(this.taskSelected().title);
+						this.taskForm.get('title')?.setValue(this.taskSelected()?.title);
 						this.taskForm
 							.get('description')
-							?.setValue(this.taskSelected().description);
+							?.setValue(this.taskSelected()?.description);
 						this.taskForm.get('status')?.setValue({
-							id: this.taskSelected().statusId,
-							name: this.taskSelected().status,
+							id: this.taskSelected()?.statusId,
+							name: this.taskSelected()?.status,
 						});
 
 						this.taskForm.disable();
+						return;
 					}
+
+					this.isEdit.set(true);
 				},
 			});
 	}
@@ -136,8 +139,10 @@ export class TaskFormComponent {
 	}
 
 	closeDialog(): void {
-		this.taskSelected.set({} as Task);
-		this.dialogRef.close();
+		this.taskSelected.set(null);
+		this.taskForm.reset();
+		this.initTaskForm();
+		this.dialogRef.close();	
 	}
 
 	createTask() {
@@ -155,8 +160,9 @@ export class TaskFormComponent {
 			status: this.taskForm.value.status.name,
 		};
 
-		if (this.taskSelected().id) {
-			newTaskData['id'] = this.taskSelected().id;
+		const taskSelectedId = this.taskSelected()?.id;
+		if (taskSelectedId) {
+			newTaskData['id'] = taskSelectedId;
 			this.store.dispatch(new fromStore.UpdateTask({...newTaskData}));
 		} else {
 			this.store.dispatch(new fromStore.AddTask({...newTaskData}));
@@ -169,7 +175,10 @@ export class TaskFormComponent {
 	acceptConfirmation(event: boolean) {
 		if (!event) return;
 
-		this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+		const taskId = this.taskSelected()?.id;
+		if (!taskId) return;
+
+		this.store.dispatch(new fromStore.DeleteTask(+taskId));
 
 		this.messageService.add({
 			severity: 'info',
@@ -224,7 +233,10 @@ export class TaskFormComponent {
 			},
 
 			accept: () => {
-				this.store.dispatch(new fromStore.DeleteTask(+this.taskSelected().id));
+				const taskId = this.taskSelected()?.id;
+				if (!taskId) return;
+
+				this.store.dispatch(new fromStore.DeleteTask(+taskId));
 
 				this.messageService.add({
 					severity: 'info',
