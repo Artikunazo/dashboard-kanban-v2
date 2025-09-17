@@ -134,6 +134,7 @@ export class TaskFormComponent {
 	closeDialog(): void {
 		this.taskSelected.set(null);
 		this.dialogRef.close();
+		this.store.dispatch(new fromStore.CleanTaskSelected());
 	}
 
 	createTask() {
