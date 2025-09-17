@@ -89,7 +89,6 @@ export class TaskOverviewComponent {
 				label: 'Yes',
 				severity: 'danger',
 			},
-
 			accept: () => {
 				this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
 
@@ -98,13 +97,11 @@ export class TaskOverviewComponent {
 					summary: 'Confirmed',
 					detail: 'The task has been deleted',
 				});
-
 			},
 		});
 	}
 
 	acceptConfirmation(event: boolean) {
-		console.log(event);
 		if (!event) return;
 
 		this.store.dispatch(new fromStore.DeleteTask(+this.task().id));
@@ -117,7 +114,6 @@ export class TaskOverviewComponent {
 	}
 
 	rejectConfirmation(event: boolean) {
-		console.log(event);
 		if (!event) return;
 
 		this.messageService.add({
