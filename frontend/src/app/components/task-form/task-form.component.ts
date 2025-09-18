@@ -30,6 +30,8 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {Menu} from 'primeng/menu';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
+import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
 	selector: 'task-form',
@@ -50,6 +52,8 @@ import {ToastModule} from 'primeng/toast';
 		Menu,
 		ConfirmDialog,
 		ToastModule,
+		SubtasksOverviewComponent,
+		PanelModule
 	],
 	providers: [MessageService, ConfirmationService],
 	templateUrl: './task-form.component.html',
@@ -65,8 +69,9 @@ export class TaskFormComponent {
 	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
 	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
 
-	protected boardSelected = toSignal(this.store
-			.select(fromStore.selectBoardSelected));
+	protected boardSelected = toSignal(
+		this.store.select(fromStore.selectBoardSelected),
+	);
 	public taskForm!: FormGroup;
 	public statusOptions = toSignal(
 		this.store.select(fromStore.selectStatusData),
@@ -80,6 +85,9 @@ export class TaskFormComponent {
 		this.isEdit() ? this.taskFormTemplate() : this.taskInfoTemplate(),
 	);
 	private taskId = computed(() => this.taskSelected()?.id ?? '');
+	public subtasks = toSignal(
+		this.store.select(fromStore.selectSubtasksByIdTask(+this.taskId())),
+	);
 
 	public menuItems: MenuItem[] = [
 		{
@@ -137,7 +145,7 @@ export class TaskFormComponent {
 
 		if (this.taskForm.invalid) return;
 
-		if(!this.boardSelected()) return;
+		if (!this.boardSelected()) return;
 
 		const newTaskData: Task = {
 			id: '',
@@ -164,7 +172,7 @@ export class TaskFormComponent {
 	acceptConfirmation(event: boolean) {
 		if (!event) return;
 
-		if(!this.taskId()) return;
+		if (!this.taskId()) return;
 
 		this.store.dispatch(new fromStore.DeleteTask(+this.taskId()));
 
@@ -221,7 +229,7 @@ export class TaskFormComponent {
 			},
 
 			accept: () => {
-				if(!this.taskId()) return;
+				if (!this.taskId()) return;
 
 				this.store.dispatch(new fromStore.DeleteTask(+this.taskId()));
 

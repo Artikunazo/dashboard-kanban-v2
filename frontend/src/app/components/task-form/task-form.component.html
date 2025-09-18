@@ -54,7 +54,6 @@
 				variant="text"
 				(click)="menuOptions.toggle($event)"
 			/>
-			
 		}
 		<custom-button
 			class="create-task-button"
@@ -88,6 +87,22 @@
 		<p-fieldset legend="Status">
 			{{ taskSelected()?.status }}
 		</p-fieldset>
+	</div>
+
+	<div class="subtasks-container mt-4">
+		<p-panel
+			header="Subtasks"
+			[toggleable]="true"
+			[collapsed]="true"
+		>
+			@for (subtask of subtasks(); track subtask.name) {
+				<subtasks-overview [subtask]="subtask" />
+			} @empty {
+				<p class="p-m-0 p-text-center">
+					No subtasks available.
+				</p>
+			}
+		</p-panel>
 	</div>
 </ng-template>
 
@@ -140,6 +155,10 @@
 			[appendTo]="'body'"
 		>
 		</p-select>
+
+		<div class="subtasks-from-container">
+			
+		</div>
 	</form>
 </ng-template>
 
