@@ -47,6 +47,7 @@ export class TaskOverviewComponent {
 			label: 'View/Edit',
 			icon: 'pi pi-pencil',
 			styleClass: 'font-normal text-sm',
+			command: () => this.emitShowTaskDialog(),
 		},
 		{
 			label: 'Delete',
