@@ -83,11 +83,6 @@ export class TaskFormComponent {
 
 	public menuItems: MenuItem[] = [
 		{
-			label: 'View/Edit',
-			icon: 'pi pi-pencil',
-			styleClass: 'font-normal text-sm',
-		},
-		{
 			label: 'Delete',
 			icon: 'pi pi-trash',
 			styleClass: 'font-normal text-sm',

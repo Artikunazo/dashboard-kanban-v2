@@ -22,19 +22,8 @@
 		}
 
 		<p (click)="emitShowTaskDialog()">{{ task.description }}</p>
-
-		<ng-template #footer>
-			<!-- <div class="flex justify-end">
-				<button pButton variant="text" severity="info" outlined="true" size="small" (click)="emitShowTaskDialog()">
-					<i class="pi pi-info"></i>
-				</button> -->
-			<!-- <button pButton severity="danger" size="small" (click)="showDeleteConfirmationDialog()">
-					<i class="pi pi-trash"></i>
-				</button> -->
-			<!-- </div> -->
-		</ng-template>
 	} @else {
-		<p>Task invalid!</p>
+		<p>Invalid task!</p>
 	}
 </p-card>
 

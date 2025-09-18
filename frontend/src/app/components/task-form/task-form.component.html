@@ -1,26 +1,26 @@
 <section class="p-2 w-full flex flex-col gap-4">
 	<div class="p-dialog-header">
 		<h2 class="p-dialog-title">Task information</h2>
-		@if(taskSelected()) {
+		@if (taskSelected()) {
 			<p-button-group>
-			<p-button
-				severity="secondary"
-				size="small"
-				icon="pi pi-eye"
-				[outlined]="true"
-				(click)="disableControl()"
-				label="View"
-			/>
-			<p-button
-				severity="secondary"
-				size="small"
-				icon="pi pi-pencil"
-				[outlined]="true"
-				(click)="enableControl()"
-				label="Edit"
-				[disabled]="isEdit()"
-			/>
-		</p-button-group>
+				<p-button
+					severity="secondary"
+					size="small"
+					icon="pi pi-eye"
+					[outlined]="true"
+					(click)="disableControl()"
+					label="View"
+				/>
+				<p-button
+					severity="secondary"
+					size="small"
+					icon="pi pi-pencil"
+					[outlined]="true"
+					(click)="enableControl()"
+					label="Edit"
+					[disabled]="isEdit()"
+				/>
+			</p-button-group>
 		}
 		<p-button
 			severity="secondary"
@@ -39,21 +39,30 @@
 	</div>
 
 	<div class="p-dialog-footer">
-		@if(taskSelected()) {
+		@if (taskSelected()) {
+			<p-menu
+				#menuOptions
+				[model]="menuItems"
+				[popup]="true"
+				[appendTo]="'body'"
+			/>
 			<p-button
-			class="btn-more-options"
-			severity="secondary"
-			size="small"
-			icon="pi pi-ellipsis-v"
-			variant="text"
-			(click)="menuOptions.toggle($event)"
-		/>
+				class="btn-more-options"
+				severity="secondary"
+				size="small"
+				icon="pi pi-ellipsis-v"
+				variant="text"
+				(click)="menuOptions.toggle($event)"
+			/>
+			
 		}
 		<custom-button
 			class="create-task-button"
 			[severity]="'secondary'"
 			[text]="'Cancel'"
-			(clickEvent)="taskSelected() ? disableControl() : closeDialog()"
+			(clickEvent)="
+				taskSelected() ? disableControl() : closeDialog()
+			"
 			[ngClass]="!isEdit() ? 'hidden' : ''"
 		></custom-button>
 		<custom-button
@@ -137,9 +146,3 @@
 
 <p-toast />
 <p-confirmdialog />
-<p-menu
-	#menuOptions
-	[model]="menuItems"
-	[popup]="true"
-/>
-
