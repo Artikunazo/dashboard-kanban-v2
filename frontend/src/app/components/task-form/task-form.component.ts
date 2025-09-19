@@ -1,11 +1,13 @@
 import {AsyncPipe, NgClass, NgTemplateOutlet} from '@angular/common';
 import {
 	Component,
+	ComponentRef,
 	computed,
 	inject,
 	signal,
 	TemplateRef,
 	viewChild,
+	ViewContainerRef,
 } from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
@@ -32,6 +34,7 @@ import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import {SubtasksOverviewComponent} from '../subtasks-overview/subtasks-overview.component';
 import { PanelModule } from 'primeng/panel';
+import { SubtaskFormComponent } from '../subtask-form/subtask-form.component';
 
 @Component({
 	selector: 'task-form',
@@ -68,6 +71,7 @@ export class TaskFormComponent {
 
 	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
 	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
+	public newSubtaskContainer = viewChild.required<ViewContainerRef>('newSubtaskContainer');
 
 	protected boardSelected = toSignal(
 		this.store.select(fromStore.selectBoardSelected),
@@ -88,6 +92,7 @@ export class TaskFormComponent {
 	public subtasks = toSignal(
 		this.store.select(fromStore.selectSubtasksByIdTask(+this.taskId())),
 	);
+	public subtaskFormComponentRef?: ComponentRef<SubtaskFormComponent>;
 
 	public menuItems: MenuItem[] = [
 		{
@@ -242,5 +247,19 @@ export class TaskFormComponent {
 				this.closeDialog();
 			},
 		});
+	}
+
+	addSubtask() {
+		this.newSubtaskContainer()?.clear();
+
+		this.subtaskFormComponentRef = this.newSubtaskContainer().createComponent(SubtaskFormComponent);
+
+		this.subtaskFormComponentRef.onDestroy(() => {
+			if(this.subtaskFormComponentRef) {
+				this.subtaskFormComponentRef.destroy();
+				this.subtaskFormComponentRef = undefined;
+			}
+		});
+
 	}
 }

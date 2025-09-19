@@ -97,11 +97,17 @@
 		>
 			@for (subtask of subtasks(); track subtask.name) {
 				<subtasks-overview [subtask]="subtask" />
-			} @empty {
-				<p class="p-m-0 p-text-center">
-					No subtasks available.
-				</p>
 			}
+
+			<ng-container #newSubtaskContainer></ng-container>
+
+			<button
+				pButton
+				severity="secondary"
+				variant="text"
+				class="pi pi-plus"
+				(click)="addSubtask()"
+			></button>
 		</p-panel>
 	</div>
 </ng-template>
@@ -155,10 +161,6 @@
 			[appendTo]="'body'"
 		>
 		</p-select>
-
-		<div class="subtasks-from-container">
-			
-		</div>
 	</form>
 </ng-template>
 
