@@ -71,7 +71,7 @@ export class TaskFormComponent {
 
 	public taskFormTemplate = viewChild<TemplateRef<any>>('taskFormTemplate');
 	public taskInfoTemplate = viewChild<TemplateRef<any>>('taskInfoTemplate');
-	public newSubtaskContainer = viewChild.required<ViewContainerRef>('newSubtaskContainer');
+	public newSubtaskContainer = viewChild.required('newSubtaskContainer', { read: ViewContainerRef });
 
 	protected boardSelected = toSignal(
 		this.store.select(fromStore.selectBoardSelected),
